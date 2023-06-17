@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:name="com.example.myanimedata.ui.AnimeFragment"
+        android:icon="@drawable/ic_movie"
+        android:title="@string/menu_home"/>
+
+    <item
+        android:id="@+id/mangaFragment"
+        android:name="com.example.myanimedata.ui.MangaFragment"
+        android:icon="@drawable/ic_manga"
+        android:title="@string/menu_manga"/>
+
+    <item
+        android:id="@+id/characterFragment"
+        android:name="com.example.myanimedata.ui.CharacterFragment"
+        android:icon="@drawable/ic_person"
+        android:title="@string/menu_character"/>
+
+</menu>
