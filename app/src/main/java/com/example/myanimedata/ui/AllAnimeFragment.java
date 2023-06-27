@@ -76,11 +76,9 @@ public class AllAnimeFragment extends Fragment {
 
     private void getAllAnimeData(int page) {
         int limit = 1;
-        String order_by = "popularity";
-        String sort = "desc";
         String type = "tv";
 
-        Call<AnimeResponse> call = apiService.getAllAnime(page, limit, order_by, sort, type);
+        Call<AnimeResponse> call = apiService.getAllAnime(page, limit, type);
         call.enqueue(new Callback<AnimeResponse>() {
             @Override
             public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {

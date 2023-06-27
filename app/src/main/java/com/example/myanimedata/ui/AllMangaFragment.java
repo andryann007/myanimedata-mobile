@@ -76,10 +76,8 @@ public class AllMangaFragment extends Fragment {
 
     private void getAllMangaData(int page) {
         int limit = 1;
-        String orderBy = "popularity";
-        String sort = "desc";
 
-        Call<MangaResponse> call = apiService.getAllManga(page, limit, orderBy, sort);
+        Call<MangaResponse> call = apiService.getAllManga(page, limit);
         call.enqueue(new Callback<MangaResponse>() {
             @Override
             public void onResponse(@NonNull Call<MangaResponse> call, @NonNull Response<MangaResponse> response) {

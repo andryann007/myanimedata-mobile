@@ -76,9 +76,8 @@ public class AllCharacterFragment extends Fragment {
 
     private void getAllCharacterData(int page) {
         int limit = 15;
-        String sort = "desc";
 
-        Call<CharacterResponse> call = apiService.getAllCharacter(page, limit, sort);
+        Call<CharacterResponse> call = apiService.getAllCharacter(page, limit);
         call.enqueue(new Callback<CharacterResponse>() {
             @Override
             public void onResponse(@NonNull Call<CharacterResponse> call, @NonNull Response<CharacterResponse> response) {

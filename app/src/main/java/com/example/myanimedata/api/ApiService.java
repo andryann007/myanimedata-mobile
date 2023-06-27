@@ -8,7 +8,6 @@ import retrofit2.http.Query;
 public interface ApiService {
     @GET("anime")
     Call<AnimeResponse> getAllAnime(@Query("page") int page, @Query("limit") int limit,
-                                    @Query("order_by") String orderBy, @Query("sort") String sort,
                                     @Query("type") String type);
     @GET("anime")
     Call<AnimeResponse> getPopularAnime(@Query("page") int page, @Query("limit") int limit,
@@ -33,8 +32,7 @@ public interface ApiService {
     Call<AnimeResponseDetail> getAnimeDetail(@Path("id") int id);
 
     @GET("manga")
-    Call<MangaResponse> getAllManga(@Query("page") int page, @Query("limit") int limit,
-                                    @Query("order_by") String orderBy, @Query("sort") String sort);
+    Call<MangaResponse> getAllManga(@Query("page") int page, @Query("limit") int limit);
 
     @GET("manga")
     Call<MangaResponse> getPopularManga(@Query("page") int page, @Query("limit") int limit,
@@ -53,8 +51,7 @@ public interface ApiService {
     Call<MangaResponseDetail> getMangaDetail(@Path("id") int id);
 
     @GET("characters")
-    Call<CharacterResponse> getAllCharacter(@Query("page") int page, @Query("limit") int limit,
-                                            @Query("sort") String sort);
+    Call<CharacterResponse> getAllCharacter(@Query("page") int page, @Query("limit") int limit);
 
     @GET("characters")
     Call<CharacterResponse> getFavoriteCharacter(@Query("page") int page, @Query("limit") int limit,
