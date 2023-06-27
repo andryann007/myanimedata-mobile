@@ -76,9 +76,10 @@ public class UpcomingAnimeFragment extends Fragment {
 
     private void getUpcomingAnimeData(int page) {
         int limit = 15;
-        String status = "upcoming";
+        boolean sfw = true;
+        boolean unapproved = false;
 
-        Call<AnimeResponse> call = apiService.getUpcomingAnime(page, limit, status);
+        Call<AnimeResponse> call = apiService.getUpcomingAnime(page, limit, sfw, unapproved);
         call.enqueue(new Callback<AnimeResponse>() {
             @Override
             public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
@@ -89,9 +90,11 @@ public class UpcomingAnimeFragment extends Fragment {
 
                     upcomingAnimeResults.addAll(response.body().getAnimeResults());
                     upcomingAnimeAdapter.notifyItemRangeInserted(oldCount, upcomingAnimeResults.size());
-                } else {
+                } else if(upcomingAnimeResults.isEmpty()){
                     binding.loadingUpcomingAnime.setVisibility(View.GONE);
                     binding.textNoUpcomingResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingUpcomingAnime.setVisibility(View.GONE);
                 }
             }
 

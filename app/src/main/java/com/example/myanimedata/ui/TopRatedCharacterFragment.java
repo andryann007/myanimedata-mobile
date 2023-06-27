@@ -1,6 +1,5 @@
 package com.example.myanimedata.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import com.example.myanimedata.api.ApiClient;
 import com.example.myanimedata.api.ApiService;
 import com.example.myanimedata.api.CharacterResponse;
 import com.example.myanimedata.api.CharacterResult;
-import com.example.myanimedata.databinding.FragmentFavoriteCharacterBinding;
+import com.example.myanimedata.databinding.FragmentTopRatedCharacterBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +27,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FavoriteCharacterFragment extends Fragment {
+public class TopRatedCharacterFragment extends Fragment {
     private ApiService apiService;
-    private FragmentFavoriteCharacterBinding binding;
-    private CharacterAdapter favoriteCharacterAdapter;
+    private FragmentTopRatedCharacterBinding binding;
+    private CharacterAdapter topCharacterAdapter;
+
+    private final List<CharacterResult> topCharacterResults = new ArrayList<>();
 
     private int page = 1;
 
-    private final List<CharacterResult> favoriteCharacterResults = new ArrayList<>();
-
-    public FavoriteCharacterFragment() {
+    public TopRatedCharacterFragment() {
         // Required empty public constructor
     }
 
@@ -45,7 +44,7 @@ public class FavoriteCharacterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentFavoriteCharacterBinding.inflate(inflater, container, false);
+        binding = FragmentTopRatedCharacterBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         Retrofit retrofit = ApiClient.getClient();
@@ -53,21 +52,21 @@ public class FavoriteCharacterFragment extends Fragment {
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
 
-        RecyclerView rvFavoriteCharacterList = root.findViewById(R.id.rvFavoriteCharacterList);
-        favoriteCharacterAdapter = new CharacterAdapter(favoriteCharacterResults, getContext());
+        RecyclerView rvTopCharacterList = root.findViewById(R.id.rvTopCharacterList);
+        topCharacterAdapter = new CharacterAdapter(topCharacterResults, getContext());
 
-        rvFavoriteCharacterList.setLayoutManager(mLayoutManager);
-        rvFavoriteCharacterList.setAdapter(favoriteCharacterAdapter);
-        getFavoriteCharacterData(page);
+        rvTopCharacterList.setLayoutManager(mLayoutManager);
+        rvTopCharacterList.setAdapter(topCharacterAdapter);
+        getTopCharacterData(page);
 
-        rvFavoriteCharacterList.addOnScrollListener(new RecyclerView.OnScrollListener(){
+        rvTopCharacterList.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
                 super.onScrolled(recyclerView, dx, dy);
 
                 if(!recyclerView.canScrollVertically(1)){
                     page++;
-                    getFavoriteCharacterData(page);
+                    getTopCharacterData(page);
                 }
             }
         });
@@ -75,34 +74,31 @@ public class FavoriteCharacterFragment extends Fragment {
         return root;
     }
 
-    private void getFavoriteCharacterData(int page) {
+    private void getTopCharacterData(int page) {
         int limit = 15;
-        String orderBy = "favorites";
-        String sort = "desc";
 
-        Call<CharacterResponse> call = apiService.getFavoriteCharacter(page, limit, orderBy, sort);
+        Call<CharacterResponse> call = apiService.getTopCharacter(page, limit);
         call.enqueue(new Callback<CharacterResponse>() {
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<CharacterResponse> call, @NonNull Response<CharacterResponse> response) {
                 if(response.body() != null){
-                    int oldCount = favoriteCharacterResults.size();
-                    binding.loadingFavoriteCharacter.setVisibility(View.GONE);
-                    binding.rvFavoriteCharacterList.setVisibility(View.VISIBLE);
+                    int oldCount = topCharacterResults.size();
+                    binding.loadingTopCharacter.setVisibility(View.GONE);
+                    binding.rvTopCharacterList.setVisibility(View.VISIBLE);
 
-                    favoriteCharacterResults.addAll(response.body().getCharacterResults());
-                    favoriteCharacterAdapter.notifyItemRangeInserted(oldCount, favoriteCharacterResults.size());
-                } else if(favoriteCharacterResults.isEmpty()) {
-                    binding.loadingFavoriteCharacter.setVisibility(View.GONE);
-                    binding.textNoFavoriteResult.setVisibility(View.VISIBLE);
+                    topCharacterResults.addAll(response.body().getCharacterResults());
+                    topCharacterAdapter.notifyItemRangeInserted(oldCount, topCharacterResults.size());
+                } else if (topCharacterResults.isEmpty()) {
+                    binding.loadingTopCharacter.setVisibility(View.GONE);
+                    binding.textNoTopResult.setVisibility(View.VISIBLE);
                 } else {
-                    binding.loadingFavoriteCharacter.setVisibility(View.GONE);
+                    binding.loadingTopCharacter.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CharacterResponse> call, @NonNull Throwable t) {
-                binding.loadingFavoriteCharacter.setVisibility(View.GONE);
+                binding.loadingTopCharacter.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Fail to Fetch Data !!!",
                         Toast.LENGTH_SHORT).show();
             }

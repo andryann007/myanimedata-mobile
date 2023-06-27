@@ -37,4 +37,12 @@
     <string name="view_pager_manga">View Pager Manga</string>
     <string name="top_rated_manga">Top Rated Manga</string>
     <string name="top_rated_anime">Top Rated Anime</string>
+    <string name="text_search_result">Search Result For :</string>
+    <string name="input_query">Input Query</string>
+    <string name="search_data">Search Data</string>
+    <string name="input_search_query">Input Search Query</string>
+    <string name="character">Character</string>
+    <string name="manga">Manga</string>
+    <string name="anime">Anime</string>
+    <string name="search_data_by">Search Data By :</string>
 </resources>

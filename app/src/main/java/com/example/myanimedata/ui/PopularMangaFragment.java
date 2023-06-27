@@ -76,9 +76,12 @@ public class PopularMangaFragment extends Fragment {
 
     private void getPopularMangaData(int page) {
         int limit = 15;
-        String order_by = "popularity";
+        String orderBy = "popularity";
+        String sort = "desc";
+        String startDate = "2000-01-01";
+        String status = "complete";
 
-        Call<MangaResponse> call = apiService.getPopularManga(page, limit, order_by);
+        Call<MangaResponse> call = apiService.getPopularManga(page, limit, orderBy, sort, startDate, status);
         call.enqueue(new Callback<MangaResponse>() {
             @Override
             public void onResponse(@NonNull Call<MangaResponse> call, @NonNull Response<MangaResponse> response) {
@@ -89,9 +92,11 @@ public class PopularMangaFragment extends Fragment {
 
                     popularMangaResults.addAll(response.body().getMangaResults());
                     popularMangaAdapter.notifyItemRangeInserted(oldCount, popularMangaResults.size());
-                } else {
+                } else if(popularMangaResults.isEmpty()) {
                     binding.loadingPopularManga.setVisibility(View.GONE);
                     binding.textNoPopularResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingPopularManga.setVisibility(View.GONE);
                 }
             }
 

@@ -77,9 +77,10 @@ public class TopRatedAnimeFragment extends Fragment {
 
     private void getTopRatedAnimeData(int page) {
         int limit = 15;
-        String order_by = "score";
+        boolean sfw = true;
+        String filter = "bypopularity";
 
-        Call<AnimeResponse> call = apiService.getTopRatedAnime(page, limit, order_by);
+        Call<AnimeResponse> call = apiService.getTopRatedAnime(page, limit, sfw, filter);
         call.enqueue(new Callback<AnimeResponse>() {
             @Override
             public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
@@ -90,9 +91,11 @@ public class TopRatedAnimeFragment extends Fragment {
 
                     topRatedAnimeResults.addAll(response.body().getAnimeResults());
                     topRatedAnimeAdapter.notifyItemRangeInserted(oldCount, topRatedAnimeResults.size());
-                } else {
+                } else if(topRatedAnimeResults.isEmpty()) {
                     binding.loadingTopRatedAnime.setVisibility(View.GONE);
                     binding.textNoTopRatedResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingTopRatedAnime.setVisibility(View.GONE);
                 }
             }
 

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +83,9 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<AnimeResponseDetail> call, @NonNull Response<AnimeResponseDetail> response) {
                 if(response.body() != null){
+                    binding.loadingDetail.setVisibility(View.GONE);
+                    binding.detailScrollView.setVisibility(View.VISIBLE);
+
                     RoundedImageView roundedImageView = findViewById(R.id.imagePoster);
                     String imageUrl = response.body().getAnimeDetails().getImageResult().getJpgResults().getImageUrl();
                     Uri mImageUrl = Uri.parse(imageUrl);
@@ -108,12 +112,16 @@ public class DetailActivity extends AppCompatActivity {
                     setHtmlText(binding.textSynopsis, mSynopsis);
 
                     setGenresAnime();
+                } else {
+                    binding.loadingDetail.setVisibility(View.GONE);
+                    binding.textNoDetailResult.setVisibility(View.VISIBLE);
                 }
-            }
 
+            }
             @Override
             public void onFailure(@NonNull Call<AnimeResponseDetail> call, @NonNull Throwable t) {
-
+                binding.loadingDetail.setVisibility(View.GONE);
+                Toast.makeText(DetailActivity.this,"Fail to Fetch Data !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -140,6 +148,8 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<AnimeResponseDetail> call, @NonNull Throwable t) {
+                binding.loadingDetail.setVisibility(View.GONE);
+                Toast.makeText(DetailActivity.this,"Fail to Fetch The Genre !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -150,6 +160,9 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<MangaResponseDetail> call, @NonNull Response<MangaResponseDetail> response) {
                 if(response.body() != null){
+                    binding.loadingDetail.setVisibility(View.GONE);
+                    binding.detailScrollView.setVisibility(View.VISIBLE);
+
                     RoundedImageView roundedImageView = findViewById(R.id.imagePoster);
                     String imageUrl = response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl();
                     Uri mImageUrl = Uri.parse(imageUrl);
@@ -174,11 +187,15 @@ public class DetailActivity extends AppCompatActivity {
                     setHtmlText(binding.textSynopsis, mSynopsis);
 
                     setGenresMangas();
+                } else {
+                    binding.loadingDetail.setVisibility(View.GONE);
+                    binding.textNoDetailResult.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<MangaResponseDetail> call, @NonNull Throwable t) {
+                binding.loadingDetail.setVisibility(View.GONE);
                 Toast.makeText(DetailActivity.this,"Fail to Fetch Data !!!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -206,6 +223,8 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<MangaResponseDetail> call, @NonNull Throwable t) {
+                binding.loadingDetail.setVisibility(View.GONE);
+                Toast.makeText(DetailActivity.this,"Fail to Fetch The Genre !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -217,6 +236,9 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<CharacterResponseDetail> call, @NonNull Response<CharacterResponseDetail> response) {
                 if(response.body() != null){
+                    binding.loadingDetail.setVisibility(View.GONE);
+                    binding.detailScrollView.setVisibility(View.VISIBLE);
+
                     RoundedImageView roundedImageView = findViewById(R.id.imagePoster);
                     String imageUrl = response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl();
                     Uri mImageUrl = Uri.parse(imageUrl);
@@ -243,11 +265,15 @@ public class DetailActivity extends AppCompatActivity {
 
                     binding.textGenreList.setText("Anime Debut");
                     setCharacterRole();
+                } else {
+                    binding.loadingDetail.setVisibility(View.GONE);
+                    binding.textNoDetailResult.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CharacterResponseDetail> call, @NonNull Throwable t) {
+                binding.loadingDetail.setVisibility(View.GONE);
                 Toast.makeText(DetailActivity.this,"Fail to Fetch Data !!!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -275,6 +301,8 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<CharacterResponseDetail> call, @NonNull Throwable t) {
+                binding.loadingDetail.setVisibility(View.GONE);
+                Toast.makeText(DetailActivity.this,"Fail to Fetch The Role !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }

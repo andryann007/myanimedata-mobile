@@ -63,6 +63,7 @@ public class CharacterFragment extends Fragment {
 
         characterPagerAdapter.addFragment(new AllCharacterFragment(), "All Character");
         characterPagerAdapter.addFragment(new FavoriteCharacterFragment(), "Favorite Character");
+        characterPagerAdapter.addFragment(new TopRatedCharacterFragment(), "Top Character");
 
         viewPager.setAdapter(characterPagerAdapter);
     }

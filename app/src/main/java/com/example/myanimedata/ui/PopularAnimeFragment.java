@@ -77,9 +77,12 @@ public class PopularAnimeFragment extends Fragment {
 
     private void getPopularAnimeData(int page) {
         int limit = 15;
-        String order_by = "popularity";
+        String orderBy = "popularity";
+        String sort = "desc";
+        String startDate = "2023-01-01";
+        int minScore = 7;
 
-        Call<AnimeResponse> call = apiService.getPopularAnime(page, limit, order_by);
+        Call<AnimeResponse> call = apiService.getPopularAnime(page, limit, orderBy, sort, startDate, minScore);
         call.enqueue(new Callback<AnimeResponse>() {
             @Override
             public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
@@ -90,9 +93,11 @@ public class PopularAnimeFragment extends Fragment {
 
                     popularAnimeResults.addAll(response.body().getAnimeResults());
                     popularAnimeAdapter.notifyItemRangeInserted(oldCount, popularAnimeResults.size());
-                } else {
+                } else if(popularAnimeResults.isEmpty()) {
                     binding.loadingPopularAnime.setVisibility(View.GONE);
                     binding.textNoPopularResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingPopularAnime.setVisibility(View.GONE);
                 }
             }
 

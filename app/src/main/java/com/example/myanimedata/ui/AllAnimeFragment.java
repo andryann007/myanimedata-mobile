@@ -76,8 +76,11 @@ public class AllAnimeFragment extends Fragment {
 
     private void getAllAnimeData(int page) {
         int limit = 1;
+        String order_by = "popularity";
+        String sort = "desc";
+        String type = "tv";
 
-        Call<AnimeResponse> call = apiService.getAllAnime(page, limit);
+        Call<AnimeResponse> call = apiService.getAllAnime(page, limit, order_by, sort, type);
         call.enqueue(new Callback<AnimeResponse>() {
             @Override
             public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
@@ -88,9 +91,11 @@ public class AllAnimeFragment extends Fragment {
 
                     allAnimeResults.addAll(response.body().getAnimeResults());
                     allAnimeAdapter.notifyItemRangeInserted(oldCount, allAnimeResults.size());
-                } else {
+                } else if (allAnimeResults.isEmpty()) {
                     binding.loadingAllAnime.setVisibility(View.GONE);
                     binding.textNoAllResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingAllAnime.setVisibility(View.GONE);
                 }
             }
 

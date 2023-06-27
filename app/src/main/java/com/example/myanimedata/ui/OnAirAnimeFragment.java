@@ -76,10 +76,10 @@ public class OnAirAnimeFragment extends Fragment {
 
     private void getOnAirAnimeData(int page) {
         int limit = 15;
-        String status = "airing";
-        String order_by = "popularity";
+        boolean sfw = true;
+        boolean unapproved = false;
 
-        Call<AnimeResponse> call = apiService.getAiringAnime(page, limit, status, order_by);
+        Call<AnimeResponse> call = apiService.getAiringAnime(page, limit, sfw, unapproved);
         call.enqueue(new Callback<AnimeResponse>() {
             @Override
             public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
@@ -90,9 +90,11 @@ public class OnAirAnimeFragment extends Fragment {
 
                     onAirAnimeResults.addAll(response.body().getAnimeResults());
                     onAirAnimeAdapter.notifyItemRangeInserted(oldCount, onAirAnimeResults.size());
-                } else {
+                } else if(onAirAnimeResults.isEmpty()) {
                     binding.loadingOnAirAnime.setVisibility(View.GONE);
                     binding.textNoOnAirResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingOnAirAnime.setVisibility(View.GONE);
                 }
             }
 

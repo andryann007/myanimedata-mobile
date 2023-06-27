@@ -76,10 +76,9 @@ public class TopRatedMangaFragment extends Fragment {
 
     private void getTopRatedMangaData(int page) {
         int limit = 15;
-        String status = "complete";
-        String order_by = "score";
+        String filter = "bypopularity";
 
-        Call<MangaResponse> call = apiService.getTopRatedManga(page, limit, status, order_by);
+        Call<MangaResponse> call = apiService.getTopRatedManga(page, limit, filter);
         call.enqueue(new Callback<MangaResponse>() {
             @Override
             public void onResponse(@NonNull Call<MangaResponse> call, @NonNull Response<MangaResponse> response) {
@@ -90,9 +89,11 @@ public class TopRatedMangaFragment extends Fragment {
 
                     topRatedMangaResults.addAll(response.body().getMangaResults());
                     topRatedMangaAdapter.notifyItemRangeInserted(oldCount, topRatedMangaResults.size());
-                } else {
+                } else if(topRatedMangaResults.isEmpty()) {
                     binding.loadingTopRatedManga.setVisibility(View.GONE);
                     binding.textNoTopRatedResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingTopRatedManga.setVisibility(View.GONE);
                 }
             }
 

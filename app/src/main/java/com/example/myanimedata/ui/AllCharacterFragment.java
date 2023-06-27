@@ -76,8 +76,9 @@ public class AllCharacterFragment extends Fragment {
 
     private void getAllCharacterData(int page) {
         int limit = 15;
+        String sort = "desc";
 
-        Call<CharacterResponse> call = apiService.getAllCharacter(page, limit);
+        Call<CharacterResponse> call = apiService.getAllCharacter(page, limit, sort);
         call.enqueue(new Callback<CharacterResponse>() {
             @Override
             public void onResponse(@NonNull Call<CharacterResponse> call, @NonNull Response<CharacterResponse> response) {
@@ -88,9 +89,11 @@ public class AllCharacterFragment extends Fragment {
 
                     allCharacterResults.addAll(response.body().getCharacterResults());
                     allCharacterAdapter.notifyItemRangeInserted(oldCount, allCharacterResults.size());
-                } else {
+                } else if(allCharacterResults.isEmpty()) {
                     binding.loadingAllCharacter.setVisibility(View.GONE);
                     binding.textNoAllResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingAllCharacter.setVisibility(View.GONE);
                 }
             }
 

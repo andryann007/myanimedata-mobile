@@ -76,8 +76,10 @@ public class AllMangaFragment extends Fragment {
 
     private void getAllMangaData(int page) {
         int limit = 1;
+        String orderBy = "popularity";
+        String sort = "desc";
 
-        Call<MangaResponse> call = apiService.getAllManga(page, limit);
+        Call<MangaResponse> call = apiService.getAllManga(page, limit, orderBy, sort);
         call.enqueue(new Callback<MangaResponse>() {
             @Override
             public void onResponse(@NonNull Call<MangaResponse> call, @NonNull Response<MangaResponse> response) {
@@ -88,9 +90,11 @@ public class AllMangaFragment extends Fragment {
 
                     allMangaResults.addAll(response.body().getMangaResults());
                     allMangaAdapter.notifyItemRangeInserted(oldCount, allMangaResults.size());
-                } else {
+                } else if(allMangaResults.isEmpty()){
                     binding.loadingAllManga.setVisibility(View.GONE);
                     binding.textNoAllResult.setVisibility(View.VISIBLE);
+                } else {
+                    binding.loadingAllManga.setVisibility(View.GONE);
                 }
             }
 
