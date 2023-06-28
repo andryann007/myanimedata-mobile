@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/contentFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="5dp"
+        android:background="@drawable/bg_dialog">
+
+        <TextView
+            android:id="@+id/textFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:text="@string/filter_data"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:id="@+id/containerFilterAnime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/containerAnimeType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/textAnimeType"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:text="@string/anime_type"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerAnimeType"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:contentDescription="@string/select_anime_type"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/containerAnimeStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/textAnimeStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:text="@string/anime_status"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerAnimeStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:contentDescription="@string/select_anime_status"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/containerAnimeRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/textAnimeRating"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:text="@string/anime_rating"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerAnimeRating"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:contentDescription="@string/select_anime_rating"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/containerAnimeOrderBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/textAnimeOrderBy"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:text="@string/order_by"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerAnimeOrderBy"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:contentDescription="@string/select_order_type"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/containerAnimeSortType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/textAnimeSortType"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:text="@string/sort_type"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerAnimeSortType"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:contentDescription="@string/select_sort_type"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/white"
+            android:text="@string/filter_data"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+</LinearLayout>

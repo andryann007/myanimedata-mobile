@@ -9,9 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private String type = null;
+
+    private String animeType = null;
+    private String animeStatus = null;
+    private String animeRating = null;
+    private String orderBy = null;
+    private String sortType = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +121,185 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void dialogFilter() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View v = inflater.inflate(R.layout.dialog_filter, null);
+
+        Button btnFilter = v.findViewById(R.id.btnFilter);
+
+        Spinner spinnerAnimeType = v.findViewById(R.id.spinnerAnimeType);
+        ArrayAdapter<String> animeTypeAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeTypeList));
+        animeTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAnimeType.setAdapter(animeTypeAdapter);
+
+        Spinner spinnerAnimeStatus = v.findViewById(R.id.spinnerAnimeStatus);
+        ArrayAdapter<String> animeStatusAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeStatusList));
+        animeStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAnimeStatus.setAdapter(animeStatusAdapter);
+
+        Spinner spinnerAnimeRating = v.findViewById(R.id.spinnerAnimeRating);
+        ArrayAdapter<String> animeRatingAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeRatingList));
+        animeRatingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAnimeRating.setAdapter(animeRatingAdapter);
+
+        Spinner spinnerAnimeOrderBy = v.findViewById(R.id.spinnerAnimeOrderBy);
+        ArrayAdapter<String> animeOrderByAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.orderList));
+        animeOrderByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAnimeOrderBy.setAdapter(animeOrderByAdapter);
+
+        Spinner spinnerAnimeSortType = v.findViewById(R.id.spinnerAnimeSortType);
+        ArrayAdapter<String> animeSortTypeAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sortList));
+        animeSortTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAnimeSortType.setAdapter(animeSortTypeAdapter);
+
+        builder.setView(v);
+
+        AlertDialog dialogFilter = builder.create();
+
+        if(dialogFilter.getWindow() != null){
+            dialogFilter.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
+            if(spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("TV")){
+                animeType = "tv";
+            } else if (spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("Movie")){
+                animeType = "movie";
+            } else if(spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("OVA")){
+                animeType = "ova";
+            } else if (spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("Special")){
+                animeType = "special";
+            } else if(spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("ONA")){
+                animeType = "ona";
+            } else {
+                animeType = "music";
+            }
+
+            if(spinnerAnimeStatus.getSelectedItem().toString().equalsIgnoreCase("Airing")){
+                animeStatus = "airing";
+            } else if(spinnerAnimeStatus.getSelectedItem().toString().equalsIgnoreCase("Complete")){
+                animeStatus = "complete";
+            } else {
+                animeStatus = "upcoming";
+            }
+
+            if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("G Rating (All Ages)")){
+                animeRating = "g";
+            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("PG Rating (For Children)")){
+                animeRating = "pg";
+            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("P13 Rating (For 13 Years Old)")){
+                animeRating = "p13";
+            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("R17 Rating (For 17 Years Old)")){
+                animeRating = "r17";
+            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("R Rating (For Adult)")){
+                animeRating = "r";
+            } else {
+                animeRating = "rx";
+            }
+
+            if(spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("ID")){
+                orderBy = "mal_id";
+            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Start Date")){
+                orderBy = "start_date";
+            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("End Date")){
+                orderBy = "end_date";
+            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Episodes")){
+                orderBy = "episodes";
+            } else if(spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Score")){
+                orderBy = "score";
+            } else if(spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Rank")){
+                orderBy = "rank";
+            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Popularity")){
+                orderBy = "popularity";
+            } else {
+                orderBy = "favorites";
+            }
+
+            if(spinnerAnimeSortType.getSelectedItem().toString().equalsIgnoreCase("Ascending")){
+                sortType = "asc";
+            } else {
+                sortType = "desc";
+            }
+
+            btnFilter.setOnClickListener(view-> doAnimeFilter(animeType, animeStatus, animeRating, orderBy, sortType));
+
+
+            dialogFilter.show();
+        }
+    }
+
+    private void doAnimeFilter(String animeType, String animeStatus, String animeRating, String orderBy, String sortType) {
+        Intent i = new Intent(MainActivity.this, FilterActivity.class);
+
+        if(animeType.equalsIgnoreCase("tv")){
+            i.putExtra("type", "tv");
+        } else if (animeType.equalsIgnoreCase("movie")){
+            i.putExtra("type", "movie");
+        } else if(animeType.equalsIgnoreCase("ova")){
+            i.putExtra("type", "ova");
+        } else if (animeType.equalsIgnoreCase("special")){
+            i.putExtra("type", "special");
+        } else if(animeType.equalsIgnoreCase("ona")){
+            i.putExtra("type", "ona");
+        } else if (animeType.equalsIgnoreCase("music")){
+            i.putExtra("type", "music");
+        }
+
+        if(animeStatus.equalsIgnoreCase("airing")){
+            i.putExtra("status", "airing");
+        } else if(animeStatus.equalsIgnoreCase("complete")){
+            i.putExtra("status", "complete");
+        } else if(animeStatus.equalsIgnoreCase("upcoming")){
+            i.putExtra("status", "upcoming");
+        }
+
+        if(animeRating.equalsIgnoreCase("g")){
+            i.putExtra("rating", "g");
+        } else if(animeRating.equalsIgnoreCase("pg")){
+            i.putExtra("rating", "pg");
+        } else if(animeRating.equalsIgnoreCase("p13")){
+            i.putExtra("rating", "p13");
+        } else if(animeRating.equalsIgnoreCase("r17")){
+            i.putExtra("rating", "r17");
+        } else if(animeRating.equalsIgnoreCase("r")){
+            i.putExtra("rating", "r");
+        } else if(animeRating.equalsIgnoreCase("rx")){
+            i.putExtra("rating", "rx");
+        }
+
+        if(orderBy.equalsIgnoreCase("mal_id")){
+            i.putExtra("order_by", "mal_id");
+        } else if(orderBy.equalsIgnoreCase("title")){
+            i.putExtra("order_by", "title");
+        } else if(orderBy.equalsIgnoreCase("start_date")){
+            i.putExtra("order_by", "start_date");
+        } else if(orderBy.equalsIgnoreCase("end_date")){
+            i.putExtra("order_by", "end_date");
+        } else if(orderBy.equalsIgnoreCase("episodes")){
+            i.putExtra("order_by", "episodes");
+        } else if(orderBy.equalsIgnoreCase("score")){
+            i.putExtra("order_by", "score");
+        } else if(orderBy.equalsIgnoreCase("rank")){
+            i.putExtra("order_by", "rank");
+        } else if(orderBy.equalsIgnoreCase("popularity")){
+            i.putExtra("order_by", "popularity");
+        } else if(orderBy.equalsIgnoreCase("favorites")){
+            i.putExtra("order_by", "favorites");
+        }
+
+        if(sortType.equalsIgnoreCase("asc")){
+            i.putExtra("sort", "asc");
+        } else if(sortType.equalsIgnoreCase("desc")){
+            i.putExtra("sort", "desc");
+        }
+
+        startActivity(i);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -124,6 +311,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.nav_search){
             dialogSearch();
+        } else if(item.getItemId() == R.id.nav_filter){
+            dialogFilter();
         }
         return super.onOptionsItemSelected(item);
     }

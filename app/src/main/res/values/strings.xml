@@ -45,4 +45,62 @@
     <string name="manga">Manga</string>
     <string name="anime">Anime</string>
     <string name="search_data_by">Search Data By :</string>
+
+    <string-array name="animeTypeList">
+        <item>TV</item>
+        <item>Movie</item>
+        <item>OVA</item>
+        <item>Special</item>
+        <item>ONA</item>
+        <item>Music</item>
+    </string-array>
+
+    <string-array name="animeStatusList">
+        <item>Airing</item>
+        <item>Complete</item>
+        <item>Upcoming</item>
+    </string-array>
+
+    <string-array name="animeRatingList">
+        <item>G Rating (All Ages)</item>
+        <item>PG Rating (For Children)</item>
+        <item>P13 Rating (For 13 Years Old)</item>
+        <item>R17 Rating (For 17 Years Old)</item>
+        <item>R Rating (For Adult)</item>
+        <item>RX Rating (NSFW)</item>
+    </string-array>
+
+    <string-array name="orderList">
+        <item>ID</item>
+        <item>Title</item>
+        <item>Start Date</item>
+        <item>End Date</item>
+        <item>Episodes</item>
+        <item>Score</item>
+        <item>Rank</item>
+        <item>Popularity</item>
+        <item>Favorites</item>
+    </string-array>
+    <string name="anime_type">Anime Type :</string>
+    <string name="filter_data">Filter Data</string>
+    <string name="select_anime_type">Select Anime Type</string>
+    <string name="filter">Filter</string>
+    <string name="anime_status">Anime Status :</string>
+    <string name="select_anime_status">Select Anime Status</string>
+    <string name="anime_rating">Anime Rating :</string>
+    <string name="select_anime_rating">Select Anime Rating</string>
+    <string name="order_by">Order By :</string>
+    <string name="select_order_type">Select Order Type</string>
+    <string name="sort_type">Sort Type :</string>
+    <string name="select_sort_type">Select Sort Type</string>
+    <string name="manga_status">Manga Status :</string>
+    <string name="select_manga_status">Select Manga Status</string>
+    <string name="select_manga_type">Select Manga Type</string>
+    <string name="manga_type">Manga Type :</string>
+    <string name="select_filter_type">Select Filter Type :</string>
+
+    <string-array name="sortList">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
 </resources>

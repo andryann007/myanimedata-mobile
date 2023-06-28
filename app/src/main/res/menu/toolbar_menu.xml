@@ -6,8 +6,8 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/nav_sort"
-        android:title="@string/sort"
-        android:icon="@drawable/ic_sort"
+    <item android:id="@+id/nav_filter"
+        android:title="@string/filter"
+        android:icon="@drawable/ic_filter"
         app:showAsAction="ifRoom"/>
 </menu>
