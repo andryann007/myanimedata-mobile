@@ -165,68 +165,167 @@ public class MainActivity extends AppCompatActivity {
         if(dialogFilter.getWindow() != null){
             dialogFilter.getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
-            if(spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("TV")){
-                animeType = "tv";
-            } else if (spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("Movie")){
-                animeType = "movie";
-            } else if(spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("OVA")){
-                animeType = "ova";
-            } else if (spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("Special")){
-                animeType = "special";
-            } else if(spinnerAnimeType.getSelectedItem().toString().equalsIgnoreCase("ONA")){
-                animeType = "ona";
-            } else {
-                animeType = "music";
+            switch(spinnerAnimeType.getSelectedItemPosition()){
+                case 0 :
+                    animeType = "tv";
+                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
+                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 1:
+                    animeType = "movie";
+                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
+                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 2 :
+                    animeType = "ova";
+                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
+                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 3 :
+                    animeType = "special";
+                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
+                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 4 :
+                    animeType = "ona";
+                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
+                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 5 :
+                    animeType = "music";
+                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
+                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
             }
 
-            if(spinnerAnimeStatus.getSelectedItem().toString().equalsIgnoreCase("Airing")){
-                animeStatus = "airing";
-            } else if(spinnerAnimeStatus.getSelectedItem().toString().equalsIgnoreCase("Complete")){
-                animeStatus = "complete";
-            } else {
-                animeStatus = "upcoming";
+            switch(spinnerAnimeStatus.getSelectedItemPosition()){
+                case 0 :
+                    animeStatus = "airing";
+                    Toast.makeText(MainActivity.this, "Selected Anime Status : " +
+                                    animeStatus.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 1:
+                    animeStatus = "complete";
+                    Toast.makeText(MainActivity.this, "Selected Anime Status : " +
+                                    animeStatus.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 2 :
+                    animeStatus = "upcoming";
+                    Toast.makeText(MainActivity.this, "Selected Anime Status : " +
+                                    animeStatus.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
             }
 
-            if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("G Rating (All Ages)")){
-                animeRating = "g";
-            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("PG Rating (For Children)")){
-                animeRating = "pg";
-            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("P13 Rating (For 13 Years Old)")){
-                animeRating = "p13";
-            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("R17 Rating (For 17 Years Old)")){
-                animeRating = "r17";
-            } else if(spinnerAnimeRating.getSelectedItem().toString().equalsIgnoreCase("R Rating (For Adult)")){
-                animeRating = "r";
-            } else {
-                animeRating = "rx";
+            switch(spinnerAnimeRating.getSelectedItemPosition()){
+                case 0 :
+                    animeRating = "g";
+                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
+                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 1:
+                    animeRating = "pg";
+                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
+                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 2 :
+                    animeRating = "p13";
+                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
+                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 3 :
+                    animeRating = "r17";
+                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
+                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 4 :
+                    animeRating = "r";
+                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
+                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 5 :
+                    animeRating = "rx";
+                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
+                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
+                    break;
             }
 
-            if(spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("ID")){
-                orderBy = "mal_id";
-            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Start Date")){
-                orderBy = "start_date";
-            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("End Date")){
-                orderBy = "end_date";
-            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Episodes")){
-                orderBy = "episodes";
-            } else if(spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Score")){
-                orderBy = "score";
-            } else if(spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Rank")){
-                orderBy = "rank";
-            } else if (spinnerAnimeOrderBy.getSelectedItem().toString().equalsIgnoreCase("Popularity")){
-                orderBy = "popularity";
-            } else {
-                orderBy = "favorites";
+            switch (spinnerAnimeOrderBy.getSelectedItemPosition()){
+                case 0 :
+                    orderBy = "mal_id";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 1:
+                    orderBy = "start_date";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 2 :
+                    orderBy = "end_date";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 3 :
+                    orderBy = "episodes";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 4 :
+                    orderBy = "score";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 5 :
+                    orderBy = "rank";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 6 :
+                    orderBy = "popularity";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 7 :
+                    orderBy = "favorites";
+                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
             }
 
-            if(spinnerAnimeSortType.getSelectedItem().toString().equalsIgnoreCase("Ascending")){
-                sortType = "asc";
-            } else {
-                sortType = "desc";
+            switch(spinnerAnimeSortType.getSelectedItemPosition()){
+                case 0 :
+                    sortType = "asc";
+                    Toast.makeText(MainActivity.this, "Sort Type : ASCENDING",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 1:
+                    sortType = "desc";
+                    Toast.makeText(MainActivity.this, "Sort Type : DESCENDING",
+                            Toast.LENGTH_SHORT).show();
+                    break;
             }
 
             btnFilter.setOnClickListener(view-> doAnimeFilter(animeType, animeStatus, animeRating, orderBy, sortType));
-
 
             dialogFilter.show();
         }
@@ -235,66 +334,97 @@ public class MainActivity extends AppCompatActivity {
     private void doAnimeFilter(String animeType, String animeStatus, String animeRating, String orderBy, String sortType) {
         Intent i = new Intent(MainActivity.this, FilterActivity.class);
 
-        if(animeType.equalsIgnoreCase("tv")){
-            i.putExtra("type", "tv");
-        } else if (animeType.equalsIgnoreCase("movie")){
-            i.putExtra("type", "movie");
-        } else if(animeType.equalsIgnoreCase("ova")){
-            i.putExtra("type", "ova");
-        } else if (animeType.equalsIgnoreCase("special")){
-            i.putExtra("type", "special");
-        } else if(animeType.equalsIgnoreCase("ona")){
-            i.putExtra("type", "ona");
-        } else if (animeType.equalsIgnoreCase("music")){
-            i.putExtra("type", "music");
+        switch(animeType){
+            case "tv" :
+                i.putExtra("type", "tv");
+                break;
+            case "movie" :
+                i.putExtra("type", "movie");
+                break;
+            case "ova" :
+                i.putExtra("type", "ova");
+                break;
+            case "special" :
+                i.putExtra("type", "special");
+                break;
+            case "ona" :
+                i.putExtra("type", "ona");
+                break;
+            case "music" :
+                i.putExtra("type", "music");
+                break;
         }
 
-        if(animeStatus.equalsIgnoreCase("airing")){
-            i.putExtra("status", "airing");
-        } else if(animeStatus.equalsIgnoreCase("complete")){
-            i.putExtra("status", "complete");
-        } else if(animeStatus.equalsIgnoreCase("upcoming")){
-            i.putExtra("status", "upcoming");
+        switch(animeStatus){
+            case "airing" :
+                i.putExtra("status", "airing");
+                break;
+            case "complete" :
+                i.putExtra("status", "complete");
+                break;
+            case "upcoming" :
+                i.putExtra("status", "upcoming");
+                break;
         }
 
-        if(animeRating.equalsIgnoreCase("g")){
-            i.putExtra("rating", "g");
-        } else if(animeRating.equalsIgnoreCase("pg")){
-            i.putExtra("rating", "pg");
-        } else if(animeRating.equalsIgnoreCase("p13")){
-            i.putExtra("rating", "p13");
-        } else if(animeRating.equalsIgnoreCase("r17")){
-            i.putExtra("rating", "r17");
-        } else if(animeRating.equalsIgnoreCase("r")){
-            i.putExtra("rating", "r");
-        } else if(animeRating.equalsIgnoreCase("rx")){
-            i.putExtra("rating", "rx");
+        switch(animeRating){
+            case "g" :
+                i.putExtra("rating", "g");
+                break;
+            case "pg" :
+                i.putExtra("rating", "pg");
+                break;
+            case "p13" :
+                i.putExtra("rating", "p13");
+                break;
+            case "r17" :
+                i.putExtra("rating", "r17");
+                break;
+            case "r" :
+                i.putExtra("rating", "r");
+                break;
+            case "rx" :
+                i.putExtra("rating", "rx");
+                break;
         }
 
-        if(orderBy.equalsIgnoreCase("mal_id")){
-            i.putExtra("order_by", "mal_id");
-        } else if(orderBy.equalsIgnoreCase("title")){
-            i.putExtra("order_by", "title");
-        } else if(orderBy.equalsIgnoreCase("start_date")){
-            i.putExtra("order_by", "start_date");
-        } else if(orderBy.equalsIgnoreCase("end_date")){
-            i.putExtra("order_by", "end_date");
-        } else if(orderBy.equalsIgnoreCase("episodes")){
-            i.putExtra("order_by", "episodes");
-        } else if(orderBy.equalsIgnoreCase("score")){
-            i.putExtra("order_by", "score");
-        } else if(orderBy.equalsIgnoreCase("rank")){
-            i.putExtra("order_by", "rank");
-        } else if(orderBy.equalsIgnoreCase("popularity")){
-            i.putExtra("order_by", "popularity");
-        } else if(orderBy.equalsIgnoreCase("favorites")){
-            i.putExtra("order_by", "favorites");
+        switch(orderBy){
+            case "mal_id" :
+                i.putExtra("order_by", "mal_id");
+                break;
+            case "title" :
+                i.putExtra("order_by", "title");
+                break;
+            case "start_date" :
+                i.putExtra("order_by", "start_date");
+                break;
+            case "end_date" :
+                i.putExtra("order_by", "end_date");
+                break;
+            case "episodes" :
+                i.putExtra("order_by", "episodes");
+                break;
+            case "score" :
+                i.putExtra("order_by", "score");
+                break;
+            case "rank" :
+                i.putExtra("order_by", "rank");
+                break;
+            case "popularity" :
+                i.putExtra("order_by", "popularity");
+                break;
+            case "favorites" :
+                i.putExtra("order_by", "favorites");
+                break;
         }
 
-        if(sortType.equalsIgnoreCase("asc")){
-            i.putExtra("sort", "asc");
-        } else if(sortType.equalsIgnoreCase("desc")){
-            i.putExtra("sort", "desc");
+        switch(sortType){
+            case "asc" :
+                i.putExtra("sort", "asc");
+                break;
+            case "desc" :
+                i.putExtra("sort", "desc");
+                break;
         }
 
         startActivity(i);

@@ -59,9 +59,8 @@
                     android:layout_height="48dp"
                     android:layout_weight="2"
                     android:gravity="start|center_vertical"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:contentDescription="@string/select_anime_type"/>
+                    android:contentDescription="@string/select_anime_type"
+                    android:theme="@style/dropdownSpinnerTheme"/>
             </LinearLayout>
 
             <LinearLayout
@@ -91,9 +90,8 @@
                     android:layout_height="48dp"
                     android:layout_weight="2"
                     android:gravity="start|center_vertical"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:contentDescription="@string/select_anime_status"/>
+                    android:contentDescription="@string/select_anime_status"
+                    android:theme="@style/dropdownSpinnerTheme"/>
             </LinearLayout>
 
             <LinearLayout
@@ -123,9 +121,8 @@
                     android:layout_height="48dp"
                     android:layout_weight="2"
                     android:gravity="start|center_vertical"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:contentDescription="@string/select_anime_rating"/>
+                    android:contentDescription="@string/select_anime_rating"
+                    android:theme="@style/dropdownSpinnerTheme"/>
             </LinearLayout>
 
             <LinearLayout
@@ -155,9 +152,8 @@
                     android:layout_height="48dp"
                     android:layout_weight="2"
                     android:gravity="start|center_vertical"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:contentDescription="@string/select_order_type"/>
+                    android:contentDescription="@string/select_order_type"
+                    android:theme="@style/dropdownSpinnerTheme"/>
             </LinearLayout>
 
             <LinearLayout
@@ -187,9 +183,8 @@
                     android:layout_height="48dp"
                     android:layout_weight="2"
                     android:gravity="start|center_vertical"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:contentDescription="@string/select_sort_type"/>
+                    android:contentDescription="@string/select_sort_type"
+                    android:theme="@style/dropdownSpinnerTheme"/>
             </LinearLayout>
 
         </LinearLayout>

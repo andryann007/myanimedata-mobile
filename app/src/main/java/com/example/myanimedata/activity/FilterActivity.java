@@ -81,11 +81,11 @@ public class FilterActivity extends AppCompatActivity {
         Retrofit retrofit = ApiClient.getClient();
         apiService = retrofit.create(ApiService.class);
 
-        setFilterText(filterResult, type);
-        setTypeText(animeType, type);
-        setStatusText(animeStatus, status);
-        setRatingText(animeRating, rating);
-        setOrderByText(animeOrderBy, orderBy);
+        setFilterText(filterResult, type.toUpperCase());
+        setTypeText(animeType, type.toUpperCase());
+        setStatusText(animeStatus, status.toUpperCase());
+        setRatingText(animeRating, rating.toUpperCase());
+        setOrderByText(animeOrderBy, orderBy.toUpperCase());
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 3);
 
@@ -146,18 +146,18 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void setTypeText(TextView tv, String type) {
-        tv.setText(HtmlCompat.fromHtml("Anime Type : <b>'" + type + "'</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
+        tv.setText(HtmlCompat.fromHtml("Anime Type : <b>" + type + "</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     private void setStatusText(TextView tv, String status) {
-        tv.setText(HtmlCompat.fromHtml("Anime Status : <b>'" + status + "'</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
+        tv.setText(HtmlCompat.fromHtml("Anime Status : <b>" + status + "</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     private void setRatingText(TextView tv, String rating) {
-        tv.setText(HtmlCompat.fromHtml("Anime Rating : <b>'" + rating + "'</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
+        tv.setText(HtmlCompat.fromHtml("Anime Rating : <b>" + rating + "</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     private void setOrderByText(TextView tv, String orderBy){
-        tv.setText(HtmlCompat.fromHtml("Order By : <b>'" + orderBy + "'</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
+        tv.setText(HtmlCompat.fromHtml("Order By : <b>" + orderBy + "</b>", HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 }

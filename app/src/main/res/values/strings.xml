@@ -63,11 +63,11 @@
 
     <string-array name="animeRatingList">
         <item>G Rating (All Ages)</item>
-        <item>PG Rating (For Children)</item>
-        <item>P13 Rating (For 13 Years Old)</item>
-        <item>R17 Rating (For 17 Years Old)</item>
-        <item>R Rating (For Adult)</item>
-        <item>RX Rating (NSFW)</item>
+        <item>PG Rating (Children)</item>
+        <item>P13 Rating (Teens 13 or Older)</item>
+        <item>R17 Rating (Violence And Profanity)</item>
+        <item>R Rating (Mild Nudity)</item>
+        <item>RX Rating (Hentai)</item>
     </string-array>
 
     <string-array name="orderList">

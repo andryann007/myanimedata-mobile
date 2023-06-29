@@ -22,4 +22,10 @@
     <style name="Theme.MyAnimeData.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MyAnimeData.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="dropdownSpinnerTheme">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:backgroundTint">@color/black</item>
+    </style>
 </resources>
