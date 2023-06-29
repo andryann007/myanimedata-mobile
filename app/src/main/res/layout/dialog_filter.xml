@@ -22,7 +22,7 @@
             android:text="@string/filter_data"
             android:fontFamily="sans-serif"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
@@ -50,7 +50,7 @@
                     android:gravity="end|center_vertical"
                     android:text="@string/anime_type"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp"/>
 
                 <Spinner
@@ -81,7 +81,7 @@
                     android:gravity="end|center_vertical"
                     android:text="@string/anime_status"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp"/>
 
                 <Spinner
@@ -112,7 +112,7 @@
                     android:gravity="end|center_vertical"
                     android:text="@string/anime_rating"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp"/>
 
                 <Spinner
@@ -143,7 +143,7 @@
                     android:gravity="end|center_vertical"
                     android:text="@string/order_by"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp"/>
 
                 <Spinner
@@ -174,7 +174,7 @@
                     android:gravity="end|center_vertical"
                     android:text="@string/sort_type"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp" />
 
                 <Spinner

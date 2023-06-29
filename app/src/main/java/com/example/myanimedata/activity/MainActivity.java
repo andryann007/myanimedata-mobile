@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,7 @@ import com.example.myanimedata.R;
 import com.example.myanimedata.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private String type = null;
 
     private String animeType = null;
@@ -56,6 +57,22 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.nav_search){
+            dialogSearch();
+        } else if(item.getItemId() == R.id.nav_filter){
+            dialogFilter();
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public void dialogSearch(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -165,165 +182,11 @@ public class MainActivity extends AppCompatActivity {
         if(dialogFilter.getWindow() != null){
             dialogFilter.getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
-            switch(spinnerAnimeType.getSelectedItemPosition()){
-                case 0 :
-                    animeType = "tv";
-                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
-                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 1:
-                    animeType = "movie";
-                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
-                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 2 :
-                    animeType = "ova";
-                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
-                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 3 :
-                    animeType = "special";
-                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
-                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 4 :
-                    animeType = "ona";
-                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
-                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 5 :
-                    animeType = "music";
-                    Toast.makeText(MainActivity.this, "Selected Anime Type : " +
-                                    animeType.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-
-            switch(spinnerAnimeStatus.getSelectedItemPosition()){
-                case 0 :
-                    animeStatus = "airing";
-                    Toast.makeText(MainActivity.this, "Selected Anime Status : " +
-                                    animeStatus.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 1:
-                    animeStatus = "complete";
-                    Toast.makeText(MainActivity.this, "Selected Anime Status : " +
-                                    animeStatus.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 2 :
-                    animeStatus = "upcoming";
-                    Toast.makeText(MainActivity.this, "Selected Anime Status : " +
-                                    animeStatus.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-
-            switch(spinnerAnimeRating.getSelectedItemPosition()){
-                case 0 :
-                    animeRating = "g";
-                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
-                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 1:
-                    animeRating = "pg";
-                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
-                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 2 :
-                    animeRating = "p13";
-                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
-                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 3 :
-                    animeRating = "r17";
-                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
-                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 4 :
-                    animeRating = "r";
-                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
-                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 5 :
-                    animeRating = "rx";
-                    Toast.makeText(MainActivity.this, "Selected Anime Rating : " +
-                                    animeRating.toUpperCase(), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-
-            switch (spinnerAnimeOrderBy.getSelectedItemPosition()){
-                case 0 :
-                    orderBy = "mal_id";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 1:
-                    orderBy = "start_date";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 2 :
-                    orderBy = "end_date";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 3 :
-                    orderBy = "episodes";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 4 :
-                    orderBy = "score";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 5 :
-                    orderBy = "rank";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 6 :
-                    orderBy = "popularity";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 7 :
-                    orderBy = "favorites";
-                    Toast.makeText(MainActivity.this, "Order By : " + orderBy.toUpperCase(),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-            }
-
-            switch(spinnerAnimeSortType.getSelectedItemPosition()){
-                case 0 :
-                    sortType = "asc";
-                    Toast.makeText(MainActivity.this, "Sort Type : ASCENDING",
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                case 1:
-                    sortType = "desc";
-                    Toast.makeText(MainActivity.this, "Sort Type : DESCENDING",
-                            Toast.LENGTH_SHORT).show();
-                    break;
-            }
+            spinnerAnimeType.setOnItemSelectedListener(this);
+            spinnerAnimeStatus.setOnItemSelectedListener(this);
+            spinnerAnimeRating.setOnItemSelectedListener(this);
+            spinnerAnimeOrderBy.setOnItemSelectedListener(this);
+            spinnerAnimeSortType.setOnItemSelectedListener(this);
 
             btnFilter.setOnClickListener(view-> doAnimeFilter(animeType, animeStatus, animeRating, orderBy, sortType));
 
@@ -431,19 +294,74 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String itemSelected = parent.getItemAtPosition(position).toString().toLowerCase();
+
+        if(itemSelected.equalsIgnoreCase("tv")){
+            animeType = "tv";
+        } else if(itemSelected.equalsIgnoreCase("movie")){
+            animeType = "movie";
+        } else if(itemSelected.equalsIgnoreCase("ova")){
+            animeType = "ova";
+        } else if(itemSelected.equalsIgnoreCase("special")){
+            animeType = "special";
+        } else if(itemSelected.equalsIgnoreCase("ona")){
+            animeType = "ona";
+        } else if(itemSelected.equalsIgnoreCase("music")){
+            animeType = "music";
+        }
+
+        if(itemSelected.equalsIgnoreCase("airing")){
+            animeStatus = "airing";
+        } else if(itemSelected.equalsIgnoreCase("complete")){
+            animeStatus = "complete";
+        } else if(itemSelected.equalsIgnoreCase("upcoming")){
+            animeStatus = "upcoming";
+        }
+
+        if(itemSelected.equalsIgnoreCase("g rating (all ages)")){
+            animeRating = "g";
+        } else if(itemSelected.equalsIgnoreCase("pg rating (children)")){
+            animeRating = "pg";
+        } else if(itemSelected.equalsIgnoreCase("p13 rating (teens 13 or older)")){
+            animeRating = "p13";
+        } else if(itemSelected.equalsIgnoreCase("r17 rating (violence and profanity)")){
+            animeRating = "r17";
+        } else if(itemSelected.equalsIgnoreCase("r rating (mild nudity)")){
+            animeRating = "r";
+        } else if(itemSelected.equalsIgnoreCase("rx rating (hentai)")){
+            animeRating = "rx";
+        }
+
+        if(itemSelected.equalsIgnoreCase("id")){
+            orderBy = "mal_id";
+        } else if(itemSelected.equalsIgnoreCase("title")){
+            orderBy = "title";
+        } else if(itemSelected.equalsIgnoreCase("start date")){
+            orderBy = "start_date";
+        } else if(itemSelected.equalsIgnoreCase("end date")){
+            orderBy = "end_date";
+        } else if(itemSelected.equalsIgnoreCase("episodes")){
+            orderBy = "episodes";
+        } else if(itemSelected.equalsIgnoreCase("score")){
+            orderBy = "score";
+        } else if(itemSelected.equalsIgnoreCase("rank")){
+            orderBy = "rank";
+        } else if(itemSelected.equalsIgnoreCase("popularity")){
+            orderBy = "popularity";
+        } else if(itemSelected.equalsIgnoreCase("favorites")){
+            orderBy = "favorites";
+        }
+
+        if(itemSelected.equalsIgnoreCase("ascending")){
+            sortType = "asc";
+        } else if (itemSelected.equalsIgnoreCase("descending")){
+            sortType = "desc";
+        }
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.nav_search){
-            dialogSearch();
-        } else if(item.getItemId() == R.id.nav_filter){
-            dialogFilter();
-        }
-        return super.onOptionsItemSelected(item);
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
