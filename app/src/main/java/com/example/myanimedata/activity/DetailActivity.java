@@ -3,8 +3,6 @@ package com.example.myanimedata.activity;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,17 +97,43 @@ public class DetailActivity extends AppCompatActivity {
 
                     String mYear = String.valueOf(response.body().getAnimeDetails().getYear());
                     String mSeason = response.body().getAnimeDetails().getSeason();
-                    setYearText(binding.textReleaseYear, mSeason, mYear);
+                    if(!mYear.equalsIgnoreCase("0")){
+                        if(mSeason != null){
+                            setYearText(binding.textReleaseYear, mSeason, mYear);
+                        } else {
+                            setYearText(binding.textReleaseYear, "", mYear);
+                        }
+                    } else {
+                        if(mSeason != null){
+                            setYearText(binding.textReleaseYear, mSeason, "");
+                        } else {
+                            setYearText(binding.textReleaseYear, "", "");
+                        }
+                    }
 
                     String mScore = String.valueOf(response.body().getAnimeDetails().getScore());
-                    setScoresText(binding.textScoreOrRating, mScore);
+                    if(!mScore.equalsIgnoreCase("0")){
+                        setScoresText(binding.textScoreOrRating, mScore);
+                    } else {
+                        setScoresText(binding.textScoreOrRating, "No Score Yet !!!");
+                    }
 
                     String mType = response.body().getAnimeDetails().getType();
                     String mEpisodes = String.valueOf(response.body().getAnimeDetails().getEpisodes());
-                    setEpisodesText(binding.textEpisodeOrVolume, mType, mEpisodes);
+                    if(mType != null){
+                        if (!mEpisodes.equalsIgnoreCase("0")){
+                            setEpisodesText(binding.textEpisodeOrVolume, mType, mEpisodes);
+                        } else {
+                            setEpisodesText(binding.textEpisodeOrVolume, mType, "-");
+                        }
+                    }
 
                     String mSynopsis = response.body().getAnimeDetails().getSynopsis();
-                    setHtmlText(binding.textSynopsis, mSynopsis);
+                    if(mSynopsis != null){
+                        setHtmlText(binding.textSynopsis, mSynopsis);
+                    } else {
+                        setHtmlText(binding.textSynopsis, "No Synopsis Yet !!!");
+                    }
 
                     setGenresAnime();
                 } else {
@@ -136,6 +160,7 @@ public class DetailActivity extends AppCompatActivity {
     private void getGenresAnime() {
         Call<AnimeResponseDetail> call = apiService.getAnimeDetail(id);
         call.enqueue(new Callback<AnimeResponseDetail>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<AnimeResponseDetail> call, @NonNull Response<AnimeResponseDetail> response) {
                 assert response.body() != null;
@@ -143,6 +168,9 @@ public class DetailActivity extends AppCompatActivity {
                     int oldCount = animeGenre.size();
                     animeGenre.addAll(response.body().getAnimeDetails().getGenreResults());
                     genreAdapter.notifyItemChanged(oldCount, animeGenre.size());
+                } else {
+                    binding.textGenreList.setText("No Genre Yet !!!");
+                    binding.rvGenreList.setVisibility(View.GONE);
                 }
             }
 
@@ -175,16 +203,32 @@ public class DetailActivity extends AppCompatActivity {
                     setHtmlText(binding.textTitleOrNameAlias, mAliasTitle);
 
                     String mStatus = response.body().getMangaDetails().getFinished();
-                    setStatusText(binding.textReleaseYear, mStatus);
+                    if(mStatus != null){
+                        setStatusText(binding.textReleaseYear, mStatus);
+                    } else {
+                        setStatusText(binding.textReleaseYear, "-");
+                    }
 
                     String mScore = String.valueOf(response.body().getMangaDetails().getScore());
-                    setScoresText(binding.textScoreOrRating, mScore);
+                    if(!mScore.equalsIgnoreCase("0")){
+                        setScoresText(binding.textScoreOrRating, mScore);
+                    } else {
+                        setScoresText(binding.textScoreOrRating, "-");
+                    }
 
                     String mVolume = String.valueOf(response.body().getMangaDetails().getVolumes());
-                    setVolumeText(binding.textEpisodeOrVolume, mVolume);
+                    if(!mVolume.equalsIgnoreCase("0")){
+                        setVolumeText(binding.textEpisodeOrVolume, mVolume);
+                    } else {
+                        setVolumeText(binding.textEpisodeOrVolume, "-");
+                    }
 
                     String mSynopsis = response.body().getMangaDetails().getSynopsis();
-                    setHtmlText(binding.textSynopsis, mSynopsis);
+                    if(mSynopsis != null){
+                        setHtmlText(binding.textSynopsis, mSynopsis);
+                    } else {
+                        setHtmlText(binding.textSynopsis, "No Synopsis Yet !!!");
+                    }
 
                     setGenresMangas();
                 } else {
@@ -211,6 +255,7 @@ public class DetailActivity extends AppCompatActivity {
     private void getGenresMangas() {
         Call<MangaResponseDetail> call = apiService.getMangaDetail(id);
         call.enqueue(new Callback<MangaResponseDetail>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<MangaResponseDetail> call, @NonNull Response<MangaResponseDetail> response) {
                 assert response.body() != null;
@@ -218,6 +263,9 @@ public class DetailActivity extends AppCompatActivity {
                     int oldCount = mangaGenre.size();
                     mangaGenre.addAll(response.body().getMangaDetails().getGenreResults());
                     genreAdapter.notifyItemChanged(oldCount, mangaGenre.size());
+                } else {
+                    binding.textGenreList.setText("No Genre Yet !!!");
+                    binding.rvGenreList.setVisibility(View.GONE);
                 }
             }
 
@@ -250,18 +298,30 @@ public class DetailActivity extends AppCompatActivity {
                     String mAliasTitle = response.body().getCharacterDetail().getNameKanji();
                     setHtmlText(binding.textTitleOrNameAlias, mAliasTitle);
 
-                    String mStatus = response.body().getCharacterDetail().getName();
-                    setCharacterNameText(binding.textScoreOrRating, mStatus);
+                    String mName = response.body().getCharacterDetail().getName();
+                    setCharacterNameText(binding.textScoreOrRating, mName);
 
-                    String mScore = String.valueOf(response.body().getCharacterDetail().getFavorites());
-                    setCharacterScoreText(binding.textEpisodeOrVolume, mScore);
+                    String mFavorites = String.valueOf(response.body().getCharacterDetail().getFavorites());
+                    if(!mFavorites.equalsIgnoreCase("0")){
+                        setCharacterScoreText(binding.textEpisodeOrVolume, mFavorites);
+                    } else {
+                        setCharacterScoreText(binding.textEpisodeOrVolume, "No Favorites Yet !!!");
+                    }
 
-                    String mVolume = String.valueOf(response.body().getCharacterDetail().getUrl());
-                    setCharacterUrlText(binding.textReleaseYear, mVolume);
+                    String mUrl = response.body().getCharacterDetail().getUrl();
+                    if(mUrl != null) {
+                        setCharacterUrlText(binding.textReleaseYear, mUrl);
+                    } else {
+                        setCharacterUrlText(binding.textReleaseYear, "No Character URL Yet !!!");
+                    }
 
                     binding.titleSynopsis.setText("About");
                     String mAbout = response.body().getCharacterDetail().getAbout();
-                    setHtmlText(binding.textSynopsis, mAbout);
+                    if(mAbout != null){
+                        setHtmlText(binding.textSynopsis, mAbout);
+                    } else {
+                        setHtmlText(binding.textSynopsis, "No Character Description Yet !!!");
+                    }
 
                     binding.textGenreList.setText("Anime Debut");
                     setCharacterRole();
@@ -289,6 +349,7 @@ public class DetailActivity extends AppCompatActivity {
     private void getCharacterRole() {
         Call<CharacterResponseDetail> call = apiService.getCharacterDetail(id);
         call.enqueue(new Callback<CharacterResponseDetail>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<CharacterResponseDetail> call, @NonNull Response<CharacterResponseDetail> response) {
                 assert response.body() != null;
@@ -296,6 +357,9 @@ public class DetailActivity extends AppCompatActivity {
                     int oldCount = characterRole.size();
                     characterRole.addAll(response.body().getCharacterDetail().getRoleResults());
                     roleAdapter.notifyItemChanged(oldCount, characterRole.size());
+                } else {
+                    binding.textGenreList.setText("No Debut Yet !!!");
+                    binding.rvGenreList.setVisibility(View.GONE);
                 }
             }
 
@@ -311,42 +375,35 @@ public class DetailActivity extends AppCompatActivity {
         tv.setText(HtmlCompat.fromHtml(textValue, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setYearText(TextView tv, String type, String year){
-        tv.setText(HtmlCompat.fromHtml("Aired : " + type + " " + year, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setYearText(TextView tv, String aired, String year){
+        tv.setText(HtmlCompat.fromHtml("Aired : " + aired + " " + year, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setScoresText(TextView tv, String textValue){
-        tv.setText(HtmlCompat.fromHtml("Score : " + textValue, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setScoresText(TextView tv, String score){
+        tv.setText(HtmlCompat.fromHtml("Score : " + score, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     private void setEpisodesText(TextView tv, String type, String episodes){
         tv.setText(HtmlCompat.fromHtml(type + " (" + episodes + " Episodes)", HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setStatusText(TextView tv, String textValue){
-        tv.setText(HtmlCompat.fromHtml("Status : " + textValue, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setStatusText(TextView tv, String status){
+        tv.setText(HtmlCompat.fromHtml("Status : " + status, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setCharacterNameText(TextView tv, String textValue){
-        tv.setText(HtmlCompat.fromHtml("Name : " + textValue, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setCharacterNameText(TextView tv, String name){
+        tv.setText(HtmlCompat.fromHtml("Name : " + name, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setVolumeText(TextView tv, String textValue){
-        tv.setText(HtmlCompat.fromHtml("Total Volume : " + textValue + " Volume", HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setVolumeText(TextView tv, String volume){
+        tv.setText(HtmlCompat.fromHtml("Total Volume : " + volume + " Volume", HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setCharacterScoreText(TextView tv, String textValue){
-        tv.setText(HtmlCompat.fromHtml("Favorites : " + textValue, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setCharacterScoreText(TextView tv, String favorites){
+        tv.setText(HtmlCompat.fromHtml("Favorites : " + favorites, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setCharacterUrlText(TextView tv, String textValue){
-        tv.setText(HtmlCompat.fromHtml("URL : " + textValue, HtmlCompat.FROM_HTML_MODE_LEGACY));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    private void setCharacterUrlText(TextView tv, String url){
+        tv.setText(HtmlCompat.fromHtml("URL : " + url, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 }
