@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,12 +48,14 @@ public class MangaAdapter extends RecyclerView.Adapter<MangaAdapter.MangaViewHol
     }
 
     public static class MangaViewHolder extends RecyclerView.ViewHolder{
+        private final ProgressBar loadingMangaItem;
         private final RoundedImageView imageMangaPoster;
         private final TextView textMangaName;
 
         public MangaViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            loadingMangaItem = itemView.findViewById(R.id.loadingMangaItem);
             imageMangaPoster = itemView.findViewById(R.id.imageMangaPoster);
             textMangaName = itemView.findViewById(R.id.textMangaName);
         }
@@ -60,6 +63,8 @@ public class MangaAdapter extends RecyclerView.Adapter<MangaAdapter.MangaViewHol
         public void bindItem(MangaResult mangaResult, Context context) {
 
             if(mangaResult.getImageResults() != null){
+                loadingMangaItem.setVisibility(View.GONE);
+
                 if(mangaResult.getImageResults().getJpgResults() != null){
                     Uri imgUrl = Uri.parse(mangaResult.getImageResults().getJpgResults().getImageUrl());
                     Picasso.get().load(imgUrl).into(imageMangaPoster);
@@ -68,6 +73,8 @@ public class MangaAdapter extends RecyclerView.Adapter<MangaAdapter.MangaViewHol
                     Picasso.get().load(imgUrl).into(imageMangaPoster);
                 }
             } else {
+                loadingMangaItem.setVisibility(View.GONE);
+
                 imageMangaPoster.setImageResource(R.drawable.ic_no_image_sm);
             }
 

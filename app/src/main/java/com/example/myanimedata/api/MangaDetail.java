@@ -21,11 +21,11 @@ public class MangaDetail {
     @SerializedName("score")
     private final double score;
 
-    @SerializedName("volumes")
-    private final int volumes;
-
     @SerializedName("synopsis")
     private final String synopsis;
+
+    @SerializedName("background")
+    private final String background;
 
     @SerializedName("images")
     private final ImageResult imageResult;
@@ -53,12 +53,12 @@ public class MangaDetail {
         return score;
     }
 
-    public int getVolumes() {
-        return volumes;
-    }
-
     public String getSynopsis() {
         return synopsis;
+    }
+
+    public String getBackground() {
+        return background;
     }
 
     public ImageResult getImageResult() {
@@ -69,14 +69,15 @@ public class MangaDetail {
         return genreResults;
     }
 
-    public MangaDetail(int id, String title, String titleJp, String finished, double score, int volumes, String synopsis, ImageResult imageResult) {
+    public MangaDetail(int id, String title, String titleJp, String finished, double score,
+                       String synopsis, String background, ImageResult imageResult) {
         this.id = id;
         this.title = title;
         this.titleJp = titleJp;
         this.finished = finished;
         this.score = score;
-        this.volumes = volumes;
         this.synopsis = synopsis;
+        this.background = background;
         this.imageResult = imageResult;
     }
 }

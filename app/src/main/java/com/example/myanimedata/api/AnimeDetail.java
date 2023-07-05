@@ -18,12 +18,6 @@ public class AnimeDetail {
     @SerializedName("type")
     private final String type;
 
-    @SerializedName("year")
-    private final int year;
-
-    @SerializedName("season")
-    private final String season;
-
     @SerializedName("score")
     private final double score;
 
@@ -32,6 +26,9 @@ public class AnimeDetail {
 
     @SerializedName("synopsis")
     private final String synopsis;
+
+    @SerializedName("background")
+    private final String background;
 
     @SerializedName("images")
     private final ImageResult imageResult;
@@ -45,10 +42,6 @@ public class AnimeDetail {
 
     public String getTitle() {
         return title;
-    }
-
-    public int getYear() {
-        return year;
     }
 
     public double getScore() {
@@ -71,28 +64,28 @@ public class AnimeDetail {
         return type;
     }
 
-    public String getSeason() {
-        return season;
-    }
-
     public ImageResult getImageResult() {
         return imageResult;
+    }
+
+    public String getBackground() {
+        return background;
     }
 
     public List<GenreResult> getGenreResults() {
         return genreResults;
     }
 
-    public AnimeDetail(int id, String title, String titleJp, String type, int year, String season, double score, int episodes, String synopsis, ImageResult imageResult) {
+    public AnimeDetail(int id, String title, String titleJp, String type, double score, int episodes,
+                       String synopsis, String background, ImageResult imageResult) {
         this.id = id;
         this.title = title;
         this.titleJp = titleJp;
         this.type = type;
-        this.year = year;
-        this.season = season;
         this.score = score;
         this.episodes = episodes;
         this.synopsis = synopsis;
+        this.background = background;
         this.imageResult = imageResult;
     }
 }

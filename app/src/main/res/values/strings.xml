@@ -8,8 +8,9 @@
     <string name="title_manga_list">Manga List</string>
     <string name="title_character_list">Character List</string>
     <string name="image_poster_desc">Image Poster</string>
-    <string name="synopsis">Synopsis</string>
-    <string name="genres">Genres</string>
+    <string name="synopsis">Synopsis :</string>
+    <string name="background">Background :</string>
+    <string name="genre">Genre :</string>
     <string name="sort">Sort</string>
     <string name="search">Search</string>
     <string name="animes_title">Animes</string>
@@ -98,6 +99,8 @@
     <string name="select_manga_type">Select Manga Type</string>
     <string name="manga_type">Manga Type :</string>
     <string name="select_filter_type">Select Filter Type :</string>
+    <string name="pictures">Pictures :</string>
+    <string name="anime_recommendations">Anime Recommendations :</string>
 
     <string-array name="sortList">
         <item>Ascending</item>

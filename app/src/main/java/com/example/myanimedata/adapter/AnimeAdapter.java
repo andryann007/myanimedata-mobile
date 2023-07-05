@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,12 +48,14 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
     }
 
     public static class AnimeViewHolder extends RecyclerView.ViewHolder{
+        private final ProgressBar loadingAnimeItem;
         private final RoundedImageView imageAnimePoster;
         private final TextView textAnimeName;
 
         public AnimeViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            loadingAnimeItem = itemView.findViewById(R.id.loadingAnimeItem);
             imageAnimePoster = itemView.findViewById(R.id.imageAnimePoster);
             textAnimeName = itemView.findViewById(R.id.textAnimeName);
         }
@@ -60,6 +63,8 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         public void bindItem(AnimeResult animeResult, Context context) {
 
             if(animeResult.getImageResults() != null){
+                loadingAnimeItem.setVisibility(View.GONE);
+
                 if(animeResult.getImageResults().getJpgResults() != null){
                     Uri imgUrl = Uri.parse(animeResult.getImageResults().getJpgResults().getImageUrl());
                     Picasso.get().load(imgUrl).into(imageAnimePoster);
@@ -68,6 +73,8 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
                     Picasso.get().load(imgUrl).into(imageAnimePoster);
                 }
             } else {
+                loadingAnimeItem.setVisibility(View.GONE);
+
                 imageAnimePoster.setImageResource(R.drawable.ic_no_image_sm);
             }
 

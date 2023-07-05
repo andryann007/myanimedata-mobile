@@ -8,7 +8,7 @@
     android:background="@drawable/bg_item">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/imageCharacterPoster"
+        android:id="@+id/imageRecommendationPoster"
         android:layout_width="112.5dp"
         android:layout_height="160dp"
         android:scaleType="fitXY"
@@ -19,26 +19,26 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/textCharacterName"
+        android:id="@+id/textRecommendationName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginVertical="2dp"
         android:layout_marginHorizontal="5dp"
         android:maxLines="1"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageCharacterPoster"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageRecommendationPoster"/>
 
     <ProgressBar
-        android:id="@+id/loadingCharacterItem"
+        android:id="@+id/loadingRecommendationItem"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/imageCharacterPoster"
-        app:layout_constraintEnd_toEndOf="@+id/imageCharacterPoster"
-        app:layout_constraintTop_toTopOf="@+id/imageCharacterPoster"
-        app:layout_constraintBottom_toBottomOf="@+id/imageCharacterPoster"/>
+        app:layout_constraintStart_toStartOf="@+id/imageRecommendationPoster"
+        app:layout_constraintEnd_toEndOf="@+id/imageRecommendationPoster"
+        app:layout_constraintTop_toTopOf="@+id/imageRecommendationPoster"
+        app:layout_constraintBottom_toBottomOf="@+id/imageRecommendationPoster"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

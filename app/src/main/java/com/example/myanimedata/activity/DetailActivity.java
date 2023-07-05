@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,16 +15,21 @@ import androidx.core.text.HtmlCompat;
 
 import com.example.myanimedata.R;
 import com.example.myanimedata.adapter.GenreAdapter;
+import com.example.myanimedata.adapter.PictureAdapter;
+import com.example.myanimedata.adapter.RecommendationAdapter;
 import com.example.myanimedata.adapter.RoleAdapter;
 import com.example.myanimedata.api.AnimeResponseDetail;
 import com.example.myanimedata.api.ApiClient;
 import com.example.myanimedata.api.ApiService;
 import com.example.myanimedata.api.CharacterResponseDetail;
 import com.example.myanimedata.api.GenreResult;
+import com.example.myanimedata.api.ImageResponse;
+import com.example.myanimedata.api.ImageResult;
 import com.example.myanimedata.api.MangaResponseDetail;
+import com.example.myanimedata.api.RecommendationResponse;
+import com.example.myanimedata.api.RecommendationResult;
 import com.example.myanimedata.api.RoleResult;
 import com.example.myanimedata.databinding.ActivityDetailBinding;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,10 +48,16 @@ public class DetailActivity extends AppCompatActivity {
 
     private GenreAdapter genreAdapter;
     private RoleAdapter roleAdapter;
+    private PictureAdapter animePictureAdapter, mangaPictureAdapter;
+    private RecommendationAdapter animeRecommendationAdapter, mangaRecommendationAdapter;
 
     private final List<GenreResult> animeGenre = new ArrayList<>();
     private final List<GenreResult> mangaGenre = new ArrayList<>();
     private final List<RoleResult> characterRole = new ArrayList<>();
+    private final ArrayList<ImageResult> animePictureResults = new ArrayList<>();
+    private final ArrayList<ImageResult> mangaPictureResults = new ArrayList<>();
+    private final ArrayList<RecommendationResult> animeRecommendationResults = new ArrayList<>();
+    private final ArrayList<RecommendationResult> mangaRecommendationResults = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,58 +96,70 @@ public class DetailActivity extends AppCompatActivity {
                     binding.loadingDetail.setVisibility(View.GONE);
                     binding.detailScrollView.setVisibility(View.VISIBLE);
 
-                    RoundedImageView roundedImageView = findViewById(R.id.imagePoster);
-                    String imageUrl = response.body().getAnimeDetails().getImageResult().getJpgResults().getImageUrl();
-                    Uri mImageUrl = Uri.parse(imageUrl);
-                    Picasso.get().load(mImageUrl).into(roundedImageView);
+                    binding.toolbar.setTitle(HtmlCompat.fromHtml("<b>" +
+                                    response.body().getAnimeDetails().getTitle() + "</b>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-                    String mTitle = response.body().getAnimeDetails().getTitle();
-                    setHtmlText(binding.textTitleOrName, mTitle);
+                    if(response.body().getAnimeDetails().getImageResult().getJpgResults().getLargeImageUrl() != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
 
-                    String mAliasTitle = response.body().getAnimeDetails().getTitleJp();
-                    setHtmlText(binding.textTitleOrNameAlias, mAliasTitle);
-
-                    String mYear = String.valueOf(response.body().getAnimeDetails().getYear());
-                    String mSeason = response.body().getAnimeDetails().getSeason();
-                    if(!mYear.equalsIgnoreCase("0")){
-                        if(mSeason != null){
-                            setYearText(binding.textReleaseYear, mSeason, mYear);
-                        } else {
-                            setYearText(binding.textReleaseYear, "", mYear);
-                        }
-                    } else {
-                        if(mSeason != null){
-                            setYearText(binding.textReleaseYear, mSeason, "");
-                        } else {
-                            setYearText(binding.textReleaseYear, "", "");
-                        }
+                        Uri backgroundImage = Uri.parse(response.body().getAnimeDetails().getImageResult().getJpgResults().getLargeImageUrl());
+                        Picasso.get().load(backgroundImage).into(binding.imageBackground);
                     }
 
-                    String mScore = String.valueOf(response.body().getAnimeDetails().getScore());
-                    if(!mScore.equalsIgnoreCase("0")){
-                        setScoresText(binding.textScoreOrRating, mScore);
+                    if(response.body().getAnimeDetails().getImageResult().getJpgResults().getImageUrl() != null){
+                        Uri posterImage = Uri.parse(response.body().getAnimeDetails().getImageResult().getJpgResults().getImageUrl());
+                        Picasso.get().load(posterImage).into(binding.imagePoster);
                     } else {
-                        setScoresText(binding.textScoreOrRating, "No Score Yet !!!");
+                        binding.imagePoster.setImageResource(R.drawable.ic_no_image);
+                        binding.imagePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     }
 
-                    String mType = response.body().getAnimeDetails().getType();
-                    String mEpisodes = String.valueOf(response.body().getAnimeDetails().getEpisodes());
-                    if(mType != null){
-                        if (!mEpisodes.equalsIgnoreCase("0")){
-                            setEpisodesText(binding.textEpisodeOrVolume, mType, mEpisodes);
+                    if(response.body().getAnimeDetails().getTitleJp() != null){
+                        setTitleJp(binding.textNameAndJapaneseName,
+                                response.body().getAnimeDetails().getTitle(),
+                                response.body().getAnimeDetails().getTitleJp());
+                    } else {
+                        setNoTitleJp(binding.textNameAndJapaneseName,
+                                response.body().getAnimeDetails().getTitle());
+                    }
+
+                    if(response.body().getAnimeDetails().getScore() != 0){
+                        setScoreText(binding.textScoreOrPopularity,
+                                response.body().getAnimeDetails().getScore());
+                    } else {
+                        setNoScoreText(binding.textScoreOrPopularity);
+                    }
+
+                    if(response.body().getAnimeDetails().getType().equalsIgnoreCase("tv")){
+                        if(response.body().getAnimeDetails().getEpisodes() != 0){
+                            setTvEpisodesText(binding.textTypeAndEpisodes,
+                                    response.body().getAnimeDetails().getType(),
+                                    response.body().getAnimeDetails().getEpisodes());
                         } else {
-                            setEpisodesText(binding.textEpisodeOrVolume, mType, "-");
+                            setTypeText(binding.textTypeAndEpisodes, response.body().getAnimeDetails().getType());
                         }
+                    } else {
+                        setTypeText(binding.textTypeAndEpisodes, response.body().getAnimeDetails().getType());
                     }
 
-                    String mSynopsis = response.body().getAnimeDetails().getSynopsis();
-                    if(mSynopsis != null){
-                        setHtmlText(binding.textSynopsis, mSynopsis);
-                    } else {
-                        setHtmlText(binding.textSynopsis, "No Synopsis Yet !!!");
+                    if(response.body().getAnimeDetails().getSynopsis() != null){
+                        binding.titleSynopsisOrAbout.setVisibility(View.VISIBLE);
+
+                        binding.textSynopsisOrAbout.setText(response.body().getAnimeDetails().getSynopsis());
+                        binding.textSynopsisOrAbout.setVisibility(View.VISIBLE);
+                    }
+
+                    if(response.body().getAnimeDetails().getBackground() != null){
+                        binding.titleBackground.setVisibility(View.VISIBLE);
+
+                        binding.textBackground.setText(response.body().getAnimeDetails().getBackground());
+                        binding.textBackground.setVisibility(View.VISIBLE);
                     }
 
                     setGenresAnime();
+
+                    setPicturesAnime();
                 } else {
                     binding.loadingDetail.setVisibility(View.GONE);
                     binding.textNoDetailResult.setVisibility(View.VISIBLE);
@@ -144,7 +168,6 @@ public class DetailActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(@NonNull Call<AnimeResponseDetail> call, @NonNull Throwable t) {
-                binding.loadingDetail.setVisibility(View.GONE);
                 Toast.makeText(DetailActivity.this,"Fail to Fetch Data !!!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -152,7 +175,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setGenresAnime(){
         genreAdapter = new GenreAdapter(animeGenre, this);
-        binding.rvGenreList.setAdapter(genreAdapter);
+        binding.rvGenreOrDebutList.setAdapter(genreAdapter);
 
         getGenresAnime();
     }
@@ -165,19 +188,90 @@ public class DetailActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<AnimeResponseDetail> call, @NonNull Response<AnimeResponseDetail> response) {
                 assert response.body() != null;
                 if(response.body().getAnimeDetails().getGenreResults() !=null){
+                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                    binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
+
                     int oldCount = animeGenre.size();
                     animeGenre.addAll(response.body().getAnimeDetails().getGenreResults());
                     genreAdapter.notifyItemChanged(oldCount, animeGenre.size());
                 } else {
-                    binding.textGenreList.setText("No Genre Yet !!!");
-                    binding.rvGenreList.setVisibility(View.GONE);
+                    setNoText(binding.textGenreOrDebutList, "No Genre Yet !!!");
+
+                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AnimeResponseDetail> call, @NonNull Throwable t) {
-                binding.loadingDetail.setVisibility(View.GONE);
                 Toast.makeText(DetailActivity.this,"Fail to Fetch The Genre !!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setPicturesAnime(){
+        animePictureAdapter = new PictureAdapter(animePictureResults);
+        binding.rvPictureList.setAdapter(animePictureAdapter);
+
+        getPicturesAnime();
+    }
+
+    private void getPicturesAnime(){
+        Call<ImageResponse> call = apiService.getAnimePictures(id);
+        call.enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
+                assert response.body() != null;
+                if(response.body().getImageResultsList() != null){
+                    binding.textPictureList.setVisibility(View.VISIBLE);
+                    binding.rvPictureList.setVisibility(View.VISIBLE);
+
+                    int oldCount = animePictureResults.size();
+                    animePictureResults.addAll(response.body().getImageResultsList());
+                    animePictureAdapter.notifyItemChanged(oldCount, animePictureResults.size());
+                } else {
+                    setNoText(binding.textPictureList, "No Images Result !!!");
+
+                    binding.textPictureList.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
+                Toast.makeText(DetailActivity.this,"Fail to Fetch The Pictures !!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setRecommendationAnime(){
+        animeRecommendationAdapter = new RecommendationAdapter(animeRecommendationResults);
+        binding.rvRecommendationList.setAdapter(animeRecommendationAdapter);
+
+        getRecommendationAnime();
+    }
+
+    private void getRecommendationAnime(){
+        Call<RecommendationResponse> call = apiService.getAnimeRecommendations(id);
+        call.enqueue(new Callback<RecommendationResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RecommendationResponse> call, @NonNull Response<RecommendationResponse> response) {
+                assert response.body() != null;
+                if(response.body().getRecommendationResults() != null){
+                    binding.textRecommendationList.setVisibility(View.VISIBLE);
+                    binding.rvRecommendationList.setVisibility(View.VISIBLE);
+
+                    int oldCount = animeRecommendationResults.size();
+                    animeRecommendationResults.addAll(response.body().getRecommendationResults());
+                    animeRecommendationAdapter.notifyItemChanged(oldCount, animeRecommendationResults.size());
+                } else {
+                    setNoText(binding.textRecommendationList, "No Recommendation Result !!!");
+
+                    binding.textRecommendationList.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RecommendationResponse> call, @NonNull Throwable t) {
+                Toast.makeText(DetailActivity.this,"Fail to Fetch Anime Recommendations !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -191,46 +285,64 @@ public class DetailActivity extends AppCompatActivity {
                     binding.loadingDetail.setVisibility(View.GONE);
                     binding.detailScrollView.setVisibility(View.VISIBLE);
 
-                    RoundedImageView roundedImageView = findViewById(R.id.imagePoster);
-                    String imageUrl = response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl();
-                    Uri mImageUrl = Uri.parse(imageUrl);
-                    Picasso.get().load(mImageUrl).into(roundedImageView);
+                    binding.toolbar.setTitle(HtmlCompat.fromHtml("<b>" +
+                            response.body().getMangaDetails().getTitle() + "</b>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-                    String mTitle = response.body().getMangaDetails().getTitle();
-                    setHtmlText(binding.textTitleOrName, mTitle);
+                    if(response.body().getMangaDetails().getImageResult().getJpgResults().getLargeImageUrl() != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
 
-                    String mAliasTitle = response.body().getMangaDetails().getTitleJp();
-                    setHtmlText(binding.textTitleOrNameAlias, mAliasTitle);
-
-                    String mStatus = response.body().getMangaDetails().getFinished();
-                    if(mStatus != null){
-                        setStatusText(binding.textReleaseYear, mStatus);
-                    } else {
-                        setStatusText(binding.textReleaseYear, "-");
+                        Uri backgroundImage = Uri.parse(response.body().getMangaDetails().getImageResult().getJpgResults().getLargeImageUrl());
+                        Picasso.get().load(backgroundImage).into(binding.imageBackground);
                     }
 
-                    String mScore = String.valueOf(response.body().getMangaDetails().getScore());
-                    if(!mScore.equalsIgnoreCase("0")){
-                        setScoresText(binding.textScoreOrRating, mScore);
+                    if(response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl() != null){
+                        Uri posterImage = Uri.parse(response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl());
+                        Picasso.get().load(posterImage).into(binding.imagePoster);
                     } else {
-                        setScoresText(binding.textScoreOrRating, "-");
+                        binding.imagePoster.setImageResource(R.drawable.ic_no_image);
+                        binding.imagePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     }
 
-                    String mVolume = String.valueOf(response.body().getMangaDetails().getVolumes());
-                    if(!mVolume.equalsIgnoreCase("0")){
-                        setVolumeText(binding.textEpisodeOrVolume, mVolume);
+                    if(response.body().getMangaDetails().getTitleJp() != null){
+                        setTitleJp(binding.textNameAndJapaneseName,
+                                response.body().getMangaDetails().getTitle(),
+                                response.body().getMangaDetails().getTitleJp());
                     } else {
-                        setVolumeText(binding.textEpisodeOrVolume, "-");
+                        setNoTitleJp(binding.textNameAndJapaneseName,
+                                response.body().getMangaDetails().getTitle());
                     }
 
-                    String mSynopsis = response.body().getMangaDetails().getSynopsis();
-                    if(mSynopsis != null){
-                        setHtmlText(binding.textSynopsis, mSynopsis);
+                    if(response.body().getMangaDetails().getScore() != 0){
+                        setScoreText(binding.textScoreOrPopularity,
+                                response.body().getMangaDetails().getScore());
                     } else {
-                        setHtmlText(binding.textSynopsis, "No Synopsis Yet !!!");
+                        setNoScoreText(binding.textScoreOrPopularity);
+                    }
+
+                    if(response.body().getMangaDetails().getFinished() != null){
+                        setStatusText(binding.textTypeAndEpisodes, response.body().getMangaDetails().getFinished());
+                    } else {
+                        setStatusText(binding.textTypeAndEpisodes, "-");
+                    }
+
+                    if(response.body().getMangaDetails().getSynopsis() != null){
+                        binding.titleSynopsisOrAbout.setVisibility(View.VISIBLE);
+
+                        binding.textSynopsisOrAbout.setText(response.body().getMangaDetails().getSynopsis());
+                        binding.textSynopsisOrAbout.setVisibility(View.VISIBLE);
+                    }
+
+                    if(response.body().getMangaDetails().getBackground() != null){
+                        binding.titleBackground.setVisibility(View.VISIBLE);
+
+                        binding.textBackground.setText(response.body().getMangaDetails().getBackground());
+                        binding.textBackground.setVisibility(View.VISIBLE);
                     }
 
                     setGenresMangas();
+
+                    setPicturesMangas();
                 } else {
                     binding.loadingDetail.setVisibility(View.GONE);
                     binding.textNoDetailResult.setVisibility(View.VISIBLE);
@@ -247,7 +359,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setGenresMangas(){
         genreAdapter = new GenreAdapter(mangaGenre, this);
-        binding.rvGenreList.setAdapter(genreAdapter);
+        binding.rvGenreOrDebutList.setAdapter(genreAdapter);
 
         getGenresMangas();
     }
@@ -260,19 +372,90 @@ public class DetailActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<MangaResponseDetail> call, @NonNull Response<MangaResponseDetail> response) {
                 assert response.body() != null;
                 if(response.body().getMangaDetails().getGenreResults() != null){
+                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                    binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
+
                     int oldCount = mangaGenre.size();
                     mangaGenre.addAll(response.body().getMangaDetails().getGenreResults());
                     genreAdapter.notifyItemChanged(oldCount, mangaGenre.size());
                 } else {
-                    binding.textGenreList.setText("No Genre Yet !!!");
-                    binding.rvGenreList.setVisibility(View.GONE);
+                    binding.textGenreOrDebutList.setText("No Genre Yet !!!");
+
+                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<MangaResponseDetail> call, @NonNull Throwable t) {
-                binding.loadingDetail.setVisibility(View.GONE);
                 Toast.makeText(DetailActivity.this,"Fail to Fetch The Genre !!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setPicturesMangas(){
+        mangaPictureAdapter = new PictureAdapter(mangaPictureResults);
+        binding.rvPictureList.setAdapter(mangaPictureAdapter);
+
+        getPicturesMangas();
+    }
+
+    private void getPicturesMangas(){
+        Call<ImageResponse> call = apiService.getMangaPictures(id);
+        call.enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
+                assert response.body() != null;
+                if(response.body().getImageResultsList() != null){
+                    binding.textPictureList.setVisibility(View.VISIBLE);
+                    binding.rvPictureList.setVisibility(View.VISIBLE);
+
+                    int oldCount = mangaPictureResults.size();
+                    mangaPictureResults.addAll(response.body().getImageResultsList());
+                    mangaPictureAdapter.notifyItemChanged(oldCount, mangaPictureResults.size());
+                } else {
+                    setNoText(binding.textPictureList, "No Images Result !!!");
+
+                    binding.textPictureList.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
+                Toast.makeText(DetailActivity.this,"Fail to Fetch The Pictures !!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setRecommendationMangas(){
+        mangaRecommendationAdapter = new RecommendationAdapter(mangaRecommendationResults);
+        binding.rvRecommendationList.setAdapter(mangaRecommendationAdapter);
+
+        getRecommendationMangas();
+    }
+
+    private void getRecommendationMangas(){
+        Call<RecommendationResponse> call = apiService.getMangaRecommendations(id);
+        call.enqueue(new Callback<RecommendationResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RecommendationResponse> call, @NonNull Response<RecommendationResponse> response) {
+                assert response.body() != null;
+                if(response.body().getRecommendationResults() != null){
+                    binding.textRecommendationList.setVisibility(View.VISIBLE);
+                    binding.rvRecommendationList.setVisibility(View.VISIBLE);
+
+                    int oldCount = mangaRecommendationResults.size();
+                    mangaRecommendationResults.addAll(response.body().getRecommendationResults());
+                    mangaRecommendationAdapter.notifyItemChanged(oldCount, mangaRecommendationResults.size());
+                } else {
+                    setNoText(binding.textRecommendationList, "No Recommendation Result !!!");
+
+                    binding.textRecommendationList.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RecommendationResponse> call, @NonNull Throwable t) {
+                Toast.makeText(DetailActivity.this,"Fail to Fetch Anime Recommendations !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -287,43 +470,48 @@ public class DetailActivity extends AppCompatActivity {
                     binding.loadingDetail.setVisibility(View.GONE);
                     binding.detailScrollView.setVisibility(View.VISIBLE);
 
-                    RoundedImageView roundedImageView = findViewById(R.id.imagePoster);
-                    String imageUrl = response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl();
-                    Uri mImageUrl = Uri.parse(imageUrl);
-                    Picasso.get().load(mImageUrl).into(roundedImageView);
+                    binding.toolbar.setTitle(HtmlCompat.fromHtml("<b>" +
+                                    response.body().getCharacterDetail().getName() + "</b>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-                    String mTitle = response.body().getCharacterDetail().getName();
-                    setHtmlText(binding.textTitleOrName, mTitle);
-
-                    String mAliasTitle = response.body().getCharacterDetail().getNameKanji();
-                    setHtmlText(binding.textTitleOrNameAlias, mAliasTitle);
-
-                    String mName = response.body().getCharacterDetail().getName();
-                    setCharacterNameText(binding.textScoreOrRating, mName);
-
-                    String mFavorites = String.valueOf(response.body().getCharacterDetail().getFavorites());
-                    if(!mFavorites.equalsIgnoreCase("0")){
-                        setCharacterScoreText(binding.textEpisodeOrVolume, mFavorites);
+                    if(response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl() != null){
+                        Uri posterImage = Uri.parse(response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl());
+                        Picasso.get().load(posterImage).into(binding.imagePoster);
                     } else {
-                        setCharacterScoreText(binding.textEpisodeOrVolume, "No Favorites Yet !!!");
+                        binding.imagePoster.setImageResource(R.drawable.ic_no_image);
+                        binding.imagePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     }
 
-                    String mUrl = response.body().getCharacterDetail().getUrl();
-                    if(mUrl != null) {
-                        setCharacterUrlText(binding.textReleaseYear, mUrl);
+                    if(response.body().getCharacterDetail().getNameKanji() != null){
+                        setTitleJp(binding.textNameAndJapaneseName,
+                                response.body().getCharacterDetail().getName(),
+                                response.body().getCharacterDetail().getNameKanji());
                     } else {
-                        setCharacterUrlText(binding.textReleaseYear, "No Character URL Yet !!!");
+                        setNoTitleJp(binding.textNameAndJapaneseName,
+                                response.body().getCharacterDetail().getName());
                     }
 
-                    binding.titleSynopsis.setText("About");
-                    String mAbout = response.body().getCharacterDetail().getAbout();
-                    if(mAbout != null){
-                        setHtmlText(binding.textSynopsis, mAbout);
+                    if(response.body().getCharacterDetail().getFavorites() != 0){
+                        setCharacterScoreText(binding.textScoreOrPopularity,
+                                response.body().getCharacterDetail().getFavorites());
                     } else {
-                        setHtmlText(binding.textSynopsis, "No Character Description Yet !!!");
+                        setNoText(binding.textScoreOrPopularity, "No Favorites Yet !!!");
                     }
 
-                    binding.textGenreList.setText("Anime Debut");
+                    if(response.body().getCharacterDetail().getUrl() != null){
+                        setCharacterUrlText(binding.textTypeAndEpisodes, response.body().getCharacterDetail().getUrl());
+                    } else {
+                        setCharacterUrlText(binding.textTypeAndEpisodes, "-");
+                    }
+
+                    if(response.body().getCharacterDetail().getAbout() != null){
+                        binding.titleSynopsisOrAbout.setText("About :");
+                        binding.titleSynopsisOrAbout.setVisibility(View.VISIBLE);
+
+                        binding.textSynopsisOrAbout.setText(response.body().getCharacterDetail().getAbout());
+                        binding.textSynopsisOrAbout.setVisibility(View.VISIBLE);
+                    }
+
                     setCharacterRole();
                 } else {
                     binding.loadingDetail.setVisibility(View.GONE);
@@ -341,7 +529,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setCharacterRole(){
         roleAdapter = new RoleAdapter(characterRole, this);
-        binding.rvGenreList.setAdapter(roleAdapter);
+        binding.rvGenreOrDebutList.setAdapter(roleAdapter);
 
         getCharacterRole();
     }
@@ -353,13 +541,17 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<CharacterResponseDetail> call, @NonNull Response<CharacterResponseDetail> response) {
                 assert response.body() != null;
-                if(response.body().getCharacterDetail().getRoleResults() !=null){
+                if(response.body().getCharacterDetail().getRoleResults() != null){
+                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                    binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
+
                     int oldCount = characterRole.size();
                     characterRole.addAll(response.body().getCharacterDetail().getRoleResults());
                     roleAdapter.notifyItemChanged(oldCount, characterRole.size());
                 } else {
-                    binding.textGenreList.setText("No Debut Yet !!!");
-                    binding.rvGenreList.setVisibility(View.GONE);
+                    binding.textGenreOrDebutList.setText("No Debut Yet !!!");
+
+                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -371,39 +563,53 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setHtmlText(TextView tv, String textValue){
-        tv.setText(HtmlCompat.fromHtml(textValue, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setTitleJp(TextView tv, String originalName, String jpName){
+        tv.setText(HtmlCompat.fromHtml("<b>" + originalName + "<br>(" + jpName + ")</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setYearText(TextView tv, String aired, String year){
-        tv.setText(HtmlCompat.fromHtml("Aired : " + aired + " " + year, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setNoTitleJp(TextView tv, String originalName){
+        tv.setText(HtmlCompat.fromHtml("<b>" + originalName + "</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setScoresText(TextView tv, String score){
-        tv.setText(HtmlCompat.fromHtml("Score : " + score, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setScoreText(TextView tv, double score){
+        tv.setText(HtmlCompat.fromHtml("<b>Score : " + score + "</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setEpisodesText(TextView tv, String type, String episodes){
-        tv.setText(HtmlCompat.fromHtml(type + " (" + episodes + " Episodes)", HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setNoScoreText(TextView tv){
+        tv.setText(HtmlCompat.fromHtml("<font color='#FF2400'><b> No Score Yet !!!</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
+    }
+
+    private void setTvEpisodesText(TextView tv, String type, int episodes){
+        tv.setText(HtmlCompat.fromHtml("<b>" + type + " (" + episodes + " Episodes)</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
+    }
+
+    private void setTypeText(TextView tv, String type){
+        tv.setText(HtmlCompat.fromHtml("<b>" + type + "</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
+    }
+
+    private void setNoText(TextView tv, String note){
+        tv.setText(HtmlCompat.fromHtml("<font color='#FF2400'><b>" + note + "</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     private void setStatusText(TextView tv, String status){
-        tv.setText(HtmlCompat.fromHtml("Status : " + status, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        tv.setText(HtmlCompat.fromHtml("<b>Status : " + status + "</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setCharacterNameText(TextView tv, String name){
-        tv.setText(HtmlCompat.fromHtml("Name : " + name, HtmlCompat.FROM_HTML_MODE_LEGACY));
-    }
-
-    private void setVolumeText(TextView tv, String volume){
-        tv.setText(HtmlCompat.fromHtml("Total Volume : " + volume + " Volume", HtmlCompat.FROM_HTML_MODE_LEGACY));
-    }
-
-    private void setCharacterScoreText(TextView tv, String favorites){
-        tv.setText(HtmlCompat.fromHtml("Favorites : " + favorites, HtmlCompat.FROM_HTML_MODE_LEGACY));
+    private void setCharacterScoreText(TextView tv, int favorites){
+        tv.setText(HtmlCompat.fromHtml("<b>Favorites : " + favorites + "</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     private void setCharacterUrlText(TextView tv, String url){
-        tv.setText(HtmlCompat.fromHtml("URL : " + url, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        tv.setText(HtmlCompat.fromHtml("<b>URL : " + url + "</b>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 }

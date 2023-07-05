@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,18 +47,22 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
     }
 
     public static class CharacterViewHolder extends RecyclerView.ViewHolder{
+        private final ProgressBar loadingCharacterItem;
         private final RoundedImageView imageCharacterPoster;
         private final TextView textCharacterName;
 
         public CharacterViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            loadingCharacterItem = itemView.findViewById(R.id.loadingCharacterItem);
             imageCharacterPoster = itemView.findViewById(R.id.imageCharacterPoster);
             textCharacterName = itemView.findViewById(R.id.textCharacterName);
         }
 
         public void bindItem(CharacterResult characterResult, Context context) {
             if(characterResult.getImageResults() != null){
+                loadingCharacterItem.setVisibility(View.GONE);
+
                 if(characterResult.getImageResults().getJpgResults() != null){
                     Uri imgUrl = Uri.parse(characterResult.getImageResults().getJpgResults().getImageUrl());
                     Picasso.get().load(imgUrl).into(imageCharacterPoster);
@@ -66,6 +71,8 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
                     Picasso.get().load(imgUrl).into(imageCharacterPoster);
                 }
             } else {
+                loadingCharacterItem.setVisibility(View.GONE);
+
                 imageCharacterPoster.setImageResource(R.drawable.ic_no_image_sm);
             }
 

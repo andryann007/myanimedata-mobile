@@ -75,7 +75,7 @@ public class AllAnimeFragment extends Fragment {
     }
 
     private void getAllAnimeData(int page) {
-        int limit = 1;
+        int limit = 15;
         String type = "tv";
 
         Call<AnimeResponse> call = apiService.getAllAnime(page, limit, type);

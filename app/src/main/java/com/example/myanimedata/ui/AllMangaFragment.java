@@ -75,7 +75,7 @@ public class AllMangaFragment extends Fragment {
     }
 
     private void getAllMangaData(int page) {
-        int limit = 1;
+        int limit = 15;
 
         Call<MangaResponse> call = apiService.getAllManga(page, limit);
         call.enqueue(new Callback<MangaResponse>() {

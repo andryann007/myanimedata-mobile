@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.DetailActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -15,7 +15,23 @@
         app:logo="@drawable/ic_back"
         app:title="@string/app_name"
         app:titleMarginStart="32dp"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white">
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:alpha="0.2">
+
+        <ImageView
+            android:id="@+id/imageBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/detailScrollView"
@@ -29,27 +45,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textTitleOrName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textTitleOrNameAlias"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,10 +52,10 @@
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/imagePoster"
-                    android:layout_width="138.75dp"
-                    android:layout_height="208.5dp"
-                    android:layout_marginHorizontal="5dp"
-                    android:scaleType="fitCenter"
+                    android:layout_width="135dp"
+                    android:layout_height="192dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:scaleType="fitXY"
                     app:riv_corner_radius="5dp"
                     android:contentDescription="@string/image_poster_desc"/>
 
@@ -74,7 +69,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textScoreOrRating"
+                        android:id="@+id/textNameAndJapaneseName"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:gravity="start|center_vertical"
@@ -85,7 +80,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/textEpisodeOrVolume"
+                        android:id="@+id/textScoreOrPopularity"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:gravity="start|center_vertical"
@@ -93,10 +88,10 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/textReleaseYear"
+                        android:id="@+id/textTypeAndEpisodes"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:gravity="start|center_vertical"
@@ -104,68 +99,140 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/moreInfo"
+            <TextView
+                android:id="@+id/titleSynopsisOrAbout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:text="@string/synopsis"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/textSynopsisOrAbout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:alpha="0.8"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:text="@string/background"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/textBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:alpha="0.8"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/textGenreOrDebutList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/genre"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/background_light"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvGenreOrDebutList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:scrollbars="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/container_genre"
+                android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/titleSynopsis"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginHorizontal="5dp"
-                    android:fontFamily="sans-serif"
-                    android:includeFontPadding="false"
-                    android:text="@string/synopsis"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/textPictureList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/pictures"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/background_light"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/textSynopsis"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="5dp"
-                    android:alpha="0.6"
-                    android:fontFamily="sans-serif"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPictureList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:scrollbars="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/container_pictures"
+                android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/textGenreList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginHorizontal="5dp"
-                    android:text="@string/genres"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/textRecommendationList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/anime_recommendations"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/background_light"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvGenreList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    android:scrollbars="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/container_genre" />
-
-            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecommendationList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:scrollbars="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/container_recommendations"
+                android:visibility="gone"/>
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <TextView

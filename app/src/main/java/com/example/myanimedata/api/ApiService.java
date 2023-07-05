@@ -37,6 +37,12 @@ public interface ApiService {
     @GET("anime/{id}/full")
     Call<AnimeResponseDetail> getAnimeDetail(@Path("id") int id);
 
+    @GET("anime/{id}/pictures")
+    Call<ImageResponse> getAnimePictures(@Path("id") int id);
+
+    @GET("anime/{id}/recommendations")
+    Call<RecommendationResponse> getAnimeRecommendations(@Path("id") int id);
+
     @GET("manga")
     Call<MangaResponse> getAllManga(@Query("page") int page, @Query("limit") int limit);
 
@@ -53,13 +59,14 @@ public interface ApiService {
     Call<MangaResponse> searchAllManga(@Query("page") int page, @Query("limit") int limit,
                                     @Query("q") String q);
 
-    @GET("manga")
-    Call<MangaResponse> filterManga(@Query("page") int page, @Query("limit") int limit,
-                                    @Query("type") String type, @Query("status") String status,
-                                    @Query("order_by") String orderBy, @Query("sort") String sortType);
-
     @GET("manga/{id}/full")
     Call<MangaResponseDetail> getMangaDetail(@Path("id") int id);
+
+    @GET("manga/{id}/pictures")
+    Call<ImageResponse> getMangaPictures(@Path("id") int id);
+
+    @GET("manga/{id}/recommendations")
+    Call<RecommendationResponse> getMangaRecommendations(@Path("id") int id);
 
     @GET("characters")
     Call<CharacterResponse> getAllCharacter(@Query("page") int page, @Query("limit") int limit);
