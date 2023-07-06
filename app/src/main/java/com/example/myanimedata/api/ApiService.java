@@ -40,9 +40,6 @@ public interface ApiService {
     @GET("anime/{id}/pictures")
     Call<ImageResponse> getAnimePictures(@Path("id") int id);
 
-    @GET("anime/{id}/recommendations")
-    Call<RecommendationResponse> getAnimeRecommendations(@Path("id") int id);
-
     @GET("manga")
     Call<MangaResponse> getAllManga(@Query("page") int page, @Query("limit") int limit);
 
@@ -64,9 +61,6 @@ public interface ApiService {
 
     @GET("manga/{id}/pictures")
     Call<ImageResponse> getMangaPictures(@Path("id") int id);
-
-    @GET("manga/{id}/recommendations")
-    Call<RecommendationResponse> getMangaRecommendations(@Path("id") int id);
 
     @GET("characters")
     Call<CharacterResponse> getAllCharacter(@Query("page") int page, @Query("limit") int limit);

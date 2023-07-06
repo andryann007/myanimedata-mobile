@@ -16,7 +16,6 @@ import androidx.core.text.HtmlCompat;
 import com.example.myanimedata.R;
 import com.example.myanimedata.adapter.GenreAdapter;
 import com.example.myanimedata.adapter.PictureAdapter;
-import com.example.myanimedata.adapter.RecommendationAdapter;
 import com.example.myanimedata.adapter.RoleAdapter;
 import com.example.myanimedata.api.AnimeResponseDetail;
 import com.example.myanimedata.api.ApiClient;
@@ -26,8 +25,6 @@ import com.example.myanimedata.api.GenreResult;
 import com.example.myanimedata.api.ImageResponse;
 import com.example.myanimedata.api.ImageResult;
 import com.example.myanimedata.api.MangaResponseDetail;
-import com.example.myanimedata.api.RecommendationResponse;
-import com.example.myanimedata.api.RecommendationResult;
 import com.example.myanimedata.api.RoleResult;
 import com.example.myanimedata.databinding.ActivityDetailBinding;
 import com.squareup.picasso.Picasso;
@@ -49,15 +46,12 @@ public class DetailActivity extends AppCompatActivity {
     private GenreAdapter genreAdapter;
     private RoleAdapter roleAdapter;
     private PictureAdapter animePictureAdapter, mangaPictureAdapter;
-    private RecommendationAdapter animeRecommendationAdapter, mangaRecommendationAdapter;
 
     private final List<GenreResult> animeGenre = new ArrayList<>();
     private final List<GenreResult> mangaGenre = new ArrayList<>();
     private final List<RoleResult> characterRole = new ArrayList<>();
     private final ArrayList<ImageResult> animePictureResults = new ArrayList<>();
     private final ArrayList<ImageResult> mangaPictureResults = new ArrayList<>();
-    private final ArrayList<RecommendationResult> animeRecommendationResults = new ArrayList<>();
-    private final ArrayList<RecommendationResult> mangaRecommendationResults = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +181,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<AnimeResponseDetail> call, @NonNull Response<AnimeResponseDetail> response) {
                 assert response.body() != null;
-                if(response.body().getAnimeDetails().getGenreResults() !=null){
+                if(!response.body().getAnimeDetails().getGenreResults().isEmpty()){
                     binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
                     binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
 
@@ -221,7 +215,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
                 assert response.body() != null;
-                if(response.body().getImageResultsList() != null){
+                if(!response.body().getImageResultsList().isEmpty()){
                     binding.textPictureList.setVisibility(View.VISIBLE);
                     binding.rvPictureList.setVisibility(View.VISIBLE);
 
@@ -238,40 +232,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
                 Toast.makeText(DetailActivity.this,"Fail to Fetch The Pictures !!!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void setRecommendationAnime(){
-        animeRecommendationAdapter = new RecommendationAdapter(animeRecommendationResults);
-        binding.rvRecommendationList.setAdapter(animeRecommendationAdapter);
-
-        getRecommendationAnime();
-    }
-
-    private void getRecommendationAnime(){
-        Call<RecommendationResponse> call = apiService.getAnimeRecommendations(id);
-        call.enqueue(new Callback<RecommendationResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<RecommendationResponse> call, @NonNull Response<RecommendationResponse> response) {
-                assert response.body() != null;
-                if(response.body().getRecommendationResults() != null && response.body().getRecommendationResults().size() > 1){
-                    binding.textRecommendationList.setVisibility(View.VISIBLE);
-                    binding.rvRecommendationList.setVisibility(View.VISIBLE);
-
-                    int oldCount = animeRecommendationResults.size();
-                    animeRecommendationResults.addAll(response.body().getRecommendationResults());
-                    animeRecommendationAdapter.notifyItemChanged(oldCount, animeRecommendationResults.size());
-                } else {
-                    setNoText(binding.textRecommendationList, "No Recommendation Result !!!");
-
-                    binding.textRecommendationList.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<RecommendationResponse> call, @NonNull Throwable t) {
-                Toast.makeText(DetailActivity.this,"Fail to Fetch Anime Recommendations !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -371,7 +331,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<MangaResponseDetail> call, @NonNull Response<MangaResponseDetail> response) {
                 assert response.body() != null;
-                if(response.body().getMangaDetails().getGenreResults() != null){
+                if(!response.body().getMangaDetails().getGenreResults().isEmpty()){
                     binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
                     binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
 
@@ -405,7 +365,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
                 assert response.body() != null;
-                if(response.body().getImageResultsList() != null){
+                if(!response.body().getImageResultsList().isEmpty()){
                     binding.textPictureList.setVisibility(View.VISIBLE);
                     binding.rvPictureList.setVisibility(View.VISIBLE);
 
@@ -422,43 +382,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
                 Toast.makeText(DetailActivity.this,"Fail to Fetch The Pictures !!!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void setRecommendationMangas(){
-        mangaRecommendationAdapter = new RecommendationAdapter(mangaRecommendationResults);
-        binding.rvRecommendationList.setAdapter(mangaRecommendationAdapter);
-
-        getRecommendationMangas();
-    }
-
-    private void getRecommendationMangas(){
-        Call<RecommendationResponse> call = apiService.getMangaRecommendations(id);
-        call.enqueue(new Callback<RecommendationResponse>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onResponse(@NonNull Call<RecommendationResponse> call, @NonNull Response<RecommendationResponse> response) {
-                assert response.body() != null;
-                if(response.body().getRecommendationResults() != null && response.body().getRecommendationResults().size() > 1){
-                    binding.textRecommendationList.setVisibility(View.VISIBLE);
-                    binding.rvRecommendationList.setVisibility(View.VISIBLE);
-
-                    binding.textRecommendationList.setText("Manga Recommendations :");
-
-                    int oldCount = mangaRecommendationResults.size();
-                    mangaRecommendationResults.addAll(response.body().getRecommendationResults());
-                    mangaRecommendationAdapter.notifyItemChanged(oldCount, mangaRecommendationResults.size());
-                } else {
-                    setNoText(binding.textRecommendationList, "No Recommendation Result !!!");
-
-                    binding.textRecommendationList.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<RecommendationResponse> call, @NonNull Throwable t) {
-                Toast.makeText(DetailActivity.this,"Fail to Fetch Anime Recommendations !!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
