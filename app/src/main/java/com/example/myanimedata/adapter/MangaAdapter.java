@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -71,14 +72,22 @@ public class MangaAdapter extends RecyclerView.Adapter<MangaAdapter.MangaViewHol
                 } else if (mangaResult.getImageResults().getWebpResults() != null){
                     Uri imgUrl = Uri.parse(mangaResult.getImageResults().getWebpResults().getImageUrl());
                     Picasso.get().load(imgUrl).into(imageMangaPoster);
+                } else {
+                    imageMangaPoster.setImageResource(R.drawable.ic_no_image_sm);
+                    imageMangaPoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 }
             } else {
                 loadingMangaItem.setVisibility(View.GONE);
 
                 imageMangaPoster.setImageResource(R.drawable.ic_no_image_sm);
+                imageMangaPoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
             }
 
-            textMangaName.setText(mangaResult.getTitle());
+            if(mangaResult.getTitle() != null){
+                textMangaName.setText(mangaResult.getTitle());
+            } else {
+                textMangaName.setText("-");
+            }
 
             itemView.setOnClickListener(v ->{
                 Intent i = new Intent(context, DetailActivity.class);

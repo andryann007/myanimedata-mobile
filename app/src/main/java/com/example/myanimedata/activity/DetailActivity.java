@@ -255,7 +255,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<RecommendationResponse> call, @NonNull Response<RecommendationResponse> response) {
                 assert response.body() != null;
-                if(response.body().getRecommendationResults() != null){
+                if(response.body().getRecommendationResults() != null && response.body().getRecommendationResults().size() > 1){
                     binding.textRecommendationList.setVisibility(View.VISIBLE);
                     binding.rvRecommendationList.setVisibility(View.VISIBLE);
 
@@ -436,12 +436,15 @@ public class DetailActivity extends AppCompatActivity {
     private void getRecommendationMangas(){
         Call<RecommendationResponse> call = apiService.getMangaRecommendations(id);
         call.enqueue(new Callback<RecommendationResponse>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<RecommendationResponse> call, @NonNull Response<RecommendationResponse> response) {
                 assert response.body() != null;
-                if(response.body().getRecommendationResults() != null){
+                if(response.body().getRecommendationResults() != null && response.body().getRecommendationResults().size() > 1){
                     binding.textRecommendationList.setVisibility(View.VISIBLE);
                     binding.rvRecommendationList.setVisibility(View.VISIBLE);
+
+                    binding.textRecommendationList.setText("Manga Recommendations :");
 
                     int oldCount = mangaRecommendationResults.size();
                     mangaRecommendationResults.addAll(response.body().getRecommendationResults());

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -71,14 +72,22 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
                 } else if (animeResult.getImageResults().getWebpResults() != null){
                     Uri imgUrl = Uri.parse(animeResult.getImageResults().getWebpResults().getImageUrl());
                     Picasso.get().load(imgUrl).into(imageAnimePoster);
+                } else {
+                    imageAnimePoster.setImageResource(R.drawable.ic_no_image_sm);
+                    imageAnimePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 }
             } else {
                 loadingAnimeItem.setVisibility(View.GONE);
 
                 imageAnimePoster.setImageResource(R.drawable.ic_no_image_sm);
+                imageAnimePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
             }
 
-            textAnimeName.setText(animeResult.getTitle());
+            if(animeResult.getTitle() != null){
+                textAnimeName.setText(animeResult.getTitle());
+            } else {
+                textAnimeName.setText("-");
+            }
 
             itemView.setOnClickListener(v ->{
                 Intent i = new Intent(context, DetailActivity.class);

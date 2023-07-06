@@ -52,15 +52,23 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
 
             loadingRecommendationItem = itemView.findViewById(R.id.loadingRecommendationItem);
             imgRecommendationItem = itemView.findViewById(R.id.imageRecommendationPoster);
-            textRecommendationItem = itemView.findViewById(R.id.textRecommendationList);
+            textRecommendationItem = itemView.findViewById(R.id.textRecommendationName);
         }
 
         public void bindItem(RecommendationResult recommendationResult) {
-            if(recommendationResult.getRecommendationResultDetail().getImageResult().getJpgResults() != null){
+            if(recommendationResult.getRecommendationResultDetail().getImageResult() != null){
                 loadingRecommendationItem.setVisibility(View.GONE);
 
-                Uri recommendationImage = Uri.parse(recommendationResult.getRecommendationResultDetail().getImageResult().getJpgResults().getImageUrl());
-                Picasso.get().load(recommendationImage).into(imgRecommendationItem);
+                if(recommendationResult.getRecommendationResultDetail().getImageResult().getJpgResults() != null){
+                    Uri recommendationImage = Uri.parse(recommendationResult.getRecommendationResultDetail().getImageResult().getJpgResults().getImageUrl());
+                    Picasso.get().load(recommendationImage).into(imgRecommendationItem);
+                } else if(recommendationResult.getRecommendationResultDetail().getImageResult().getWebpResults() != null){
+                    Uri recommendationImage = Uri.parse(recommendationResult.getRecommendationResultDetail().getImageResult().getWebpResults().getImageUrl());
+                    Picasso.get().load(recommendationImage).into(imgRecommendationItem);
+                } else {
+                    imgRecommendationItem.setImageResource(R.drawable.ic_no_image);
+                    imgRecommendationItem.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                }
             } else {
                 loadingRecommendationItem.setVisibility(View.GONE);
 
@@ -68,7 +76,11 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
                 imgRecommendationItem.setScaleType(ImageView.ScaleType.FIT_CENTER);
             }
 
-            textRecommendationItem.setText(recommendationResult.getRecommendationResultDetail().getTitle());
+            if(recommendationResult.getRecommendationResultDetail().getTitle() != null){
+                textRecommendationItem.setText(recommendationResult.getRecommendationResultDetail().getTitle());
+            } else {
+                textRecommendationItem.setText("-");
+            }
         }
     }
 }

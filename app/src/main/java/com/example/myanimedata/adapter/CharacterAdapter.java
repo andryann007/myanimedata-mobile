@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -69,14 +70,22 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
                 } else if (characterResult.getImageResults().getWebpResults() != null){
                     Uri imgUrl = Uri.parse(characterResult.getImageResults().getWebpResults().getImageUrl());
                     Picasso.get().load(imgUrl).into(imageCharacterPoster);
+                } else {
+                    imageCharacterPoster.setImageResource(R.drawable.ic_no_image_sm);
+                    imageCharacterPoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 }
             } else {
                 loadingCharacterItem.setVisibility(View.GONE);
 
                 imageCharacterPoster.setImageResource(R.drawable.ic_no_image_sm);
+                imageCharacterPoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
             }
 
-            textCharacterName.setText(characterResult.getName());
+            if(characterResult.getName() != null){
+                textCharacterName.setText(characterResult.getName());
+            } else {
+                textCharacterName.setText("-");
+            }
 
             itemView.setOnClickListener(v ->{
                 Intent i = new Intent(context, DetailActivity.class);
