@@ -27,6 +27,10 @@ import com.example.myanimedata.api.ImageResult;
 import com.example.myanimedata.api.MangaResponseDetail;
 import com.example.myanimedata.api.RoleResult;
 import com.example.myanimedata.databinding.ActivityDetailBinding;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.customui.DefaultPlayerUiController;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -135,6 +139,30 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     } else {
                         setTypeText(binding.textTypeAndEpisodes, response.body().getAnimeDetails().getType());
+                    }
+
+                    if(response.body().getAnimeDetails().getTrailerResult().getYoutubeId() != null){
+                        binding.titleTrailerVideo.setVisibility(View.VISIBLE);
+                        binding.youtubePlayerView.setVisibility(View.VISIBLE);
+
+                        binding.youtubePlayerView.setEnableAutomaticInitialization(false);
+
+                        getLifecycle().addObserver(binding.youtubePlayerView);
+                        IFramePlayerOptions iFramePlayerOptions = new IFramePlayerOptions.Builder()
+                                .controls(1).fullscreen(0).build();
+
+                        binding.youtubePlayerView.initialize(new AbstractYouTubePlayerListener() {
+                            @Override
+                            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                                super.onReady(youTubePlayer);
+
+                                DefaultPlayerUiController defaultPlayerUiController = new DefaultPlayerUiController(binding.youtubePlayerView, youTubePlayer);
+                                binding.youtubePlayerView.setCustomPlayerUi(defaultPlayerUiController.getRootView());
+
+                                String videoId = response.body().getAnimeDetails().getTrailerResult().getYoutubeId();
+                                youTubePlayer.cueVideo(videoId, 0);
+                            }
+                        }, true, iFramePlayerOptions);
                     }
 
                     if(response.body().getAnimeDetails().getSynopsis() != null){
@@ -537,5 +565,11 @@ public class DetailActivity extends AppCompatActivity {
     private void setCharacterUrlText(TextView tv, String url){
         tv.setText(HtmlCompat.fromHtml("<b>URL : " + url + "</b>",
                 HtmlCompat.FROM_HTML_MODE_LEGACY));
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        binding.youtubePlayerView.release();
     }
 }

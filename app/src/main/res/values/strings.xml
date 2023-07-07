@@ -101,6 +101,7 @@
     <string name="select_filter_type">Select Filter Type :</string>
     <string name="pictures">Pictures :</string>
     <string name="anime_recommendations">Anime Recommendations :</string>
+    <string name="trailer_video">Trailer Video :</string>
 
     <string-array name="sortList">
         <item>Ascending</item>

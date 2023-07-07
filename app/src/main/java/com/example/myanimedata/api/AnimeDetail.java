@@ -33,6 +33,9 @@ public class AnimeDetail {
     @SerializedName("images")
     private final ImageResult imageResult;
 
+    @SerializedName("trailer")
+    private final TrailerResult trailerResult;
+
     @SerializedName("genres")
     private final List<GenreResult> genreResults = new ArrayList<>();
 
@@ -68,6 +71,10 @@ public class AnimeDetail {
         return imageResult;
     }
 
+    public TrailerResult getTrailerResult() {
+        return trailerResult;
+    }
+
     public String getBackground() {
         return background;
     }
@@ -77,7 +84,8 @@ public class AnimeDetail {
     }
 
     public AnimeDetail(int id, String title, String titleJp, String type, double score, int episodes,
-                       String synopsis, String background, ImageResult imageResult) {
+                       String synopsis, String background, ImageResult imageResult,
+                       TrailerResult trailerResult) {
         this.id = id;
         this.title = title;
         this.titleJp = titleJp;
@@ -87,5 +95,6 @@ public class AnimeDetail {
         this.synopsis = synopsis;
         this.background = background;
         this.imageResult = imageResult;
+        this.trailerResult = trailerResult;
     }
 }
