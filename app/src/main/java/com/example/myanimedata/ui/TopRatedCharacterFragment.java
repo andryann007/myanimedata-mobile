@@ -99,8 +99,8 @@ public class TopRatedCharacterFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<CharacterResponse> call, @NonNull Throwable t) {
                 binding.loadingTopCharacter.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Fail to Fetch Data !!!",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.example.myanimedata.R;
 import com.example.myanimedata.activity.DetailActivity;
 import com.example.myanimedata.api.CharacterResult;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -64,12 +66,49 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
             if(characterResult.getImageResults() != null){
                 loadingCharacterItem.setVisibility(View.GONE);
 
-                if(characterResult.getImageResults().getJpgResults() != null){
+                if(characterResult.getImageResults().getJpgResults() != null &&
+                        characterResult.getImageResults().getWebpResults() != null){
                     Uri imgUrl = Uri.parse(characterResult.getImageResults().getJpgResults().getImageUrl());
-                    Picasso.get().load(imgUrl).into(imageCharacterPoster);
+                    Picasso.get().load(imgUrl).noFade().into(imageCharacterPoster, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            imageCharacterPoster.animate().setDuration(500).alpha(1f).start();
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Toast.makeText(itemView.getContext(), e.getMessage() + " cause : "
+                                    + e.getCause(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if(characterResult.getImageResults().getJpgResults() != null){
+                    Uri imgUrl = Uri.parse(characterResult.getImageResults().getJpgResults().getImageUrl());
+                    Picasso.get().load(imgUrl).noFade().into(imageCharacterPoster, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            imageCharacterPoster.animate().setDuration(500).alpha(1f).start();
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Toast.makeText(itemView.getContext(), e.getMessage() + " cause : "
+                                    + e.getCause(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else if (characterResult.getImageResults().getWebpResults() != null){
                     Uri imgUrl = Uri.parse(characterResult.getImageResults().getWebpResults().getImageUrl());
-                    Picasso.get().load(imgUrl).into(imageCharacterPoster);
+                    Picasso.get().load(imgUrl).noFade().into(imageCharacterPoster, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            imageCharacterPoster.animate().setDuration(500).alpha(1f).start();
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Toast.makeText(itemView.getContext(), e.getMessage() + " cause : "
+                                    + e.getCause(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     imageCharacterPoster.setImageResource(R.drawable.ic_no_image_sm);
                     imageCharacterPoster.setScaleType(ImageView.ScaleType.FIT_CENTER);

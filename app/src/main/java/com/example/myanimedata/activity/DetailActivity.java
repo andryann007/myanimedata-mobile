@@ -56,6 +56,10 @@ public class DetailActivity extends AppCompatActivity {
     private final List<RoleResult> characterRole = new ArrayList<>();
     private final ArrayList<ImageResult> animePictureResults = new ArrayList<>();
     private final ArrayList<ImageResult> mangaPictureResults = new ArrayList<>();
+    private String backgroundJpgUrl = null;
+    private String backgroundWebpUrl = null;
+    private String posterJpgUrl = null;
+    private String posterWebpUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,16 +102,106 @@ public class DetailActivity extends AppCompatActivity {
                                     response.body().getAnimeDetails().getTitle() + "</b>",
                             HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-                    if(response.body().getAnimeDetails().getImageResult().getJpgResults().getLargeImageUrl() != null){
+                    backgroundJpgUrl = response.body().getAnimeDetails().getImageResult().getJpgResults().getLargeImageUrl();
+                    backgroundWebpUrl = response.body().getAnimeDetails().getImageResult().getWebpResults().getLargeImageUrl();
+
+                    if(backgroundJpgUrl != null && backgroundWebpUrl != null){
                         binding.imageBackground.setVisibility(View.VISIBLE);
 
-                        Uri backgroundImage = Uri.parse(response.body().getAnimeDetails().getImageResult().getJpgResults().getLargeImageUrl());
-                        Picasso.get().load(backgroundImage).into(binding.imageBackground);
+                        Uri backgroundImage = Uri.parse(backgroundJpgUrl);
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(backgroundJpgUrl != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+
+                        Uri backgroundImage = Uri.parse(backgroundJpgUrl);
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(backgroundWebpUrl != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+
+                        Uri backgroundImage = Uri.parse(backgroundWebpUrl);
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        binding.imageBackground.setVisibility(View.GONE);
                     }
 
-                    if(response.body().getAnimeDetails().getImageResult().getJpgResults().getImageUrl() != null){
-                        Uri posterImage = Uri.parse(response.body().getAnimeDetails().getImageResult().getJpgResults().getImageUrl());
-                        Picasso.get().load(posterImage).into(binding.imagePoster);
+                    posterJpgUrl = response.body().getAnimeDetails().getImageResult().getJpgResults().getImageUrl();
+                    posterWebpUrl = response.body().getAnimeDetails().getImageResult().getWebpResults().getImageUrl();
+
+                    if(posterJpgUrl != null && posterWebpUrl != null){
+                        Uri posterImage = Uri.parse(posterJpgUrl);
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(posterJpgUrl != null){
+                        Uri posterImage = Uri.parse(posterJpgUrl);
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(posterWebpUrl != null){
+                        Uri posterImage = Uri.parse(posterWebpUrl);
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
                         binding.imagePoster.setImageResource(R.drawable.ic_no_image);
                         binding.imagePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -149,7 +243,8 @@ public class DetailActivity extends AppCompatActivity {
 
                         getLifecycle().addObserver(binding.youtubePlayerView);
                         IFramePlayerOptions iFramePlayerOptions = new IFramePlayerOptions.Builder()
-                                .controls(1).fullscreen(0).build();
+                                .controls(0).fullscreen(0).autoplay(0)
+                                .langPref("en").ccLoadPolicy(1).build();
 
                         binding.youtubePlayerView.initialize(new AbstractYouTubePlayerListener() {
                             @Override
@@ -157,10 +252,15 @@ public class DetailActivity extends AppCompatActivity {
                                 super.onReady(youTubePlayer);
 
                                 DefaultPlayerUiController defaultPlayerUiController = new DefaultPlayerUiController(binding.youtubePlayerView, youTubePlayer);
+                                defaultPlayerUiController.showFullscreenButton(false);
+                                defaultPlayerUiController.showYouTubeButton(true);
+                                defaultPlayerUiController.showMenuButton(false);
+
                                 binding.youtubePlayerView.setCustomPlayerUi(defaultPlayerUiController.getRootView());
 
                                 String videoId = response.body().getAnimeDetails().getTrailerResult().getYoutubeId();
                                 youTubePlayer.cueVideo(videoId, 0);
+                                youTubePlayer.setVolume(100);
                             }
                         }, true, iFramePlayerOptions);
                     }
@@ -190,13 +290,14 @@ public class DetailActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(@NonNull Call<AnimeResponseDetail> call, @NonNull Throwable t) {
-                Toast.makeText(DetailActivity.this,"Fail to Fetch Data !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setGenresAnime(){
-        genreAdapter = new GenreAdapter(animeGenre, this);
+        genreAdapter = new GenreAdapter(animeGenre);
         binding.rvGenreOrDebutList.setAdapter(genreAdapter);
 
         getGenresAnime();
@@ -208,24 +309,26 @@ public class DetailActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<AnimeResponseDetail> call, @NonNull Response<AnimeResponseDetail> response) {
-                assert response.body() != null;
-                if(!response.body().getAnimeDetails().getGenreResults().isEmpty()){
-                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
-                    binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
+                if(response.body() != null){
+                    if(!response.body().getAnimeDetails().getGenreResults().isEmpty()){
+                        binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                        binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
 
-                    int oldCount = animeGenre.size();
-                    animeGenre.addAll(response.body().getAnimeDetails().getGenreResults());
-                    genreAdapter.notifyItemChanged(oldCount, animeGenre.size());
-                } else {
-                    setNoText(binding.textGenreOrDebutList, "No Genre Yet !!!");
+                        int oldCount = animeGenre.size();
+                        animeGenre.addAll(response.body().getAnimeDetails().getGenreResults());
+                        genreAdapter.notifyItemChanged(oldCount, animeGenre.size());
+                    } else {
+                        setNoText(binding.textGenreOrDebutList, "No Genre Yet !!!");
 
-                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                        binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AnimeResponseDetail> call, @NonNull Throwable t) {
-                Toast.makeText(DetailActivity.this,"Fail to Fetch The Genre !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -242,24 +345,26 @@ public class DetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<ImageResponse>() {
             @Override
             public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
-                assert response.body() != null;
-                if(!response.body().getImageResultsList().isEmpty()){
-                    binding.textPictureList.setVisibility(View.VISIBLE);
-                    binding.rvPictureList.setVisibility(View.VISIBLE);
+                if(response.body() != null){
+                    if(!response.body().getImageResultsList().isEmpty()){
+                        binding.textPictureList.setVisibility(View.VISIBLE);
+                        binding.rvPictureList.setVisibility(View.VISIBLE);
 
-                    int oldCount = animePictureResults.size();
-                    animePictureResults.addAll(response.body().getImageResultsList());
-                    animePictureAdapter.notifyItemChanged(oldCount, animePictureResults.size());
-                } else {
-                    setNoText(binding.textPictureList, "No Images Result !!!");
+                        int oldCount = animePictureResults.size();
+                        animePictureResults.addAll(response.body().getImageResultsList());
+                        animePictureAdapter.notifyItemChanged(oldCount, animePictureResults.size());
+                    } else {
+                        setNoText(binding.textPictureList, "No Images Result !!!");
 
-                    binding.textPictureList.setVisibility(View.VISIBLE);
+                        binding.textPictureList.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
-                Toast.makeText(DetailActivity.this,"Fail to Fetch The Pictures !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -277,16 +382,106 @@ public class DetailActivity extends AppCompatActivity {
                             response.body().getMangaDetails().getTitle() + "</b>",
                             HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-                    if(response.body().getMangaDetails().getImageResult().getJpgResults().getLargeImageUrl() != null){
+                    backgroundJpgUrl = response.body().getMangaDetails().getImageResult().getJpgResults().getLargeImageUrl();
+                    backgroundWebpUrl = response.body().getMangaDetails().getImageResult().getWebpResults().getLargeImageUrl();
+
+                    if(backgroundJpgUrl != null && backgroundWebpUrl != null){
                         binding.imageBackground.setVisibility(View.VISIBLE);
 
                         Uri backgroundImage = Uri.parse(response.body().getMangaDetails().getImageResult().getJpgResults().getLargeImageUrl());
-                        Picasso.get().load(backgroundImage).into(binding.imageBackground);
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(backgroundJpgUrl != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+
+                        Uri backgroundImage = Uri.parse(response.body().getMangaDetails().getImageResult().getJpgResults().getLargeImageUrl());
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(backgroundWebpUrl != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+
+                        Uri backgroundImage = Uri.parse(response.body().getMangaDetails().getImageResult().getWebpResults().getLargeImageUrl());
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        binding.imageBackground.setVisibility(View.GONE);
                     }
 
-                    if(response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl() != null){
+                    posterJpgUrl = response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl();
+                    posterWebpUrl = response.body().getMangaDetails().getImageResult().getWebpResults().getImageUrl();
+
+                    if(posterJpgUrl != null && posterWebpUrl != null){
                         Uri posterImage = Uri.parse(response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl());
-                        Picasso.get().load(posterImage).into(binding.imagePoster);
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(posterJpgUrl != null){
+                        Uri posterImage = Uri.parse(response.body().getMangaDetails().getImageResult().getJpgResults().getImageUrl());
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(posterWebpUrl != null){
+                        Uri posterImage = Uri.parse(response.body().getMangaDetails().getImageResult().getWebpResults().getImageUrl());
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
                         binding.imagePoster.setImageResource(R.drawable.ic_no_image);
                         binding.imagePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -346,7 +541,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setGenresMangas(){
-        genreAdapter = new GenreAdapter(mangaGenre, this);
+        genreAdapter = new GenreAdapter(mangaGenre);
         binding.rvGenreOrDebutList.setAdapter(genreAdapter);
 
         getGenresMangas();
@@ -358,24 +553,26 @@ public class DetailActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<MangaResponseDetail> call, @NonNull Response<MangaResponseDetail> response) {
-                assert response.body() != null;
-                if(!response.body().getMangaDetails().getGenreResults().isEmpty()){
-                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
-                    binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
+                if(response.body() != null){
+                    if(!response.body().getMangaDetails().getGenreResults().isEmpty()){
+                        binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                        binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
 
-                    int oldCount = mangaGenre.size();
-                    mangaGenre.addAll(response.body().getMangaDetails().getGenreResults());
-                    genreAdapter.notifyItemChanged(oldCount, mangaGenre.size());
-                } else {
-                    binding.textGenreOrDebutList.setText("No Genre Yet !!!");
+                        int oldCount = mangaGenre.size();
+                        mangaGenre.addAll(response.body().getMangaDetails().getGenreResults());
+                        genreAdapter.notifyItemChanged(oldCount, mangaGenre.size());
+                    } else {
+                        binding.textGenreOrDebutList.setText("No Genre Yet !!!");
 
-                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                        binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<MangaResponseDetail> call, @NonNull Throwable t) {
-                Toast.makeText(DetailActivity.this,"Fail to Fetch The Genre !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this,t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -392,24 +589,26 @@ public class DetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<ImageResponse>() {
             @Override
             public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
-                assert response.body() != null;
-                if(!response.body().getImageResultsList().isEmpty()){
-                    binding.textPictureList.setVisibility(View.VISIBLE);
-                    binding.rvPictureList.setVisibility(View.VISIBLE);
+                if(response.body() != null){
+                    if(!response.body().getImageResultsList().isEmpty()){
+                        binding.textPictureList.setVisibility(View.VISIBLE);
+                        binding.rvPictureList.setVisibility(View.VISIBLE);
 
-                    int oldCount = mangaPictureResults.size();
-                    mangaPictureResults.addAll(response.body().getImageResultsList());
-                    mangaPictureAdapter.notifyItemChanged(oldCount, mangaPictureResults.size());
-                } else {
-                    setNoText(binding.textPictureList, "No Images Result !!!");
+                        int oldCount = mangaPictureResults.size();
+                        mangaPictureResults.addAll(response.body().getImageResultsList());
+                        mangaPictureAdapter.notifyItemChanged(oldCount, mangaPictureResults.size());
+                    } else {
+                        setNoText(binding.textPictureList, "No Images Result !!!");
 
-                    binding.textPictureList.setVisibility(View.VISIBLE);
+                        binding.textPictureList.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
-                Toast.makeText(DetailActivity.this,"Fail to Fetch The Pictures !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -428,9 +627,106 @@ public class DetailActivity extends AppCompatActivity {
                                     response.body().getCharacterDetail().getName() + "</b>",
                             HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-                    if(response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl() != null){
+                    backgroundJpgUrl = response.body().getCharacterDetail().getImageResult().getJpgResults().getLargeImageUrl();
+                    backgroundWebpUrl = response.body().getCharacterDetail().getImageResult().getWebpResults().getLargeImageUrl();
+
+                    if(backgroundJpgUrl != null && backgroundWebpUrl != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+
+                        Uri backgroundImage = Uri.parse(response.body().getCharacterDetail().getImageResult().getJpgResults().getLargeImageUrl());
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(backgroundJpgUrl != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+
+                        Uri backgroundImage = Uri.parse(response.body().getCharacterDetail().getImageResult().getJpgResults().getLargeImageUrl());
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(backgroundWebpUrl != null){
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+
+                        Uri backgroundImage = Uri.parse(response.body().getCharacterDetail().getImageResult().getWebpResults().getLargeImageUrl());
+                        Picasso.get().load(backgroundImage).noFade().into(binding.imageBackground, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imageBackground.animate().setDuration(1000).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        binding.imageBackground.setVisibility(View.VISIBLE);
+                    }
+
+                    posterJpgUrl = response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl();
+                    posterWebpUrl = response.body().getCharacterDetail().getImageResult().getWebpResults().getImageUrl();
+
+                    if(posterJpgUrl != null && posterWebpUrl != null){
                         Uri posterImage = Uri.parse(response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl());
-                        Picasso.get().load(posterImage).into(binding.imagePoster);
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(posterJpgUrl != null){
+                        Uri posterImage = Uri.parse(response.body().getCharacterDetail().getImageResult().getJpgResults().getImageUrl());
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if(posterWebpUrl != null){
+                        Uri posterImage = Uri.parse(response.body().getCharacterDetail().getImageResult().getWebpResults().getImageUrl());
+                        Picasso.get().load(posterImage).noFade().into(binding.imagePoster, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.imagePoster.animate().setDuration(500).alpha(1f).start();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(DetailActivity.this, e.getMessage() + " cause : "
+                                        + e.getCause(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
                         binding.imagePoster.setImageResource(R.drawable.ic_no_image);
                         binding.imagePoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -476,13 +772,14 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<CharacterResponseDetail> call, @NonNull Throwable t) {
                 binding.loadingDetail.setVisibility(View.GONE);
-                Toast.makeText(DetailActivity.this,"Fail to Fetch Data !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setCharacterRole(){
-        roleAdapter = new RoleAdapter(characterRole, this);
+        roleAdapter = new RoleAdapter(characterRole);
         binding.rvGenreOrDebutList.setAdapter(roleAdapter);
 
         getCharacterRole();
@@ -494,25 +791,27 @@ public class DetailActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<CharacterResponseDetail> call, @NonNull Response<CharacterResponseDetail> response) {
-                assert response.body() != null;
-                if(response.body().getCharacterDetail().getRoleResults() != null){
-                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
-                    binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
+                if(response.body() != null){
+                    if(response.body().getCharacterDetail().getRoleResults() != null){
+                        binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                        binding.rvGenreOrDebutList.setVisibility(View.VISIBLE);
 
-                    int oldCount = characterRole.size();
-                    characterRole.addAll(response.body().getCharacterDetail().getRoleResults());
-                    roleAdapter.notifyItemChanged(oldCount, characterRole.size());
-                } else {
-                    binding.textGenreOrDebutList.setText("No Debut Yet !!!");
+                        int oldCount = characterRole.size();
+                        characterRole.addAll(response.body().getCharacterDetail().getRoleResults());
+                        roleAdapter.notifyItemChanged(oldCount, characterRole.size());
+                    } else {
+                        binding.textGenreOrDebutList.setText("No Debut Yet !!!");
 
-                    binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                        binding.textGenreOrDebutList.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CharacterResponseDetail> call, @NonNull Throwable t) {
                 binding.loadingDetail.setVisibility(View.GONE);
-                Toast.makeText(DetailActivity.this,"Fail to Fetch The Role !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }

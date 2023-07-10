@@ -191,8 +191,8 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<MangaResponse> call, @NonNull Throwable t) {
                 progressSearch.setVisibility(View.GONE);
-                Toast.makeText(SearchActivity.this, "Fail to Fetch Data !!!",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }

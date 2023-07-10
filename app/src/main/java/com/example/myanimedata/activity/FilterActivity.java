@@ -135,8 +135,8 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
                 progressFilter.setVisibility(View.GONE);
-                Toast.makeText(FilterActivity.this, "Fail to Fetch Data !!!",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(FilterActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }

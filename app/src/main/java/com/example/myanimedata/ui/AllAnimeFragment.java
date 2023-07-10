@@ -100,8 +100,8 @@ public class AllAnimeFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
                 binding.loadingAllAnime.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Fail to Fetch Data !!!",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }

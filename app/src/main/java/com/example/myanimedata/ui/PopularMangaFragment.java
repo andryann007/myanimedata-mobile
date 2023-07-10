@@ -103,8 +103,8 @@ public class PopularMangaFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<MangaResponse> call, @NonNull Throwable t) {
                 binding.loadingPopularManga.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Fail to Fetch Data !!!",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,6 +1,5 @@
 package com.example.myanimedata.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,9 @@ import java.util.List;
 
 public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RoleViewHolder>{
     private final List<RoleResult> roleResults;
-    private final Context context;
 
-    public RoleAdapter(List<RoleResult> roleResults, Context context) {
+    public RoleAdapter(List<RoleResult> roleResults) {
         this.roleResults = roleResults;
-        this.context = context;
     }
 
     @NonNull
@@ -32,7 +29,7 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RoleViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RoleAdapter.RoleViewHolder holder, int position) {
-        holder.bindItem(roleResults.get(position), context);
+        holder.bindItem(roleResults.get(position));
     }
 
     @Override
@@ -48,7 +45,7 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RoleViewHolder
             this.textRole = itemView.findViewById(R.id.textGenres);
         }
 
-        public void bindItem(RoleResult roleResult, Context context) {
+        public void bindItem(RoleResult roleResult) {
             textRole.setText(roleResult.getAnimeRoleResult().getTitle());
         }
     }

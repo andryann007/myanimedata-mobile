@@ -21,7 +21,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.DetailActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"/>
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
