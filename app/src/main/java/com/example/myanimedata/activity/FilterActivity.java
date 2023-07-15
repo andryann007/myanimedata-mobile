@@ -31,8 +31,16 @@ import retrofit2.Retrofit;
 public class FilterActivity extends AppCompatActivity {
 
     private ApiService apiService;
-    private AnimeAdapter filterAnimeAdapter;
+    private AnimeAdapter filterAnimeAdapter, filterAnimeTypeAdapter, filterAnimeRatingAdapter,
+            filterAnimeStatusAdapter, filterAnimeTypeAndRatingAdapter, filterAnimeTypeAndStatusAdapter,
+            filterAnimeStatusAndRatingAdapter;
     private final List<AnimeResult> filterAnimeResults = new ArrayList<>();
+    private final List<AnimeResult> filterAnimeType = new ArrayList<>();
+    private final List<AnimeResult> filterAnimeRating = new ArrayList<>();
+    private final List<AnimeResult> filterAnimeStatus = new ArrayList<>();
+    private final List<AnimeResult> filterAnimeTypeAndRating = new ArrayList<>();
+    private final List<AnimeResult> filterAnimeTypeAndStatus = new ArrayList<>();
+    private final List<AnimeResult> filterAnimeStatusAndRating = new ArrayList<>();
 
     private TextView noFilterResult;
     private RecyclerView rvFilter;
@@ -40,6 +48,7 @@ public class FilterActivity extends AppCompatActivity {
     private ProgressBar progressFilter;
 
     private int page = 1;
+    private final int limit = 15;
     private String type = null;
     private String status = null;
     private String rating = null;
@@ -51,19 +60,7 @@ public class FilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        type = getIntent().getStringExtra("type");
-        status = getIntent().getStringExtra("status");
-        rating = getIntent().getStringExtra("rating");
-        orderBy = getIntent().getStringExtra("order_by");
-        sortType = getIntent().getStringExtra("sort");
-
-        String sortName;
-
-        if(sortType.equalsIgnoreCase("asc")){
-            sortName = "Ascending";
-        } else {
-            sortName = "Descending";
-        }
+        String filterType = getIntent().getStringExtra("filter_type");
 
         Toolbar filterToolbar = findViewById(R.id.filterToolbar);
         TextView filterResult = findViewById(R.id.textFilterResult);
@@ -75,60 +72,432 @@ public class FilterActivity extends AppCompatActivity {
         rvFilter = findViewById(R.id.rvFilterList);
         progressFilter = findViewById(R.id.loadingFilter);
 
-        filterToolbar.setTitle("Filter Result (" + sortName + ") :");
-        setSupportActionBar(filterToolbar);
-
         Retrofit retrofit = ApiClient.getClient();
         apiService = retrofit.create(ApiService.class);
-
-        setFilterText(filterResult, type.toUpperCase());
-        setTypeText(animeType, type.toUpperCase());
-        setStatusText(animeStatus, status.toUpperCase());
-        setRatingText(animeRating, rating.toUpperCase());
-        setOrderByText(animeOrderBy, orderBy.toUpperCase());
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 3);
 
         rvFilter.setLayoutManager(mLayoutManager);
 
-        filterAnimeAdapter = new AnimeAdapter(filterAnimeResults, this);
-        rvFilter.setAdapter(filterAnimeAdapter);
-        filterAnimeData(page);
+        String sortName;
+        switch (filterType) {
+            case "filter_all":
+                type = getIntent().getStringExtra("type");
+                status = getIntent().getStringExtra("status");
+                rating = getIntent().getStringExtra("rating");
+                orderBy = getIntent().getStringExtra("order_by");
+                sortType = getIntent().getStringExtra("sort");
 
-        rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener(){
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
-                super.onScrolled(recyclerView, dx, dy);
-
-                if(!recyclerView.canScrollVertically(1)){
-                    page++;
-                    filterAnimeData(page);
+                if(sortType.equalsIgnoreCase("asc")){
+                    sortName = "ascending";
+                } else {
+                    sortName = "descending";
                 }
-            }
-        });
+
+                filterToolbar.setTitle("Filter Result (" + sortName + ") :");
+                setSupportActionBar(filterToolbar);
+
+                setFilterText(filterResult, type.toUpperCase());
+                setTypeText(animeType, type);
+                setStatusText(animeStatus, status);
+                setRatingText(animeRating, rating);
+                setOrderByText(animeOrderBy, orderBy);
+
+                filterAnimeAdapter = new AnimeAdapter(filterAnimeResults, this);
+                rvFilter.setAdapter(filterAnimeAdapter);
+                getFilterAnimeData(page);
+
+                rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        if (!recyclerView.canScrollVertically(1)) {
+                            page++;
+                            getFilterAnimeData(page);
+                        }
+                    }
+                });
+                break;
+            case "filter_type":
+                type = getIntent().getStringExtra("type");
+                orderBy = getIntent().getStringExtra("order_by");
+                sortType = getIntent().getStringExtra("sort");
+
+                filterToolbar.setTitle("Filter Anime Type : (" + type.toUpperCase() + ") :");
+                setSupportActionBar(filterToolbar);
+
+                setFilterText(filterResult, type.toUpperCase());
+                setTypeText(animeType, type);
+                setStatusText(animeStatus, "-");
+                setRatingText(animeRating, "-");
+                setOrderByText(animeOrderBy, orderBy);
+
+                filterAnimeTypeAdapter = new AnimeAdapter(filterAnimeType, this);
+                rvFilter.setAdapter(filterAnimeTypeAdapter);
+                getFilterAnimeType(page);
+
+                rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        if (!recyclerView.canScrollVertically(1)) {
+                            page++;
+                            getFilterAnimeType(page);
+                        }
+                    }
+                });
+                break;
+            case "filter_status":
+                status = getIntent().getStringExtra("status");
+                orderBy = getIntent().getStringExtra("order_by");
+                sortType = getIntent().getStringExtra("sort");
+
+                filterToolbar.setTitle("Filter Anime Status : (" + status.toUpperCase() + ") :");
+                setSupportActionBar(filterToolbar);
+
+                setFilterText(filterResult, status.toUpperCase());
+                setTypeText(animeType, "-");
+                setStatusText(animeStatus, status);
+                setRatingText(animeRating, "-");
+                setOrderByText(animeOrderBy, orderBy);
+
+                filterAnimeStatusAdapter = new AnimeAdapter(filterAnimeStatus, this);
+                rvFilter.setAdapter(filterAnimeStatusAdapter);
+                getFilterAnimeStatus(page);
+
+                rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        if (!recyclerView.canScrollVertically(1)) {
+                            page++;
+                            getFilterAnimeStatus(page);
+                        }
+                    }
+                });
+                break;
+            case "filter_rating":
+                rating = getIntent().getStringExtra("rating");
+                orderBy = getIntent().getStringExtra("order_by");
+                sortType = getIntent().getStringExtra("sort");
+
+                filterToolbar.setTitle("Filter Anime Rating : (" + rating.toUpperCase() + ") :");
+                setSupportActionBar(filterToolbar);
+
+                setFilterText(filterResult, rating.toUpperCase());
+                setTypeText(animeType, "-");
+                setStatusText(animeStatus, "-");
+                setRatingText(animeRating, rating);
+                setOrderByText(animeOrderBy, orderBy);
+
+                filterAnimeRatingAdapter = new AnimeAdapter(filterAnimeRating, this);
+                rvFilter.setAdapter(filterAnimeRatingAdapter);
+                getFilterAnimeRating(page);
+
+                rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        if (!recyclerView.canScrollVertically(1)) {
+                            page++;
+                            getFilterAnimeRating(page);
+                        }
+                    }
+                });
+                break;
+            case "filter_type_and_status":
+                type = getIntent().getStringExtra("type");
+                status = getIntent().getStringExtra("status");
+                orderBy = getIntent().getStringExtra("order_by");
+                sortType = getIntent().getStringExtra("sort");
+
+                filterToolbar.setTitle("Filter Anime : (" + type.toUpperCase() + ", " + status.toUpperCase() + ") :");
+                setSupportActionBar(filterToolbar);
+
+                setFilterText(filterResult, type.toUpperCase());
+                setTypeText(animeType, type);
+                setStatusText(animeStatus, status);
+                setRatingText(animeRating, "-");
+                setOrderByText(animeOrderBy, orderBy);
+
+                filterAnimeTypeAndStatusAdapter = new AnimeAdapter(filterAnimeTypeAndStatus, this);
+                rvFilter.setAdapter(filterAnimeTypeAndStatusAdapter);
+                getFilterAnimeTypeStatus(page);
+
+                rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        if (!recyclerView.canScrollVertically(1)) {
+                            page++;
+                            getFilterAnimeTypeStatus(page);
+                        }
+                    }
+                });
+                break;
+            case "filter_type_and_rating":
+                type = getIntent().getStringExtra("type");
+                rating = getIntent().getStringExtra("rating");
+                orderBy = getIntent().getStringExtra("order_by");
+                sortType = getIntent().getStringExtra("sort");
+
+                filterToolbar.setTitle("Filter Anime : (" + type.toUpperCase() + ", " + rating.toUpperCase() + ") :");
+                setSupportActionBar(filterToolbar);
+
+                setFilterText(filterResult, type.toUpperCase());
+                setTypeText(animeType, type);
+                setStatusText(animeStatus, "-");
+                setRatingText(animeRating, rating);
+                setOrderByText(animeOrderBy, orderBy);
+
+                filterAnimeTypeAndRatingAdapter = new AnimeAdapter(filterAnimeTypeAndRating, this);
+                rvFilter.setAdapter(filterAnimeTypeAndRatingAdapter);
+                getFilterAnimeTypeRating(page);
+
+                rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        if (!recyclerView.canScrollVertically(1)) {
+                            page++;
+                            getFilterAnimeTypeRating(page);
+                        }
+                    }
+                });
+                break;
+            case "filter_status_and_rating":
+                status = getIntent().getStringExtra("status");
+                rating = getIntent().getStringExtra("rating");
+                orderBy = getIntent().getStringExtra("order_by");
+                sortType = getIntent().getStringExtra("sort");
+
+                filterToolbar.setTitle("Filter Anime : (" + status.toUpperCase() + ", " + rating.toUpperCase() + ") :");
+                setSupportActionBar(filterToolbar);
+
+                setFilterText(filterResult, status.toUpperCase());
+                setTypeText(animeType, "-");
+                setStatusText(animeStatus, status);
+                setRatingText(animeRating, rating);
+                setOrderByText(animeOrderBy, orderBy);
+
+                filterAnimeStatusAndRatingAdapter = new AnimeAdapter(filterAnimeStatusAndRating, this);
+                rvFilter.setAdapter(filterAnimeStatusAndRatingAdapter);
+                getFilterAnimeStatusRating(page);
+
+                rvFilter.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        if (!recyclerView.canScrollVertically(1)) {
+                            page++;
+                            getFilterAnimeStatusRating(page);
+                        }
+                    }
+                });
+                break;
+        }
 
         filterToolbar.setOnClickListener(v->onBackPressed());
     }
 
-    private void filterAnimeData(int page) {
-        int limit = 15;
-
+    private void getFilterAnimeData(int page) {
         Call<AnimeResponse> call = apiService.filterAnime(page, limit, type, status, rating, orderBy, sortType);
         call.enqueue(new Callback<AnimeResponse>() {
             @Override
             public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
                 if(response.body() != null){
-                    int oldCount = filterAnimeResults.size();
-                    progressFilter.setVisibility(View.GONE);
-                    rvFilter.setVisibility(View.VISIBLE);
+                    if(!response.body().getAnimeResults().isEmpty() && response.body().getAnimeResults().size() > 0){
+                        int oldCount = filterAnimeResults.size();
+                        progressFilter.setVisibility(View.GONE);
+                        rvFilter.setVisibility(View.VISIBLE);
 
-                    filterAnimeResults.addAll(response.body().getAnimeResults());
-                    filterAnimeAdapter.notifyItemRangeInserted(oldCount, filterAnimeResults.size());
-                } else if(filterAnimeResults.isEmpty()) {
-                    progressFilter.setVisibility(View.GONE);
-                    noFilterResult.setVisibility(View.VISIBLE);
-                } else {
-                    progressFilter.setVisibility(View.GONE);
+                        filterAnimeResults.addAll(response.body().getAnimeResults());
+                        filterAnimeAdapter.notifyItemRangeInserted(oldCount, filterAnimeResults.size());
+                    } else {
+                        progressFilter.setVisibility(View.GONE);
+                        noFilterResult.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
+                progressFilter.setVisibility(View.GONE);
+                Toast.makeText(FilterActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getFilterAnimeType(int page){
+        Call<AnimeResponse> call = apiService.filterAnimeType(page, limit, type, orderBy, sortType);
+        call.enqueue(new Callback<AnimeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
+                if(response.body() != null){
+                    if(!response.body().getAnimeResults().isEmpty() && response.body().getAnimeResults().size() > 0){
+                        int oldCount = filterAnimeType.size();
+                        progressFilter.setVisibility(View.GONE);
+                        rvFilter.setVisibility(View.VISIBLE);
+
+                        filterAnimeType.addAll(response.body().getAnimeResults());
+                        filterAnimeTypeAdapter.notifyItemRangeInserted(oldCount, filterAnimeType.size());
+                    } else {
+                        progressFilter.setVisibility(View.GONE);
+                        noFilterResult.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
+                progressFilter.setVisibility(View.GONE);
+                Toast.makeText(FilterActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getFilterAnimeRating(int page){
+        Call<AnimeResponse> call = apiService.filterAnimeRating(page, limit, rating, orderBy, sortType);
+        call.enqueue(new Callback<AnimeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
+                if(response.body() != null){
+                    if(!response.body().getAnimeResults().isEmpty() && response.body().getAnimeResults().size() > 0){
+                        int oldCount = filterAnimeRating.size();
+                        progressFilter.setVisibility(View.GONE);
+                        rvFilter.setVisibility(View.VISIBLE);
+
+                        filterAnimeRating.addAll(response.body().getAnimeResults());
+                        filterAnimeRatingAdapter.notifyItemRangeInserted(oldCount, filterAnimeRating.size());
+                    } else {
+                        progressFilter.setVisibility(View.GONE);
+                        noFilterResult.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
+                progressFilter.setVisibility(View.GONE);
+                Toast.makeText(FilterActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getFilterAnimeStatus(int page){
+        Call<AnimeResponse> call = apiService.filterAnimeStatus(page, limit, status, orderBy, sortType);
+        call.enqueue(new Callback<AnimeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
+                if(response.body() != null){
+                    if(!response.body().getAnimeResults().isEmpty() && response.body().getAnimeResults().size() > 0){
+                        int oldCount = filterAnimeStatus.size();
+                        progressFilter.setVisibility(View.GONE);
+                        rvFilter.setVisibility(View.VISIBLE);
+
+                        filterAnimeStatus.addAll(response.body().getAnimeResults());
+                        filterAnimeStatusAdapter.notifyItemRangeInserted(oldCount, filterAnimeStatus.size());
+                    } else {
+                        progressFilter.setVisibility(View.GONE);
+                        noFilterResult.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
+                progressFilter.setVisibility(View.GONE);
+                Toast.makeText(FilterActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getFilterAnimeTypeRating(int page){
+        Call<AnimeResponse> call = apiService.filterAnimeTypeRating(page, limit, type, rating, orderBy, sortType);
+        call.enqueue(new Callback<AnimeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
+                if(response.body() != null){
+                    if(!response.body().getAnimeResults().isEmpty() && response.body().getAnimeResults().size() > 0){
+                        int oldCount = filterAnimeTypeAndRating.size();
+                        progressFilter.setVisibility(View.GONE);
+                        rvFilter.setVisibility(View.VISIBLE);
+
+                        filterAnimeTypeAndRating.addAll(response.body().getAnimeResults());
+                        filterAnimeTypeAndRatingAdapter.notifyItemRangeInserted(oldCount, filterAnimeTypeAndRating.size());
+                    } else {
+                        progressFilter.setVisibility(View.GONE);
+                        noFilterResult.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
+                progressFilter.setVisibility(View.GONE);
+                Toast.makeText(FilterActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getFilterAnimeTypeStatus(int page){
+        Call<AnimeResponse> call = apiService.filterAnimeTypeStatus(page, limit, type, status, orderBy, sortType);
+        call.enqueue(new Callback<AnimeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
+                if(response.body() != null){
+                    if(!response.body().getAnimeResults().isEmpty() && response.body().getAnimeResults().size() > 0){
+                        int oldCount = filterAnimeTypeAndStatus.size();
+                        progressFilter.setVisibility(View.GONE);
+                        rvFilter.setVisibility(View.VISIBLE);
+
+                        filterAnimeTypeAndStatus.addAll(response.body().getAnimeResults());
+                        filterAnimeTypeAndStatusAdapter.notifyItemRangeInserted(oldCount, filterAnimeTypeAndStatus.size());
+                    } else {
+                        progressFilter.setVisibility(View.GONE);
+                        noFilterResult.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
+                progressFilter.setVisibility(View.GONE);
+                Toast.makeText(FilterActivity.this, t.getMessage() + " cause : "
+                        + t.getCause(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getFilterAnimeStatusRating(int page){
+        Call<AnimeResponse> call = apiService.filterAnimeStatusRating(page, limit, status, rating, orderBy, sortType);
+        call.enqueue(new Callback<AnimeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AnimeResponse> call, @NonNull Response<AnimeResponse> response) {
+                if(response.body() != null){
+                    if(!response.body().getAnimeResults().isEmpty() && response.body().getAnimeResults().size() > 0){
+                        int oldCount = filterAnimeStatusAndRating.size();
+                        progressFilter.setVisibility(View.GONE);
+                        rvFilter.setVisibility(View.VISIBLE);
+
+                        filterAnimeStatusAndRating.addAll(response.body().getAnimeResults());
+                        filterAnimeStatusAndRatingAdapter.notifyItemRangeInserted(oldCount, filterAnimeStatusAndRating.size());
+                    } else {
+                        progressFilter.setVisibility(View.GONE);
+                        noFilterResult.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 

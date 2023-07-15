@@ -31,7 +31,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private String type = null;
-
     private String animeType = null;
     private String animeStatus = null;
     private String animeRating = null;
@@ -99,7 +98,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     type = null;
                 }
             });
-            btnSearch.setOnClickListener(view-> doSearch(searchQuery.getText().toString(), type));
+
+            dialogSearch.show();
+
+            btnSearch.setOnClickListener(v12 -> {
+                doSearch(searchQuery.getText().toString(), type);
+                dialogSearch.hide();
+            });
 
             searchQuery.setOnEditorActionListener((v1, actionId, event) -> {
                 if(actionId == EditorInfo.IME_ACTION_GO){
@@ -107,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 return false;
             });
-            dialogSearch.show();
         }
     }
 
@@ -145,36 +149,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         Button btnFilter = v.findViewById(R.id.btnFilter);
 
-        Spinner spinnerAnimeType = v.findViewById(R.id.spinnerAnimeType);
-        ArrayAdapter<String> animeTypeAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeTypeList));
-        animeTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAnimeType.setAdapter(animeTypeAdapter);
-
-        Spinner spinnerAnimeStatus = v.findViewById(R.id.spinnerAnimeStatus);
-        ArrayAdapter<String> animeStatusAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeStatusList));
-        animeStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAnimeStatus.setAdapter(animeStatusAdapter);
-
-        Spinner spinnerAnimeRating = v.findViewById(R.id.spinnerAnimeRating);
-        ArrayAdapter<String> animeRatingAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeRatingList));
-        animeRatingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAnimeRating.setAdapter(animeRatingAdapter);
-
-        Spinner spinnerAnimeOrderBy = v.findViewById(R.id.spinnerAnimeOrderBy);
-        ArrayAdapter<String> animeOrderByAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.orderList));
-        animeOrderByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAnimeOrderBy.setAdapter(animeOrderByAdapter);
-
-        Spinner spinnerAnimeSortType = v.findViewById(R.id.spinnerAnimeSortType);
-        ArrayAdapter<String> animeSortTypeAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sortList));
-        animeSortTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAnimeSortType.setAdapter(animeSortTypeAdapter);
-
         builder.setView(v);
 
         AlertDialog dialogFilter = builder.create();
@@ -182,180 +156,224 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(dialogFilter.getWindow() != null){
             dialogFilter.getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
+            Spinner spinnerAnimeType = v.findViewById(R.id.spinnerAnimeType);
+            ArrayAdapter<String> animeTypeAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeTypeList));
+            animeTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerAnimeType.setAdapter(animeTypeAdapter);
+
+            Spinner spinnerAnimeStatus = v.findViewById(R.id.spinnerAnimeStatus);
+            ArrayAdapter<String> animeStatusAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeStatusList));
+            animeStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerAnimeStatus.setAdapter(animeStatusAdapter);
+
+            Spinner spinnerAnimeRating = v.findViewById(R.id.spinnerAnimeRating);
+            ArrayAdapter<String> animeRatingAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.animeRatingList));
+            animeRatingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerAnimeRating.setAdapter(animeRatingAdapter);
+
+            Spinner spinnerAnimeOrderBy = v.findViewById(R.id.spinnerAnimeOrderBy);
+            ArrayAdapter<String> animeOrderByAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.orderList));
+            animeOrderByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerAnimeOrderBy.setAdapter(animeOrderByAdapter);
+
+            Spinner spinnerAnimeSortType = v.findViewById(R.id.spinnerAnimeSortType);
+            ArrayAdapter<String> animeSortTypeAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sortList));
+            animeSortTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerAnimeSortType.setAdapter(animeSortTypeAdapter);
+
             spinnerAnimeType.setOnItemSelectedListener(this);
             spinnerAnimeStatus.setOnItemSelectedListener(this);
             spinnerAnimeRating.setOnItemSelectedListener(this);
             spinnerAnimeOrderBy.setOnItemSelectedListener(this);
             spinnerAnimeSortType.setOnItemSelectedListener(this);
 
-            btnFilter.setOnClickListener(view-> doAnimeFilter(animeType, animeStatus, animeRating, orderBy, sortType));
-
             dialogFilter.show();
+
+            btnFilter.setOnClickListener(v1 -> {
+                doAnimeFilter(animeType, animeStatus, animeRating, orderBy, sortType);
+                dialogFilter.hide();
+            });
         }
     }
 
     private void doAnimeFilter(String animeType, String animeStatus, String animeRating, String orderBy, String sortType) {
         Intent i = new Intent(MainActivity.this, FilterActivity.class);
 
-        switch(animeType){
-            case "tv" :
-                i.putExtra("type", "tv");
-                break;
-            case "movie" :
-                i.putExtra("type", "movie");
-                break;
-            case "ova" :
-                i.putExtra("type", "ova");
-                break;
-            case "special" :
-                i.putExtra("type", "special");
-                break;
-            case "ona" :
-                i.putExtra("type", "ona");
-                break;
-            case "music" :
-                i.putExtra("type", "music");
-                break;
+        if(!animeType.isEmpty() && !animeStatus.isEmpty() && !animeRating.isEmpty()){
+            i.putExtra("filter_type", "filter_all");
+            i.putExtra("type", animeType);
+            i.putExtra("status", animeStatus);
+            i.putExtra("rating", animeRating);
+            i.putExtra("order_by", orderBy);
+            i.putExtra("sort", sortType);
+            startActivity(i);
         }
 
-        switch(animeStatus){
-            case "airing" :
-                i.putExtra("status", "airing");
-                break;
-            case "complete" :
-                i.putExtra("status", "complete");
-                break;
-            case "upcoming" :
-                i.putExtra("status", "upcoming");
-                break;
+        if(!animeType.isEmpty() && animeStatus.isEmpty() && animeRating.isEmpty()){
+            i.putExtra("filter_type", "filter_type");
+            i.putExtra("type", animeType);
+            i.putExtra("order_by", orderBy);
+            i.putExtra("sort", sortType);
+            startActivity(i);
         }
 
-        switch(animeRating){
-            case "g" :
-                i.putExtra("rating", "g");
-                break;
-            case "pg" :
-                i.putExtra("rating", "pg");
-                break;
-            case "p13" :
-                i.putExtra("rating", "p13");
-                break;
-            case "r17" :
-                i.putExtra("rating", "r17");
-                break;
-            case "r" :
-                i.putExtra("rating", "r");
-                break;
-            case "rx" :
-                i.putExtra("rating", "rx");
-                break;
+        if(animeType.isEmpty() && !animeStatus.isEmpty() && animeRating.isEmpty()){
+            i.putExtra("filter_type", "filter_status");
+            i.putExtra("status", animeStatus);
+            i.putExtra("order_by", orderBy);
+            i.putExtra("sort", sortType);
+            startActivity(i);
         }
 
-        switch(orderBy){
-            case "mal_id" :
-                i.putExtra("order_by", "mal_id");
-                break;
-            case "title" :
-                i.putExtra("order_by", "title");
-                break;
-            case "start_date" :
-                i.putExtra("order_by", "start_date");
-                break;
-            case "end_date" :
-                i.putExtra("order_by", "end_date");
-                break;
-            case "episodes" :
-                i.putExtra("order_by", "episodes");
-                break;
-            case "score" :
-                i.putExtra("order_by", "score");
-                break;
-            case "rank" :
-                i.putExtra("order_by", "rank");
-                break;
-            case "popularity" :
-                i.putExtra("order_by", "popularity");
-                break;
-            case "favorites" :
-                i.putExtra("order_by", "favorites");
-                break;
+        if(animeType.isEmpty() && animeStatus.isEmpty() && !animeRating.isEmpty()){
+            i.putExtra("filter_type", "filter_rating");
+            i.putExtra("rating", animeRating);
+            i.putExtra("order_by", orderBy);
+            i.putExtra("sort", sortType);
+            startActivity(i);
         }
 
-        switch(sortType){
-            case "asc" :
-                i.putExtra("sort", "asc");
-                break;
-            case "desc" :
-                i.putExtra("sort", "desc");
-                break;
+        if(!animeType.isEmpty() && !animeStatus.isEmpty() && animeRating.isEmpty()){
+            i.putExtra("filter_type", "filter_type_and_status");
+            i.putExtra("type", animeType);
+            i.putExtra("status", animeStatus);
+            i.putExtra("order_by", orderBy);
+            i.putExtra("sort", sortType);
+            startActivity(i);
         }
 
-        startActivity(i);
+        if(!animeType.isEmpty() && animeStatus.isEmpty() && !animeRating.isEmpty()){
+            i.putExtra("filter_type", "filter_type_and_rating");
+            i.putExtra("type", animeType);
+            i.putExtra("rating", animeRating);
+            i.putExtra("order_by", orderBy);
+            i.putExtra("sort", sortType);
+            startActivity(i);
+        }
+
+        if(animeType.isEmpty() && !animeStatus.isEmpty() && !animeRating.isEmpty()){
+            i.putExtra("filter_type", "filter_status_and_rating");
+            i.putExtra("status", animeStatus);
+            i.putExtra("rating", animeRating);
+            i.putExtra("order_by", orderBy);
+            i.putExtra("sort", sortType);
+            startActivity(i);
+        }
+
+        if(animeType.isEmpty() && animeStatus.isEmpty() && animeRating.isEmpty()){
+            Toast.makeText(MainActivity.this, "No Filter Type !!!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String itemSelected = parent.getItemAtPosition(position).toString().toLowerCase();
+        String typeSelected = parent.getItemAtPosition(position).toString().toLowerCase();
+        String ratingSelected =  parent.getItemAtPosition(position).toString().toLowerCase();
+        String statusSelected =  parent.getItemAtPosition(position).toString().toLowerCase();
+        String orderBySelected = parent.getItemAtPosition(position).toString().toLowerCase();
+        String sortTypeSelected = parent.getItemAtPosition(position).toString().toLowerCase();
 
-        if(itemSelected.equalsIgnoreCase("tv")){
-            animeType = "tv";
-        } else if(itemSelected.equalsIgnoreCase("movie")){
-            animeType = "movie";
-        } else if(itemSelected.equalsIgnoreCase("ova")){
-            animeType = "ova";
-        } else if(itemSelected.equalsIgnoreCase("special")){
-            animeType = "special";
-        } else if(itemSelected.equalsIgnoreCase("ona")){
-            animeType = "ona";
-        } else if(itemSelected.equalsIgnoreCase("music")){
-            animeType = "music";
+        switch (typeSelected) {
+            case "tv":
+                animeType = "tv";
+                break;
+            case "movie":
+                animeType = "movie";
+                break;
+            case "ova":
+                animeType = "ova";
+                break;
+            case "special":
+                animeType = "special";
+                break;
+            case "ona":
+                animeType = "ona";
+                break;
+            case "music":
+                animeType = "music";
+                break;
+            case "not selected":
+                animeType = "";
+                break;
         }
 
-        if(itemSelected.equalsIgnoreCase("airing")){
-            animeStatus = "airing";
-        } else if(itemSelected.equalsIgnoreCase("complete")){
-            animeStatus = "complete";
-        } else if(itemSelected.equalsIgnoreCase("upcoming")){
-            animeStatus = "upcoming";
+        switch (statusSelected) {
+            case "airing":
+                animeStatus = "airing";
+                break;
+            case "complete":
+                animeStatus = "complete";
+                break;
+            case "upcoming":
+                animeStatus = "upcoming";
+                break;
+            case "not selected":
+                animeStatus = "";
+                break;
         }
 
-        if(itemSelected.equalsIgnoreCase("g rating (all ages)")){
-            animeRating = "g";
-        } else if(itemSelected.equalsIgnoreCase("pg rating (children)")){
-            animeRating = "pg";
-        } else if(itemSelected.equalsIgnoreCase("p13 rating (teens 13 or older)")){
-            animeRating = "p13";
-        } else if(itemSelected.equalsIgnoreCase("r17 rating (violence and profanity)")){
-            animeRating = "r17";
-        } else if(itemSelected.equalsIgnoreCase("r rating (mild nudity)")){
-            animeRating = "r";
-        } else if(itemSelected.equalsIgnoreCase("rx rating (hentai)")){
-            animeRating = "rx";
+        switch (ratingSelected) {
+            case "g rating (all ages)":
+                animeRating = "g";
+                break;
+            case "pg rating (children)":
+                animeRating = "pg";
+                break;
+            case "p13 rating (teens 13 or older)":
+                animeRating = "p13";
+                break;
+            case "r17 rating (violence and profanity)":
+                animeRating = "r17";
+                break;
+            case "r rating (mild nudity)":
+                animeRating = "r";
+                break;
+            case "rx rating (hentai)":
+                animeRating = "rx";
+                break;
+            case "not selected":
+                animeRating = "";
+                break;
         }
 
-        if(itemSelected.equalsIgnoreCase("id")){
-            orderBy = "mal_id";
-        } else if(itemSelected.equalsIgnoreCase("title")){
-            orderBy = "title";
-        } else if(itemSelected.equalsIgnoreCase("start date")){
-            orderBy = "start_date";
-        } else if(itemSelected.equalsIgnoreCase("end date")){
-            orderBy = "end_date";
-        } else if(itemSelected.equalsIgnoreCase("episodes")){
-            orderBy = "episodes";
-        } else if(itemSelected.equalsIgnoreCase("score")){
-            orderBy = "score";
-        } else if(itemSelected.equalsIgnoreCase("rank")){
-            orderBy = "rank";
-        } else if(itemSelected.equalsIgnoreCase("popularity")){
-            orderBy = "popularity";
-        } else if(itemSelected.equalsIgnoreCase("favorites")){
-            orderBy = "favorites";
+        switch (orderBySelected) {
+            case "id":
+                orderBy = "mal_id";
+                break;
+            case "title":
+                orderBy = "title";
+                break;
+            case "start date":
+                orderBy = "start_date";
+                break;
+            case "end date":
+                orderBy = "end_date";
+                break;
+            case "episodes":
+                orderBy = "episodes";
+                break;
+            case "score":
+                orderBy = "score";
+                break;
+            case "rank":
+                orderBy = "rank";
+                break;
+            case "popularity":
+                orderBy = "popularity";
+                break;
+            case "favorites":
+                orderBy = "favorites";
+                break;
         }
 
-        if(itemSelected.equalsIgnoreCase("ascending")){
+        if(sortTypeSelected.equals("ascending")){
             sortType = "asc";
-        } else if (itemSelected.equalsIgnoreCase("descending")){
+        } else if (sortTypeSelected.equals("descending")){
             sortType = "desc";
         }
     }

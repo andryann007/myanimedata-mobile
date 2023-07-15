@@ -34,6 +34,35 @@ public interface ApiService {
                                         @Query("rating") String rating, @Query("order_by") String orderBy,
                                         @Query("sort") String sortType);
 
+    @GET("anime")
+    Call<AnimeResponse> filterAnimeType(@Query("page") int page, @Query("limit") int limit,
+                                        @Query("type") String type, @Query("order_by") String orderBy,
+                                        @Query("sort") String sortType);
+
+    @GET("anime")
+    Call<AnimeResponse> filterAnimeStatus(@Query("page") int page, @Query("limit") int limit,
+                                          @Query("status") String status, @Query("order_by") String orderBy,
+                                          @Query("sort") String sortType);
+
+    @GET("anime")
+    Call<AnimeResponse> filterAnimeRating(@Query("page") int page, @Query("limit") int limit,
+                                          @Query("rating") String rating, @Query("order_by") String orderBy,
+                                          @Query("status") String status);
+
+    @GET("anime")
+    Call<AnimeResponse> filterAnimeTypeStatus(@Query("page") int page, @Query("limit") int limit,
+                                              @Query("type") String type, @Query("status") String status,
+                                              @Query("order_by") String orderBy, @Query("sort") String sortType);
+
+    @GET("anime")
+    Call<AnimeResponse> filterAnimeTypeRating(@Query("page") int page, @Query("limit") int limit,
+                                              @Query("type") String type, @Query("rating") String rating,
+                                              @Query("order_by") String orderBy, @Query("sort") String sortType);
+
+    @GET("anime")
+    Call<AnimeResponse> filterAnimeStatusRating(@Query("page") int page, @Query("limit") int limit,
+                                                @Query("status") String status, @Query("rating") String rating,
+                                                @Query("order_by") String orderBy, @Query("sort") String sortType);
     @GET("anime/{id}/full")
     Call<AnimeResponseDetail> getAnimeDetail(@Path("id") int id);
 

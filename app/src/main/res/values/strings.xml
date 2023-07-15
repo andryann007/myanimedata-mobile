@@ -48,6 +48,7 @@
     <string name="search_data_by">Search Data By :</string>
 
     <string-array name="animeTypeList">
+        <item>Not Selected</item>
         <item>TV</item>
         <item>Movie</item>
         <item>OVA</item>
@@ -57,12 +58,14 @@
     </string-array>
 
     <string-array name="animeStatusList">
+        <item>Not Selected</item>
         <item>Airing</item>
         <item>Complete</item>
         <item>Upcoming</item>
     </string-array>
 
     <string-array name="animeRatingList">
+        <item>Not Selected</item>
         <item>G Rating (All Ages)</item>
         <item>PG Rating (Children)</item>
         <item>P13 Rating (Teens 13 or Older)</item>
