@@ -99,21 +99,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textFilter2"
-        android:layout_marginVertical="5dp"
         android:orientation="vertical"
         android:scrollbars="vertical"
         android:overScrollMode="never"
-        app:spanCount="3"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/container_anime"
-        android:visibility="gone"/>
+        app:spanCount="3"
+        tools:listitem="@layout/container_anime"/>
 
     <ProgressBar
         android:id="@+id/loadingFilter"
-        style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        style="?android:attr/progressBarStyle"/>
 
     <TextView
         android:id="@+id/textNoFilterResult"
@@ -124,7 +123,7 @@
         android:fontFamily="sans-serif"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="20sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        style="@style/TextAppearance.AppCompat.Body2"/>
 
 </RelativeLayout>

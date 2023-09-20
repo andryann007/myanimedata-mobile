@@ -106,27 +106,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/titleTrailerVideo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:fontFamily="sans-serif"
-                android:includeFontPadding="false"
-                android:text="@string/trailer_video"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="gone"/>
-
-            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                android:id="@+id/youtubePlayerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:visibility="gone"/>
-
-            <TextView
                 android:id="@+id/titleSynopsisOrAbout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

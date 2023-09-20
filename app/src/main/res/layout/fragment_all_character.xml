@@ -10,21 +10,20 @@
         android:id="@+id/rvAllCharacterList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
         android:orientation="vertical"
         android:scrollbars="vertical"
         android:overScrollMode="never"
+        android:visibility="gone"
         app:spanCount="3"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/container_character"
-        android:visibility="gone"/>
+        tools:listitem="@layout/container_character" />
 
     <ProgressBar
         android:id="@+id/loadingAllCharacter"
-        style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        style="?android:attr/progressBarStyle"/>
 
     <TextView
         android:id="@+id/textNoAllResult"
@@ -35,7 +34,7 @@
         android:fontFamily="sans-serif"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="20sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        style="@style/TextAppearance.AppCompat.Body2"/>
 
 </FrameLayout>
