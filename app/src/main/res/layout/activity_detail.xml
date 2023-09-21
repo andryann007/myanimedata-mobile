@@ -55,7 +55,7 @@
                     android:layout_width="135dp"
                     android:layout_height="192dp"
                     android:layout_marginHorizontal="10dp"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     app:riv_corner_radius="5dp"
                     android:contentDescription="@string/image_poster_desc"/>
 
@@ -69,7 +69,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textNameAndJapaneseName"
+                        android:id="@+id/textName"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:gravity="start|center_vertical"
@@ -77,7 +77,8 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/white"
-                        android:textSize="20sp" />
+                        android:textStyle="bold"
+                        style="@style/TextAppearance.Material3.TitleLarge"/>
 
                     <TextView
                         android:id="@+id/textScoreOrPopularity"
@@ -88,7 +89,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/white"
-                        android:textSize="20sp" />
+                        style="@style/TextAppearance.Material3.TitleLarge"/>
 
                     <TextView
                         android:id="@+id/textTypeAndEpisodes"
@@ -99,7 +100,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/white"
-                        android:textSize="20sp" />
+                        style="@style/TextAppearance.Material3.TitleLarge"/>
 
                 </LinearLayout>
 
@@ -115,9 +116,9 @@
                 android:includeFontPadding="false"
                 android:text="@string/synopsis"
                 android:textColor="@color/white"
-                android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
             <TextView
                 android:id="@+id/textSynopsisOrAbout"
@@ -129,8 +130,8 @@
                 android:fontFamily="sans-serif"
                 android:includeFontPadding="false"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
             <TextView
                 android:id="@+id/titleBackground"
@@ -142,9 +143,9 @@
                 android:includeFontPadding="false"
                 android:text="@string/background"
                 android:textColor="@color/white"
-                android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
             <TextView
                 android:id="@+id/textBackground"
@@ -156,8 +157,8 @@
                 android:fontFamily="sans-serif"
                 android:includeFontPadding="false"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
             <TextView
                 android:id="@+id/textGenreOrDebutList"
@@ -168,9 +169,9 @@
                 android:text="@string/genre"
                 android:fontFamily="sans-serif"
                 android:textColor="@android:color/background_light"
-                android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvGenreOrDebutList"
@@ -192,9 +193,9 @@
                 android:text="@string/pictures"
                 android:fontFamily="sans-serif"
                 android:textColor="@android:color/background_light"
-                android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPictureList"
@@ -216,9 +217,9 @@
                 android:text="@string/anime_recommendations"
                 android:fontFamily="sans-serif"
                 android:textColor="@android:color/background_light"
-                android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvRecommendationList"

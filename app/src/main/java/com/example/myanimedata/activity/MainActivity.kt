@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         setContentView(binding.root)
 
         val toolbar = binding.mainToolbar
+        toolbar.subtitle = "Anime Data Catalog"
         setSupportActionBar(toolbar)
 
         val navView = findViewById<BottomNavigationView>(R.id.bottomNavView)

@@ -43,8 +43,10 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
         val retrofit = ApiClient.client
         if (retrofit != null) {
             apiService = retrofit.create(ApiService::class.java)
@@ -52,15 +54,24 @@ class DetailActivity : AppCompatActivity() {
 
         when (intent.getStringExtra("type")) {
             "anime" -> {
-                id = intent.getIntExtra("id", 0)
+                toolbar.title = "Anime Detail"
+                toolbar.subtitle = intent.getStringExtra("anime_title")
+
+                id = intent.getIntExtra("anime_id", 0)
                 setAnimeDetails()
             }
             "manga" -> {
-                id = intent.getIntExtra("id", 0)
+                toolbar.title = "Manga Detail"
+                toolbar.subtitle = intent.getStringExtra("manga_title")
+
+                id = intent.getIntExtra("manga_id", 0)
                 setMangaDetails()
             }
             "character" -> {
-                id = intent.getIntExtra("id", 0)
+                toolbar.title = "Character Detail"
+                toolbar.subtitle = intent.getStringExtra("character_name")
+
+                id = intent.getIntExtra("character_id", 0)
                 setCharacterDetails()
             }
         }
@@ -75,11 +86,7 @@ class DetailActivity : AppCompatActivity() {
                 if (response.body() != null) {
                     binding!!.loadingDetail.visibility = View.GONE
                     binding!!.detailScrollView.visibility = View.VISIBLE
-                    binding!!.toolbar.title = HtmlCompat.fromHtml(
-                        "<b>" +
-                                response.body()!!.animeDetails.title + "</b>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+
                     backgroundJpgUrl =
                         response.body()!!.animeDetails.imageResult.jpgResults.largeImageUrl
                     backgroundWebpUrl =
@@ -127,10 +134,9 @@ class DetailActivity : AppCompatActivity() {
                         binding!!.imagePoster.setImageResource(R.drawable.ic_no_image)
                         binding!!.imagePoster.scaleType = ImageView.ScaleType.FIT_CENTER
                     }
-                    setTitleJp(
-                        binding!!.textNameAndJapaneseName,
-                        response.body()!!.animeDetails.title,
-                        response.body()!!.animeDetails.titleJp
+                    this@DetailActivity.setTitle(
+                        binding!!.textName,
+                        response.body()!!.animeDetails.title
                     )
                     if (response.body()!!.animeDetails.score != 0.0) {
                         setScoreText(
@@ -267,11 +273,7 @@ class DetailActivity : AppCompatActivity() {
                 if (response.body() != null) {
                     binding!!.loadingDetail.visibility = View.GONE
                     binding!!.detailScrollView.visibility = View.VISIBLE
-                    binding!!.toolbar.title = HtmlCompat.fromHtml(
-                        "<b>" +
-                                response.body()!!.mangaDetails.title + "</b>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+
                     backgroundJpgUrl =
                         response.body()!!.mangaDetails.imageResult.jpgResults.largeImageUrl
                     backgroundWebpUrl =
@@ -323,10 +325,9 @@ class DetailActivity : AppCompatActivity() {
                         binding!!.imagePoster.setImageResource(R.drawable.ic_no_image)
                         binding!!.imagePoster.scaleType = ImageView.ScaleType.FIT_CENTER
                     }
-                    setTitleJp(
-                        binding!!.textNameAndJapaneseName,
-                        response.body()!!.mangaDetails.title,
-                        response.body()!!.mangaDetails.titleJp
+                    this@DetailActivity.setTitle(
+                        binding!!.textName,
+                        response.body()!!.mangaDetails.title
                     )
                     if (response.body()!!.mangaDetails.score != 0.0) {
                         setScoreText(
@@ -448,11 +449,7 @@ class DetailActivity : AppCompatActivity() {
                 if (response.body() != null) {
                     binding!!.loadingDetail.visibility = View.GONE
                     binding!!.detailScrollView.visibility = View.VISIBLE
-                    binding!!.toolbar.title = HtmlCompat.fromHtml(
-                        "<b>" +
-                                response.body()!!.characterDetail.name + "</b>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+
                     backgroundJpgUrl =
                         response.body()!!.characterDetail.imageResult.jpgResults.largeImageUrl
                     backgroundWebpUrl =
@@ -505,10 +502,9 @@ class DetailActivity : AppCompatActivity() {
                         binding!!.imagePoster.setImageResource(R.drawable.ic_no_image)
                         binding!!.imagePoster.scaleType = ImageView.ScaleType.FIT_CENTER
                     }
-                    setTitleJp(
-                        binding!!.textNameAndJapaneseName,
-                        response.body()!!.characterDetail.name,
-                        response.body()!!.characterDetail.nameKanji
+                    this@DetailActivity.setTitle(
+                        binding!!.textName,
+                        response.body()!!.characterDetail.name
                     )
                     if (response.body()!!.characterDetail.favorites != 0) {
                         setCharacterScoreText(
@@ -575,9 +571,9 @@ class DetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun setTitleJp(tv: TextView, originalName: String, jpName: String) {
+    private fun setTitle(tv: TextView, originalName: String) {
         tv.text = HtmlCompat.fromHtml(
-            "<b>$originalName<br>($jpName)</b>",
+            "<b>$originalName</b>",
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
     }

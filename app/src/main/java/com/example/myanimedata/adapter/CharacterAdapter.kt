@@ -19,7 +19,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class CharacterAdapter(
-    private val CharacterResults: List<CharacterResult>,
+    private val characterResults: List<CharacterResult>,
     private val context: Context
 ) : RecyclerView.Adapter<CharacterViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
@@ -30,11 +30,11 @@ class CharacterAdapter(
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.bindItem(CharacterResults[position], context)
+        holder.bindItem(characterResults[position], context)
     }
 
     override fun getItemCount(): Int {
-        return CharacterResults.size
+        return characterResults.size
     }
 
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -68,7 +68,8 @@ class CharacterAdapter(
             itemView.setOnClickListener {
                 val i = Intent(context, DetailActivity::class.java)
                 i.putExtra("type", "character")
-                i.putExtra("id", characterResult.id)
+                i.putExtra("character_id", characterResult.id)
+                i.putExtra("character_name", characterResult.name)
                 context.startActivity(i)
             }
         }

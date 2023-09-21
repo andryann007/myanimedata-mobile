@@ -1,5 +1,6 @@
 package com.example.myanimedata.activity
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -51,9 +52,11 @@ class FilterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
+
         val filterType = intent.getStringExtra("filter_type")
         val filterToolbar = findViewById<Toolbar>(R.id.filterToolbar)
         val filterResult = findViewById<TextView>(R.id.textFilterResult)
+
         val animeType = findViewById<TextView>(R.id.textFilterByType)
         val animeStatus = findViewById<TextView>(R.id.textFilterByStatus)
         val animeRating = findViewById<TextView>(R.id.textFilterByRating)
@@ -61,13 +64,26 @@ class FilterActivity : AppCompatActivity() {
         noFilterResult = findViewById(R.id.textNoFilterResult)
         rvFilter = findViewById(R.id.rvFilterList)
         progressFilter = findViewById(R.id.loadingFilter)
+
         val retrofit = client
         apiService = retrofit!!.create(ApiService::class.java)
-        val mLayoutManager = GridLayoutManager(this, 3)
-        rvFilter.layoutManager = mLayoutManager
+
+        val mPortraitLayoutManager = GridLayoutManager(this, 3)
+        val mLandscapeLayoutManager = GridLayoutManager(this, 5)
+
+        if(applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            rvFilter.layoutManager = mLandscapeLayoutManager
+        } else {
+            rvFilter.layoutManager = mPortraitLayoutManager
+        }
+
         val sortName: String
+
         when (filterType) {
             "filter_all" -> {
+                filterToolbar.title = "Filter Result"
+                filterToolbar.subtitle = "Filter All"
+
                 type = intent.getStringExtra("type")
                 status = intent.getStringExtra("status")
                 rating = intent.getStringExtra("rating")
@@ -99,6 +115,9 @@ class FilterActivity : AppCompatActivity() {
                 })
             }
             "filter_type" -> {
+                filterToolbar.title = "Filter Result"
+                filterToolbar.subtitle = "Filter Type"
+
                 type = intent.getStringExtra("type")
                 orderBy = intent.getStringExtra("order_by")
                 sortType = intent.getStringExtra("sort")
@@ -124,6 +143,9 @@ class FilterActivity : AppCompatActivity() {
                 })
             }
             "filter_status" -> {
+                filterToolbar.title = "Filter Result"
+                filterToolbar.subtitle = "Filter Status"
+
                 status = intent.getStringExtra("status")
                 orderBy = intent.getStringExtra("order_by")
                 sortType = intent.getStringExtra("sort")
@@ -149,6 +171,9 @@ class FilterActivity : AppCompatActivity() {
                 })
             }
             "filter_rating" -> {
+                filterToolbar.title = "Filter Result"
+                filterToolbar.subtitle = "Filter Rating"
+
                 rating = intent.getStringExtra("rating")
                 orderBy = intent.getStringExtra("order_by")
                 sortType = intent.getStringExtra("sort")
@@ -174,6 +199,9 @@ class FilterActivity : AppCompatActivity() {
                 })
             }
             "filter_type_and_status" -> {
+                filterToolbar.title = "Filter Result"
+                filterToolbar.subtitle = "Filter Type & Status"
+
                 type = intent.getStringExtra("type")
                 status = intent.getStringExtra("status")
                 orderBy = intent.getStringExtra("order_by")
@@ -202,6 +230,9 @@ class FilterActivity : AppCompatActivity() {
                 })
             }
             "filter_type_and_rating" -> {
+                filterToolbar.title = "Filter Result"
+                filterToolbar.subtitle = "Filter Type & Rating"
+
                 type = intent.getStringExtra("type")
                 rating = intent.getStringExtra("rating")
                 orderBy = intent.getStringExtra("order_by")
@@ -230,6 +261,9 @@ class FilterActivity : AppCompatActivity() {
                 })
             }
             "filter_status_and_rating" -> {
+                filterToolbar.title = "Filter Result"
+                filterToolbar.subtitle = "Filter Status & Rating"
+
                 status = intent.getStringExtra("status")
                 rating = intent.getStringExtra("rating")
                 orderBy = intent.getStringExtra("order_by")

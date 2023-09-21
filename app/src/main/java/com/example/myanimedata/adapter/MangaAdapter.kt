@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso
 
 class MangaAdapter(private val mangaResults: List<MangaResult>, private val context: Context) :
     RecyclerView.Adapter<MangaViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MangaViewHolder {
         return MangaViewHolder(
             LayoutInflater.from(parent.context)
@@ -65,7 +66,8 @@ class MangaAdapter(private val mangaResults: List<MangaResult>, private val cont
             itemView.setOnClickListener {
                 val i = Intent(context, DetailActivity::class.java)
                 i.putExtra("type", "manga")
-                i.putExtra("id", mangaResult.id)
+                i.putExtra("manga_id", mangaResult.id)
+                i.putExtra("manga_title", mangaResult.title)
                 context.startActivity(i)
             }
         }

@@ -1,139 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black"
-    android:gravity="center">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    app:cardCornerRadius="5dp"
+    style="@style/CardView.Dark">
 
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
+        android:id="@+id/contentSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="5dp"
-        style="@style/CardView.Dark">
+        android:orientation="vertical"
+        android:layout_marginHorizontal="5dp">
 
-        <LinearLayout
-            android:id="@+id/contentSearch"
+        <TextView
+            android:id="@+id/textSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginHorizontal="5dp">
+            android:layout_marginVertical="5dp"
+            android:text="@string/search_data"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            style="@style/TextAppearance.Material3.ActionBar.Title"/>
 
-            <TextView
-                android:id="@+id/textSearch"
-                android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textSearchType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="5dp"
+            android:text="@string/search_data_by"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            style="@style/TextAppearance.Material3.ActionBar.Subtitle"/>
+
+        <RadioGroup
+            android:id="@+id/radioSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_marginHorizontal="5dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioSearchAnime"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/search_data"
-                android:fontFamily="sans-serif"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/textSearchType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:layout_marginHorizontal="5dp"
-                android:text="@string/search_data_by"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/white"
-                android:textSize="16sp"/>
-
-            <RadioGroup
-                android:id="@+id/radioSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:layout_marginHorizontal="5dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radioSearchAnime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/anime"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <RadioButton
-                    android:id="@+id/radioSearchManga"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/manga"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <RadioButton
-                    android:id="@+id/radioSearchCharacter"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/character"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/textSearchInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:layout_marginHorizontal="5dp"
-                android:text="@string/input_search_query"
+                android:layout_weight="1"
+                android:text="@string/anime"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.LabelSmall"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputQuery"
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/radioSearchManga"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                app:hintEnabled="false">
+                android:layout_weight="1"
+                android:text="@string/manga"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.LabelSmall"/>
 
-                <EditText
-                    android:id="@+id/edSearchQuery"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_dialog"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="10dp"
-                    android:hint="@string/input_query"
-                    android:inputType="text"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textSize="14sp"
-                    android:autofillHints="false"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btnSearch"
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/radioSearchCharacter"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="5dp"
-                android:background="@color/white"
-                android:text="@string/search_data"
-                android:textColor="@color/black"/>
+                android:layout_weight="1"
+                android:text="@string/character"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.LabelSmall"/>
 
-        </LinearLayout>
+        </RadioGroup>
 
-    </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/textSearchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="5dp"
+            android:text="@string/input_search_query"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            style="@style/TextAppearance.Material3.ActionBar.Subtitle"/>
 
-</LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputQuery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/edSearchQuery"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_dialog"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:hint="@string/input_query"
+                android:inputType="text"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="14sp"
+                android:autofillHints="false"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:text="@string/search_data"
+            android:textColor="@color/black"
+            style="@style/Widget.AppCompat.Button"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

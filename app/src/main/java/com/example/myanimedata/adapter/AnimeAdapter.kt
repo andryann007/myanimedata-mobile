@@ -65,7 +65,8 @@ class AnimeAdapter(private val animeResults: List<AnimeResult>, private val cont
             itemView.setOnClickListener {
                 val i = Intent(context, DetailActivity::class.java)
                 i.putExtra("type", "anime")
-                i.putExtra("id", animeResult.id)
+                i.putExtra("anime_id", animeResult.id)
+                i.putExtra("anime_title", animeResult.title)
                 context.startActivity(i)
             }
         }

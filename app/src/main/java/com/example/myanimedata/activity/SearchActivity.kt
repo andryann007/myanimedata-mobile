@@ -1,5 +1,6 @@
 package com.example.myanimedata.activity
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -42,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
         val type = intent.getStringExtra("type")
         val searchToolbar = findViewById<Toolbar>(R.id.searchToolbar)
         val searchResult = findViewById<TextView>(R.id.textSearchResult)
+
         noSearchResult = findViewById(R.id.textNoSearchResult)
         rvSearch = findViewById(R.id.rvSearchList)
         progressSearch = findViewById(R.id.loadingSearch)
@@ -50,14 +52,25 @@ class SearchActivity : AppCompatActivity() {
 
         val retrofit = client
         apiService = retrofit!!.create(ApiService::class.java)
-        val mLayoutManager = GridLayoutManager(this, 3)
-        rvSearch.layoutManager = mLayoutManager
+
+        val mPortraitLayoutManager = GridLayoutManager(this, 3)
+        val mLandscapeLayoutManager = GridLayoutManager(this, 5)
+
+        if(applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            rvSearch.layoutManager = mLandscapeLayoutManager
+        } else {
+            rvSearch.layoutManager = mPortraitLayoutManager
+        }
 
         when (type) {
             "anime" -> {
+                searchToolbar.title = "Search Anime"
+                searchToolbar.subtitle = query
+
                 searchAnimeAdapter = AnimeAdapter(searchAnimeResults, this)
                 rvSearch.adapter = searchAnimeAdapter
                 searchAnimeData(page)
+
                 rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
@@ -69,9 +82,13 @@ class SearchActivity : AppCompatActivity() {
                 })
             }
             "manga" -> {
+                searchToolbar.title = "Search Manga"
+                searchToolbar.subtitle = query
+
                 searchMangaAdapter = MangaAdapter(searchMangaResults, this)
                 rvSearch.adapter = searchMangaAdapter
                 searchMangaData(page)
+
                 rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
@@ -83,9 +100,13 @@ class SearchActivity : AppCompatActivity() {
                 })
             }
             "character" -> {
+                searchToolbar.title = "Search Character"
+                searchToolbar.subtitle = query
+
                 searchCharacterAdapter = CharacterAdapter(searchCharacterResults, this)
                 rvSearch.adapter = searchCharacterAdapter
                 searchCharacterData(page)
+
                 rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
