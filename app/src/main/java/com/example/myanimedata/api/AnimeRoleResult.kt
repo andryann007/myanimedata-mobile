@@ -1,9 +1,11 @@
 package com.example.myanimedata.api
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-class AnimeRoleResult(
-    @field:SerializedName("mal_id") val id: Int, @field:SerializedName(
-        "url"
-    ) val url: String, @field:SerializedName("title") val title: String
-)
+@Parcelize
+data class AnimeRoleResult(
+    @field:SerializedName("mal_id") val id: Int,
+    @field:SerializedName("title") val title: String
+) : Parcelable

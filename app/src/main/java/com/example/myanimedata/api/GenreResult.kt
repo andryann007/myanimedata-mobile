@@ -1,17 +1,12 @@
 package com.example.myanimedata.api
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-class GenreResult {
-    @SerializedName("mal_id")
-    val id = 0
-
-    @SerializedName("name")
-    val name: String? = null
-
-    @SerializedName("type")
-    val type: String? = null
-
-    @SerializedName("url")
-    val url: String? = null
-}
+@Parcelize
+data class GenreResult (
+    @field:SerializedName("mal_id") val id: Int,
+    @field:SerializedName("name") val name: String,
+    @field:SerializedName("type") val type: String,
+) : Parcelable
