@@ -23,8 +23,10 @@ import retrofit2.Response
 class AllCharacterFragment : Fragment() {
     private var apiService: ApiService? = null
     private var binding: FragmentAllCharacterBinding? = null
+
     private var allCharacterAdapter: CharacterAdapter? = null
     private val allCharacterResults: MutableList<CharacterResult> = ArrayList()
+
     private var page = 1
 
     override fun onCreateView(
@@ -78,7 +80,7 @@ class AllCharacterFragment : Fragment() {
                     val oldCount = allCharacterResults.size
                     binding!!.loadingAllCharacter.visibility = View.GONE
                     binding!!.rvAllCharacterList.visibility = View.VISIBLE
-                    allCharacterResults.addAll(response.body()!!.characterResults)
+                    response.body()!!.characterResults?.let { allCharacterResults.addAll(it) }
                     allCharacterAdapter!!.notifyItemRangeInserted(
                         oldCount,
                         allCharacterResults.size

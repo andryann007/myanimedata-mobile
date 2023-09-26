@@ -1,11 +1,14 @@
 package com.example.myanimedata.activity
 
+import android.content.ContentValues
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.HtmlCompat
@@ -23,15 +26,19 @@ import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
     private var apiService: ApiService? = null
+
     private var searchAnimeAdapter: AnimeAdapter? = null
     private var searchMangaAdapter: MangaAdapter? = null
     private var searchCharacterAdapter: CharacterAdapter? = null
+
     private val searchAnimeResults: MutableList<AnimeResult> = ArrayList()
     private val searchMangaResults: MutableList<MangaResult> = ArrayList()
     private val searchCharacterResults: MutableList<CharacterResult> = ArrayList()
+
     private lateinit var noSearchResult: TextView
     private lateinit var rvSearch: RecyclerView
     private lateinit var progressSearch: ProgressBar
+
     private var page = 1
     private var query: String? = null
 
@@ -118,6 +125,20 @@ class SearchActivity : AppCompatActivity() {
                 })
             }
         }
+
+        onBackPressedDispatcher.addCallback(
+            this,
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Log.d(ContentValues.TAG, "Activity back pressed invoked")
+                    finish()
+                }
+            }
+        )
+
+        searchToolbar.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun searchAnimeData(page: Int) {
@@ -133,7 +154,7 @@ class SearchActivity : AppCompatActivity() {
                     val oldCount = searchAnimeResults.size
                     progressSearch.visibility = View.GONE
                     rvSearch.visibility = View.VISIBLE
-                    searchAnimeResults.addAll(response.body()!!.animeResults)
+                    response.body()!!.animeResults?.let { searchAnimeResults.addAll(it) }
                     searchAnimeAdapter!!.notifyItemRangeInserted(oldCount, searchAnimeResults.size)
                 } else if (searchAnimeResults.isEmpty()) {
                     progressSearch.visibility = View.GONE
@@ -166,7 +187,7 @@ class SearchActivity : AppCompatActivity() {
                     val oldCount = searchMangaResults.size
                     progressSearch.visibility = View.GONE
                     rvSearch.visibility = View.VISIBLE
-                    searchMangaResults.addAll(response.body()!!.mangaResults)
+                    response.body()!!.mangaResults?.let { searchMangaResults.addAll(it) }
                     searchMangaAdapter!!.notifyItemRangeInserted(oldCount, searchMangaResults.size)
                 } else if (searchMangaResults.isEmpty()) {
                     progressSearch.visibility = View.GONE
@@ -199,7 +220,7 @@ class SearchActivity : AppCompatActivity() {
                     val oldCount = searchCharacterResults.size
                     progressSearch.visibility = View.GONE
                     rvSearch.visibility = View.VISIBLE
-                    searchCharacterResults.addAll(response.body()!!.characterResults)
+                    response.body()!!.characterResults?.let { searchCharacterResults.addAll(it) }
                     searchCharacterAdapter!!.notifyItemRangeInserted(
                         oldCount,
                         searchCharacterResults.size

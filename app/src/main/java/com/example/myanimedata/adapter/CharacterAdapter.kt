@@ -50,7 +50,7 @@ class CharacterAdapter(
 
         fun bindItem(characterResult: CharacterResult, context: Context) {
             loadingCharacterItem.visibility = View.GONE
-            val imgUrl = Uri.parse(characterResult.imageResults.jpgResults.imageUrl)
+            val imgUrl = Uri.parse(characterResult.imageResults?.jpgResults?.imageUrl)
             Picasso.get().load(imgUrl).noFade()
                 .into(imageCharacterPoster, object : Callback {
                     override fun onSuccess() {

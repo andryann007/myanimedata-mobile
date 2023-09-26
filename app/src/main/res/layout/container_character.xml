@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="@+id/imageCharacterPoster"
             app:layout_constraintTop_toTopOf="@+id/imageCharacterPoster"
             app:layout_constraintBottom_toBottomOf="@+id/imageCharacterPoster"
-            style="?android:attr/progressBarStyle"/>
+            style="@android:style/Widget.ProgressBar"/>
 
         <LinearLayout
             android:layout_width="match_parent"

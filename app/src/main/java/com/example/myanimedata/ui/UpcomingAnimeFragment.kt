@@ -23,8 +23,10 @@ import retrofit2.Response
 class UpcomingAnimeFragment : Fragment() {
     private var apiService: ApiService? = null
     private var binding: FragmentUpcomingAnimeBinding? = null
+
     private var upcomingAnimeAdapter: AnimeAdapter? = null
     private val upcomingAnimeResults: MutableList<AnimeResult> = ArrayList()
+
     private var page = 1
 
     override fun onCreateView(
@@ -82,7 +84,7 @@ class UpcomingAnimeFragment : Fragment() {
                         val oldCount = upcomingAnimeResults.size
                         binding!!.loadingUpcomingAnime.visibility = View.GONE
                         binding!!.rvUpcomingAnimeList.visibility = View.VISIBLE
-                        upcomingAnimeResults.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { upcomingAnimeResults.addAll(it) }
                         upcomingAnimeAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             upcomingAnimeResults.size

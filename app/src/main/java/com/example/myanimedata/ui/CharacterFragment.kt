@@ -20,17 +20,22 @@ class CharacterFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState)
+
         val binding = FragmentCharactersBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
         viewPager = binding.viewPagerCharacter
         tabLayout = binding.tabLayoutCharacter
+
         return root
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         setUpViewPager(viewPager)
+
         tabLayout!!.setupWithViewPager(viewPager)
         tabLayout!!.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {}
@@ -44,6 +49,7 @@ class CharacterFragment : Fragment() {
         characterPagerAdapter.addFragment(AllCharacterFragment(), "All Character")
         characterPagerAdapter.addFragment(FavoriteCharacterFragment(), "Favorite Character")
         characterPagerAdapter.addFragment(TopRatedCharacterFragment(), "Top Character")
+
         viewPager!!.adapter = characterPagerAdapter
     }
 }

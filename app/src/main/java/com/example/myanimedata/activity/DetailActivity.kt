@@ -1,12 +1,15 @@
 package com.example.myanimedata.activity
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.HtmlCompat
@@ -25,15 +28,18 @@ class DetailActivity : AppCompatActivity() {
     private var apiService: ApiService? = null
     private var id = 0
     private var binding: ActivityDetailBinding? = null
+
     private var genreAdapter: GenreAdapter? = null
     private var roleAdapter: RoleAdapter? = null
     private var animePictureAdapter: PictureAdapter? = null
     private var mangaPictureAdapter: PictureAdapter? = null
+
     private val animeGenre: MutableList<GenreResult> = ArrayList()
     private val mangaGenre: MutableList<GenreResult> = ArrayList()
     private val characterRole: MutableList<RoleResult> = ArrayList()
     private val animePictureResults = ArrayList<ImageResult>()
     private val mangaPictureResults = ArrayList<ImageResult>()
+
     private var backgroundJpgUrl: String? = null
     private var backgroundWebpUrl: String? = null
     private var posterJpgUrl: String? = null
@@ -75,6 +81,20 @@ class DetailActivity : AppCompatActivity() {
                 setCharacterDetails()
             }
         }
+
+        onBackPressedDispatcher.addCallback(
+            this,
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Log.d(TAG, "Activity back pressed invoked")
+                    finish()
+                }
+            }
+        )
+
+        toolbar.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun setAnimeDetails() {
@@ -88,9 +108,9 @@ class DetailActivity : AppCompatActivity() {
                     binding!!.detailScrollView.visibility = View.VISIBLE
 
                     backgroundJpgUrl =
-                        response.body()!!.animeDetails.imageResult.jpgResults.largeImageUrl
+                        response.body()!!.animeDetails?.imageResult?.jpgResults?.largeImageUrl
                     backgroundWebpUrl =
-                        response.body()!!.animeDetails.imageResult.webpResults.largeImageUrl
+                        response.body()!!.animeDetails?.imageResult?.webpResults?.largeImageUrl
                     if (backgroundJpgUrl != null) {
                         binding!!.imageBackground.visibility = View.VISIBLE
                         val backgroundImage = Uri.parse(backgroundJpgUrl)
@@ -112,8 +132,8 @@ class DetailActivity : AppCompatActivity() {
                     } else {
                         binding!!.imageBackground.visibility = View.GONE
                     }
-                    posterJpgUrl = response.body()!!.animeDetails.imageResult.jpgResults.imageUrl
-                    posterWebpUrl = response.body()!!.animeDetails.imageResult.webpResults.imageUrl
+                    posterJpgUrl = response.body()!!.animeDetails?.imageResult?.jpgResults?.imageUrl
+                    posterWebpUrl = response.body()!!.animeDetails?.imageResult?.webpResults?.imageUrl
                     if (posterJpgUrl != null) {
                         val posterImage = Uri.parse(posterJpgUrl)
                         Picasso.get().load(posterImage).noFade()
@@ -134,42 +154,56 @@ class DetailActivity : AppCompatActivity() {
                         binding!!.imagePoster.setImageResource(R.drawable.ic_no_image)
                         binding!!.imagePoster.scaleType = ImageView.ScaleType.FIT_CENTER
                     }
-                    this@DetailActivity.setTitle(
-                        binding!!.textName,
-                        response.body()!!.animeDetails.title
-                    )
-                    if (response.body()!!.animeDetails.score != 0.0) {
-                        setScoreText(
-                            binding!!.textScoreOrPopularity,
-                            response.body()!!.animeDetails.score
+                    response.body()!!.animeDetails?.title?.let {
+                        this@DetailActivity.setTitle(
+                            binding!!.textName,
+                            it
                         )
-                    } else {
-                        setNoScoreText(binding!!.textScoreOrPopularity)
                     }
-                    if (response.body()!!.animeDetails.type.equals("tv", ignoreCase = true)) {
-                        if (response.body()!!.animeDetails.episodes != 0) {
-                            setTvEpisodesText(
-                                binding!!.textTypeAndEpisodes,
-                                response.body()!!.animeDetails.type,
-                                response.body()!!.animeDetails.episodes
-                            )
-                        } else {
-                            setTypeText(
-                                binding!!.textTypeAndEpisodes,
-                                response.body()!!.animeDetails.type
+                    if (response.body()!!.animeDetails?.score != 0.0) {
+                        response.body()!!.animeDetails?.score?.let {
+                            setScoreText(
+                                binding!!.textScoreOrPopularity,
+                                it
                             )
                         }
                     } else {
-                        setTypeText(
-                            binding!!.textTypeAndEpisodes,
-                            response.body()!!.animeDetails.type
-                        )
+                        setNoScoreText(binding!!.textScoreOrPopularity)
+                    }
+                    if (response.body()!!.animeDetails?.type.equals("tv", ignoreCase = true)) {
+                        if (response.body()!!.animeDetails?.episodes != 0) {
+                            response.body()!!.animeDetails?.type?.let {
+                                response.body()!!.animeDetails?.episodes?.let { it1 ->
+                                    setTvEpisodesText(
+                                        binding!!.textTypeAndEpisodes,
+                                        it,
+                                        it1
+                                    )
+                                }
+                            }
+                        } else {
+                            response.body()!!.animeDetails?.type?.let {
+                                setTypeText(
+                                    binding!!.textTypeAndEpisodes,
+                                    it
+                                )
+                            }
+                        }
+                    } else {
+                        response.body()!!.animeDetails?.type?.let {
+                            setTypeText(
+                                binding!!.textTypeAndEpisodes,
+                                it
+                            )
+                        }
                     }
                     binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
-                    binding!!.textSynopsisOrAbout.text = response.body()!!.animeDetails.synopsis
+                    binding!!.textSynopsisOrAbout.text = response.body()!!.animeDetails?.synopsis
+
                     binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
                     binding!!.titleBackground.visibility = View.VISIBLE
-                    binding!!.textBackground.text = response.body()!!.animeDetails.background
+                    binding!!.textBackground.text = response.body()!!.animeDetails?.background
+
                     binding!!.textBackground.visibility = View.VISIBLE
                     setGenresAnime()
                     setPicturesAnime()
@@ -203,11 +237,11 @@ class DetailActivity : AppCompatActivity() {
                     response: Response<AnimeResponseDetail?>
                 ) {
                     if (response.body() != null) {
-                        if (response.body()!!.animeDetails.genreResults.isNotEmpty()) {
+                        if (response.body()!!.animeDetails?.genreResults?.isNotEmpty() == true) {
                             binding!!.textGenreOrDebutList.visibility = View.VISIBLE
                             binding!!.rvGenreOrDebutList.visibility = View.VISIBLE
                             val oldCount = animeGenre.size
-                            animeGenre.addAll(response.body()!!.animeDetails.genreResults)
+                            response.body()!!.animeDetails?.genreResults?.let { animeGenre.addAll(it) }
                             genreAdapter!!.notifyItemChanged(oldCount, animeGenre.size)
                         } else {
                             setNoText(binding!!.textGenreOrDebutList, "No Genre Yet !!!")
@@ -239,11 +273,11 @@ class DetailActivity : AppCompatActivity() {
                     response: Response<ImageResponse?>
                 ) {
                     if (response.body() != null) {
-                        if (response.body()!!.imageResultsList.isNotEmpty()) {
+                        if (response.body()!!.imageResultsList?.isNotEmpty() == true) {
                             binding!!.textPictureList.visibility = View.VISIBLE
                             binding!!.rvPictureList.visibility = View.VISIBLE
                             val oldCount = animePictureResults.size
-                            animePictureResults.addAll(response.body()!!.imageResultsList)
+                            response.body()!!.imageResultsList?.let { animePictureResults.addAll(it) }
                             animePictureAdapter!!.notifyItemChanged(
                                 oldCount,
                                 animePictureResults.size
@@ -275,13 +309,13 @@ class DetailActivity : AppCompatActivity() {
                     binding!!.detailScrollView.visibility = View.VISIBLE
 
                     backgroundJpgUrl =
-                        response.body()!!.mangaDetails.imageResult.jpgResults.largeImageUrl
+                        response.body()!!.mangaDetails?.imageResult?.jpgResults?.largeImageUrl
                     backgroundWebpUrl =
-                        response.body()!!.mangaDetails.imageResult.webpResults.largeImageUrl
+                        response.body()!!.mangaDetails?.imageResult?.webpResults?.largeImageUrl
                     if (backgroundJpgUrl != null) {
                         binding!!.imageBackground.visibility = View.VISIBLE
                         val backgroundImage = Uri.parse(
-                            response.body()!!.mangaDetails.imageResult.jpgResults.largeImageUrl
+                            response.body()!!.mangaDetails?.imageResult?.jpgResults?.largeImageUrl
                         )
                         Picasso.get().load(backgroundImage).noFade().into(
                             binding!!.imageBackground,
@@ -301,11 +335,11 @@ class DetailActivity : AppCompatActivity() {
                     } else {
                         binding!!.imageBackground.visibility = View.GONE
                     }
-                    posterJpgUrl = response.body()!!.mangaDetails.imageResult.jpgResults.imageUrl
-                    posterWebpUrl = response.body()!!.mangaDetails.imageResult.webpResults.imageUrl
+                    posterJpgUrl = response.body()!!.mangaDetails?.imageResult?.jpgResults?.imageUrl
+                    posterWebpUrl = response.body()!!.mangaDetails?.imageResult?.webpResults?.imageUrl
                     if (posterJpgUrl != null) {
                         val posterImage = Uri.parse(
-                            response.body()!!.mangaDetails.imageResult.jpgResults.imageUrl
+                            response.body()!!.mangaDetails?.imageResult?.jpgResults?.imageUrl
                         )
                         Picasso.get().load(posterImage).noFade()
                             .into(binding!!.imagePoster, object : com.squareup.picasso.Callback {
@@ -325,27 +359,34 @@ class DetailActivity : AppCompatActivity() {
                         binding!!.imagePoster.setImageResource(R.drawable.ic_no_image)
                         binding!!.imagePoster.scaleType = ImageView.ScaleType.FIT_CENTER
                     }
-                    this@DetailActivity.setTitle(
-                        binding!!.textName,
-                        response.body()!!.mangaDetails.title
-                    )
-                    if (response.body()!!.mangaDetails.score != 0.0) {
-                        setScoreText(
-                            binding!!.textScoreOrPopularity,
-                            response.body()!!.mangaDetails.score
+                    response.body()!!.mangaDetails?.title?.let {
+                        this@DetailActivity.setTitle(
+                            binding!!.textName,
+                            it
                         )
+                    }
+                    if (response.body()!!.mangaDetails?.score != 0.0) {
+                        response.body()!!.mangaDetails?.score?.let {
+                            setScoreText(
+                                binding!!.textScoreOrPopularity,
+                                it
+                            )
+                        }
                     } else {
                         setNoScoreText(binding!!.textScoreOrPopularity)
                     }
-                    setStatusText(
-                        binding!!.textTypeAndEpisodes,
-                        response.body()!!.mangaDetails.finished
-                    )
+                    response.body()!!.mangaDetails?.finished?.let {
+                        setStatusText(
+                            binding!!.textTypeAndEpisodes,
+                            it
+                        )
+                    }
                     binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
-                    binding!!.textSynopsisOrAbout.text = response.body()!!.mangaDetails.synopsis
+                    binding!!.textSynopsisOrAbout.text = response.body()!!.mangaDetails?.synopsis
+
                     binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
                     binding!!.titleBackground.visibility = View.VISIBLE
-                    binding!!.textBackground.text = response.body()!!.mangaDetails.background
+                    binding!!.textBackground.text = response.body()!!.mangaDetails?.background
                     binding!!.textBackground.visibility = View.VISIBLE
                     setGenresMangas()
                     setPicturesMangas()
@@ -378,11 +419,11 @@ class DetailActivity : AppCompatActivity() {
                     response: Response<MangaResponseDetail?>
                 ) {
                     if (response.body() != null) {
-                        if (response.body()!!.mangaDetails.genreResults.isNotEmpty()) {
+                        if (response.body()!!.mangaDetails?.genreResults?.isNotEmpty() == true) {
                             binding!!.textGenreOrDebutList.visibility = View.VISIBLE
                             binding!!.rvGenreOrDebutList.visibility = View.VISIBLE
                             val oldCount = mangaGenre.size
-                            mangaGenre.addAll(response.body()!!.mangaDetails.genreResults)
+                            response.body()!!.mangaDetails?.genreResults?.let { mangaGenre.addAll(it) }
                             genreAdapter!!.notifyItemChanged(oldCount, mangaGenre.size)
                         } else {
                             binding!!.textGenreOrDebutList.text = "No Genre Yet !!!"
@@ -414,11 +455,11 @@ class DetailActivity : AppCompatActivity() {
                     response: Response<ImageResponse?>
                 ) {
                     if (response.body() != null) {
-                        if (response.body()!!.imageResultsList.isNotEmpty()) {
+                        if (response.body()!!.imageResultsList?.isNotEmpty() == true) {
                             binding!!.textPictureList.visibility = View.VISIBLE
                             binding!!.rvPictureList.visibility = View.VISIBLE
                             val oldCount = mangaPictureResults.size
-                            mangaPictureResults.addAll(response.body()!!.imageResultsList)
+                            response.body()!!.imageResultsList?.let { mangaPictureResults.addAll(it) }
                             mangaPictureAdapter!!.notifyItemChanged(
                                 oldCount,
                                 mangaPictureResults.size
@@ -451,13 +492,13 @@ class DetailActivity : AppCompatActivity() {
                     binding!!.detailScrollView.visibility = View.VISIBLE
 
                     backgroundJpgUrl =
-                        response.body()!!.characterDetail.imageResult.jpgResults.largeImageUrl
+                        response.body()!!.characterDetail?.imageResult?.jpgResults?.largeImageUrl
                     backgroundWebpUrl =
-                        response.body()!!.characterDetail.imageResult.webpResults.largeImageUrl
+                        response.body()!!.characterDetail?.imageResult?.webpResults?.largeImageUrl
                     if (backgroundJpgUrl != null) {
                         binding!!.imageBackground.visibility = View.VISIBLE
                         val backgroundImage = Uri.parse(
-                            response.body()!!.characterDetail.imageResult.jpgResults.largeImageUrl
+                            response.body()!!.characterDetail?.imageResult?.jpgResults?.largeImageUrl
                         )
                         Picasso.get().load(backgroundImage).noFade().into(
                             binding!!.imageBackground,
@@ -477,12 +518,12 @@ class DetailActivity : AppCompatActivity() {
                     } else {
                         binding!!.imageBackground.visibility = View.VISIBLE
                     }
-                    posterJpgUrl = response.body()!!.characterDetail.imageResult.jpgResults.imageUrl
+                    posterJpgUrl = response.body()!!.characterDetail?.imageResult?.jpgResults?.imageUrl
                     posterWebpUrl =
-                        response.body()!!.characterDetail.imageResult.webpResults.imageUrl
+                        response.body()!!.characterDetail?.imageResult?.webpResults?.imageUrl
                     if (posterJpgUrl != null) {
                         val posterImage = Uri.parse(
-                            response.body()!!.characterDetail.imageResult.jpgResults.imageUrl
+                            response.body()!!.characterDetail?.imageResult?.jpgResults?.imageUrl
                         )
                         Picasso.get().load(posterImage).noFade()
                             .into(binding!!.imagePoster, object : com.squareup.picasso.Callback {
@@ -502,25 +543,32 @@ class DetailActivity : AppCompatActivity() {
                         binding!!.imagePoster.setImageResource(R.drawable.ic_no_image)
                         binding!!.imagePoster.scaleType = ImageView.ScaleType.FIT_CENTER
                     }
-                    this@DetailActivity.setTitle(
-                        binding!!.textName,
-                        response.body()!!.characterDetail.name
-                    )
-                    if (response.body()!!.characterDetail.favorites != 0) {
-                        setCharacterScoreText(
-                            binding!!.textScoreOrPopularity,
-                            response.body()!!.characterDetail.favorites
+                    response.body()!!.characterDetail?.name?.let {
+                        this@DetailActivity.setTitle(
+                            binding!!.textName,
+                            it
                         )
+                    }
+                    if (response.body()!!.characterDetail?.favorites != 0) {
+                        response.body()!!.characterDetail?.favorites?.let {
+                            setCharacterScoreText(
+                                binding!!.textScoreOrPopularity,
+                                it
+                            )
+                        }
                     } else {
                         setNoText(binding!!.textScoreOrPopularity, "No Favorites Yet !!!")
                     }
-                    setCharacterUrlText(
-                        binding!!.textTypeAndEpisodes,
-                        response.body()!!.characterDetail.url
-                    )
+                    response.body()!!.characterDetail?.url?.let {
+                        setCharacterUrlText(
+                            binding!!.textTypeAndEpisodes,
+                            it
+                        )
+                    }
                     binding!!.titleSynopsisOrAbout.text = "About :"
                     binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
-                    binding!!.textSynopsisOrAbout.text = response.body()!!.characterDetail.about
+
+                    binding!!.textSynopsisOrAbout.text = response.body()!!.characterDetail?.about
                     binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
                     setCharacterRole()
                 } else {
@@ -556,7 +604,7 @@ class DetailActivity : AppCompatActivity() {
                     binding!!.textGenreOrDebutList.visibility = View.VISIBLE
                     binding!!.rvGenreOrDebutList.visibility = View.VISIBLE
                     val oldCount = characterRole.size
-                    characterRole.addAll(response.body()!!.characterDetail.roleResults)
+                    response.body()!!.characterDetail?.roleResults?.let { characterRole.addAll(it) }
                     roleAdapter!!.notifyItemChanged(oldCount, characterRole.size)
                 }
             }

@@ -38,7 +38,7 @@ class PictureAdapter(private val imageResults: ArrayList<ImageResult>) :
         }
 
         fun bindItem(imageResult: ImageResult) {
-            val imageUrl = Uri.parse(imageResult.jpgResults.imageUrl)
+            val imageUrl = Uri.parse(imageResult.jpgResults?.imageUrl)
             Picasso.get().load(imageUrl).noFade().into(imageView, object : Callback {
                 override fun onSuccess() {
                     imageView.animate().setDuration(500).alpha(1f).start()

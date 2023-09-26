@@ -1,11 +1,14 @@
 package com.example.myanimedata.activity
 
+import android.content.ContentValues
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.HtmlCompat
@@ -24,6 +27,7 @@ import java.util.*
 
 class FilterActivity : AppCompatActivity() {
     private var apiService: ApiService? = null
+
     private var filterAnimeAdapter: AnimeAdapter? = null
     private var filterAnimeTypeAdapter: AnimeAdapter? = null
     private var filterAnimeRatingAdapter: AnimeAdapter? = null
@@ -31,6 +35,7 @@ class FilterActivity : AppCompatActivity() {
     private var filterAnimeTypeAndRatingAdapter: AnimeAdapter? = null
     private var filterAnimeTypeAndStatusAdapter: AnimeAdapter? = null
     private var filterAnimeStatusAndRatingAdapter: AnimeAdapter? = null
+
     private val filterAnimeResults: MutableList<AnimeResult> = ArrayList()
     private val filterAnimeType: MutableList<AnimeResult> = ArrayList()
     private val filterAnimeRating: MutableList<AnimeResult> = ArrayList()
@@ -38,9 +43,11 @@ class FilterActivity : AppCompatActivity() {
     private val filterAnimeTypeAndRating: MutableList<AnimeResult> = ArrayList()
     private val filterAnimeTypeAndStatus: MutableList<AnimeResult> = ArrayList()
     private val filterAnimeStatusAndRating: MutableList<AnimeResult> = ArrayList()
+
     private lateinit var noFilterResult: TextView
     private lateinit var rvFilter: RecyclerView
     private lateinit var progressFilter: ProgressBar
+
     private var page = 1
     private val limit = 15
     private var type: String? = null
@@ -292,6 +299,20 @@ class FilterActivity : AppCompatActivity() {
                 })
             }
         }
+
+        onBackPressedDispatcher.addCallback(
+            this,
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Log.d(ContentValues.TAG, "Activity back pressed invoked")
+                    finish()
+                }
+            }
+        )
+
+        filterToolbar.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun getFilterAnimeData(page: Int) {
@@ -302,11 +323,11 @@ class FilterActivity : AppCompatActivity() {
                 response: Response<AnimeResponse?>
             ) {
                 if (response.body() != null) {
-                    if (response.body()!!.animeResults.isNotEmpty() && response.body()!!.animeResults.isNotEmpty()) {
+                    if (response.body()!!.animeResults?.isNotEmpty() == true) {
                         val oldCount = filterAnimeResults.size
                         progressFilter.visibility = View.GONE
                         rvFilter.visibility = View.VISIBLE
-                        filterAnimeResults.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { filterAnimeResults.addAll(it) }
                         filterAnimeAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             filterAnimeResults.size
@@ -336,11 +357,11 @@ class FilterActivity : AppCompatActivity() {
                 response: Response<AnimeResponse?>
             ) {
                 if (response.body() != null) {
-                    if (response.body()!!.animeResults.isNotEmpty()) {
+                    if (response.body()!!.animeResults?.isNotEmpty() == true) {
                         val oldCount = filterAnimeType.size
                         progressFilter.visibility = View.GONE
                         rvFilter.visibility = View.VISIBLE
-                        filterAnimeType.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { filterAnimeType.addAll(it) }
                         filterAnimeTypeAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             filterAnimeType.size
@@ -370,11 +391,11 @@ class FilterActivity : AppCompatActivity() {
                 response: Response<AnimeResponse?>
             ) {
                 if (response.body() != null) {
-                    if (response.body()!!.animeResults.isNotEmpty()) {
+                    if (response.body()!!.animeResults?.isNotEmpty() == true) {
                         val oldCount = filterAnimeRating.size
                         progressFilter.visibility = View.GONE
                         rvFilter.visibility = View.VISIBLE
-                        filterAnimeRating.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { filterAnimeRating.addAll(it) }
                         filterAnimeRatingAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             filterAnimeRating.size
@@ -404,11 +425,11 @@ class FilterActivity : AppCompatActivity() {
                 response: Response<AnimeResponse?>
             ) {
                 if (response.body() != null) {
-                    if (response.body()!!.animeResults.isNotEmpty()) {
+                    if (response.body()!!.animeResults?.isNotEmpty() == true) {
                         val oldCount = filterAnimeStatus.size
                         progressFilter.visibility = View.GONE
                         rvFilter.visibility = View.VISIBLE
-                        filterAnimeStatus.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { filterAnimeStatus.addAll(it) }
                         filterAnimeStatusAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             filterAnimeStatus.size
@@ -438,11 +459,11 @@ class FilterActivity : AppCompatActivity() {
                 response: Response<AnimeResponse?>
             ) {
                 if (response.body() != null) {
-                    if (response.body()!!.animeResults.isNotEmpty()) {
+                    if (response.body()!!.animeResults?.isNotEmpty() == true) {
                         val oldCount = filterAnimeTypeAndRating.size
                         progressFilter.visibility = View.GONE
                         rvFilter.visibility = View.VISIBLE
-                        filterAnimeTypeAndRating.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { filterAnimeTypeAndRating.addAll(it) }
                         filterAnimeTypeAndRatingAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             filterAnimeTypeAndRating.size
@@ -472,11 +493,11 @@ class FilterActivity : AppCompatActivity() {
                 response: Response<AnimeResponse?>
             ) {
                 if (response.body() != null) {
-                    if (response.body()!!.animeResults.isNotEmpty()) {
+                    if (response.body()!!.animeResults?.isNotEmpty() == true) {
                         val oldCount = filterAnimeTypeAndStatus.size
                         progressFilter.visibility = View.GONE
                         rvFilter.visibility = View.VISIBLE
-                        filterAnimeTypeAndStatus.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { filterAnimeTypeAndStatus.addAll(it) }
                         filterAnimeTypeAndStatusAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             filterAnimeTypeAndStatus.size
@@ -507,11 +528,11 @@ class FilterActivity : AppCompatActivity() {
                 response: Response<AnimeResponse?>
             ) {
                 if (response.body() != null) {
-                    if (response.body()!!.animeResults.isNotEmpty()) {
+                    if (response.body()!!.animeResults?.isNotEmpty() == true) {
                         val oldCount = filterAnimeStatusAndRating.size
                         progressFilter.visibility = View.GONE
                         rvFilter.visibility = View.VISIBLE
-                        filterAnimeStatusAndRating.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { filterAnimeStatusAndRating.addAll(it) }
                         filterAnimeStatusAndRatingAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             filterAnimeStatusAndRating.size

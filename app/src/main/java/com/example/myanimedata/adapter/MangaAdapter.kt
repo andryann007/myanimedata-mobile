@@ -49,7 +49,7 @@ class MangaAdapter(private val mangaResults: List<MangaResult>, private val cont
 
         fun bindItem(mangaResult: MangaResult, context: Context) {
             loadingMangaItem.visibility = View.GONE
-            val imgUrl = Uri.parse(mangaResult.imageResults.jpgResults.imageUrl)
+            val imgUrl = Uri.parse(mangaResult.imageResults?.jpgResults?.imageUrl)
             Picasso.get().load(imgUrl).noFade().into(imageMangaPoster, object : Callback {
                 override fun onSuccess() {
                     imageMangaPoster.animate().setDuration(500).alpha(1f).start()

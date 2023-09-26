@@ -21,17 +21,22 @@ class AnimeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState)
+
         val binding = FragmentAnimesBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
         viewPager = binding.viewPagerAnime
         tabLayout = binding.tabLayoutAnime
+
         return root
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         setUpViewPager(viewPager)
+
         tabLayout!!.setupWithViewPager(viewPager)
         tabLayout!!.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {}
@@ -42,11 +47,13 @@ class AnimeFragment : Fragment() {
 
     private fun setUpViewPager(viewPager: ViewPager?) {
         val animePagerAdapter = ViewPagerAdapter(childFragmentManager)
+
         animePagerAdapter.addFragment(AllAnimeFragment(), "All Anime")
         animePagerAdapter.addFragment(PopularAnimeFragment(), "Popular")
         animePagerAdapter.addFragment(TopRatedAnimeFragment(), "Top Rated")
         animePagerAdapter.addFragment(OnAirAnimeFragment(), "On Air")
         animePagerAdapter.addFragment(UpcomingAnimeFragment(), "Upcoming")
+
         viewPager!!.adapter = animePagerAdapter
     }
 }

@@ -6,6 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AnimeRoleResult(
-    @field:SerializedName("mal_id") val id: Int,
-    @field:SerializedName("title") val title: String
+    @field:SerializedName("mal_id") val id: Int? = 0,
+    @field:SerializedName("title") val title: String? = null
 ) : Parcelable

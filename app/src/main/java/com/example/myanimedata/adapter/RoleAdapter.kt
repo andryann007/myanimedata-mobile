@@ -34,7 +34,7 @@ class RoleAdapter(private val roleResults: List<RoleResult>) :
         }
 
         fun bindItem(roleResult: RoleResult) {
-            textRole.text = roleResult.animeRoleResult.title
+            textRole.text = roleResult.animeRoleResult?.title
         }
     }
 }

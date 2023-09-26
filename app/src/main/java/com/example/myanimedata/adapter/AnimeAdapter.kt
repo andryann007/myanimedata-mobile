@@ -48,7 +48,7 @@ class AnimeAdapter(private val animeResults: List<AnimeResult>, private val cont
 
         fun bindItem(animeResult: AnimeResult, context: Context) {
             loadingAnimeItem.visibility = View.GONE
-            val imgUrl = Uri.parse(animeResult.imageResults.jpgResults.imageUrl)
+            val imgUrl = Uri.parse(animeResult.imageResults?.jpgResults?.imageUrl)
             Picasso.get().load(imgUrl).noFade().into(imageAnimePoster, object : Callback {
                 override fun onSuccess() {
                     imageAnimePoster.animate().setDuration(500).alpha(1f).start()

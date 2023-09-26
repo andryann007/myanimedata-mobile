@@ -23,8 +23,10 @@ import retrofit2.Response
 class OnAirAnimeFragment : Fragment() {
     private var apiService: ApiService? = null
     private var binding: FragmentOnAirAnimeBinding? = null
+
     private var onAirAnimeAdapter: AnimeAdapter? = null
     private val onAirAnimeResults: MutableList<AnimeResult> = ArrayList()
+
     private var page = 1
 
     override fun onCreateView(
@@ -82,7 +84,7 @@ class OnAirAnimeFragment : Fragment() {
                         val oldCount = onAirAnimeResults.size
                         binding!!.loadingOnAirAnime.visibility = View.GONE
                         binding!!.rvOnAirAnimeList.visibility = View.VISIBLE
-                        onAirAnimeResults.addAll(response.body()!!.animeResults)
+                        response.body()!!.animeResults?.let { onAirAnimeResults.addAll(it) }
                         onAirAnimeAdapter!!.notifyItemRangeInserted(
                             oldCount,
                             onAirAnimeResults.size

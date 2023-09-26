@@ -1,8 +1,10 @@
 package com.example.myanimedata.api
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-class MangaResponse {
-    @SerializedName("data")
-    val mangaResults: List<MangaResult> = ArrayList()
-}
+@Parcelize
+data class MangaResponse (
+    @field:SerializedName("data") val mangaResults: ArrayList<MangaResult>? = null
+) : Parcelable

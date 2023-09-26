@@ -24,8 +24,10 @@ import retrofit2.Response
 class FavoriteCharacterFragment : Fragment() {
     private var apiService: ApiService? = null
     private var binding: FragmentFavoriteCharacterBinding? = null
+
     private var favoriteCharacterAdapter: CharacterAdapter? = null
     private var page = 1
+
     private val favoriteCharacterResults: MutableList<CharacterResult> = ArrayList()
 
     override fun onCreateView(
@@ -82,7 +84,7 @@ class FavoriteCharacterFragment : Fragment() {
                     val oldCount = favoriteCharacterResults.size
                     binding!!.loadingFavoriteCharacter.visibility = View.GONE
                     binding!!.rvFavoriteCharacterList.visibility = View.VISIBLE
-                    favoriteCharacterResults.addAll(response.body()!!.characterResults)
+                    response.body()!!.characterResults?.let { favoriteCharacterResults.addAll(it) }
                     favoriteCharacterAdapter!!.notifyItemRangeInserted(
                         oldCount,
                         favoriteCharacterResults.size

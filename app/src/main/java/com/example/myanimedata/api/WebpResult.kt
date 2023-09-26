@@ -6,6 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WebpResult(
-    @field:SerializedName("image_url") val imageUrl: String,
-    @field:SerializedName("large_image_url") val largeImageUrl: String
+    @field:SerializedName("image_url") val imageUrl: String? = null,
+    @field:SerializedName("large_image_url") val largeImageUrl: String? = null
 ) : Parcelable

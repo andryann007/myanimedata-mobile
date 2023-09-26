@@ -21,17 +21,22 @@ class MangaFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState)
+
         val binding = FragmentMangasBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
         viewPager = binding.viewPagerManga
         tabLayout = binding.tabLayoutManga
+
         return root
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         setUpViewPager(viewPager)
+
         tabLayout!!.setupWithViewPager(viewPager)
         tabLayout!!.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {}
@@ -45,6 +50,7 @@ class MangaFragment : Fragment() {
         mangaPagerAdapter.addFragment(AllMangaFragment(), "All Manga")
         mangaPagerAdapter.addFragment(PopularMangaFragment(), "Popular")
         mangaPagerAdapter.addFragment(TopRatedMangaFragment(), "Top Rated")
+
         viewPager!!.adapter = mangaPagerAdapter
     }
 }

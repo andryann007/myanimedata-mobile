@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:alpha="0.9"
     tools:context=".activity.FilterActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -22,11 +24,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/filterToolbar"
-        android:layout_marginHorizontal="5dp"
+        android:layout_margin="5dp"
+        android:padding="8dp"
+        android:background="@color/black"
         android:fontFamily="sans-serif"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        style="@style/TextAppearance.Material3.LabelMedium"/>
 
     <LinearLayout
         android:id="@+id/textFilter1"
@@ -34,6 +39,9 @@
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:layout_below="@+id/textFilterResult"
+        android:layout_marginHorizontal="5dp"
+        android:padding="8dp"
+        android:background="@color/black"
         android:weightSum="2"
         android:orientation="horizontal">
 
@@ -67,6 +75,9 @@
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:layout_below="@+id/textFilter1"
+        android:layout_marginHorizontal="5dp"
+        android:padding="8dp"
+        android:background="@color/black"
         android:weightSum="2"
         android:orientation="horizontal">
 
@@ -112,13 +123,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        style="?android:attr/progressBarStyle"/>
+        style="@android:style/Widget.ProgressBar"/>
 
     <TextView
         android:id="@+id/textNoFilterResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/textFilter2"
+        android:layout_margin="5dp"
+        android:padding="8dp"
+        android:background="@color/black"
         android:text="@string/text_no_result"
         android:fontFamily="sans-serif"
         android:textAlignment="center"

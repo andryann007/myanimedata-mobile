@@ -6,6 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AuthorResult(
-    @field:SerializedName("mal_id") val id: Int,
-    @field:SerializedName("name") val name: String
+    @field:SerializedName("mal_id") val id: Int? = 0,
+    @field:SerializedName("name") val name: String? = null
 ) : Parcelable
