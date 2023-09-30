@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:alpha="0.9"
+    android:alpha="0.8"
     tools:context=".activity.FilterActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -17,106 +17,134 @@
         app:logo="@drawable/ic_back"
         app:title="Filter Result"
         app:titleMarginStart="32dp"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white"/>
 
-    <TextView
-        android:id="@+id/textFilterResult"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/filterToolbar"
-        android:layout_margin="5dp"
-        android:padding="8dp"
-        android:background="@color/black"
-        android:fontFamily="sans-serif"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="20sp"
-        style="@style/TextAppearance.Material3.LabelMedium"/>
+        android:layout_margin="8dp"
+        android:alpha="0.9"
+        app:cardCornerRadius="5dp"
+        style="@style/CardView.Light">
 
-    <LinearLayout
-        android:id="@+id/textFilter1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:layout_below="@+id/textFilterResult"
-        android:layout_marginHorizontal="5dp"
-        android:padding="8dp"
-        android:background="@color/black"
-        android:weightSum="2"
-        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textFilterByType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginHorizontal="5dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@android:color/background_light"
-            android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/textFilterResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.LabelMedium"/>
 
-        <TextView
-            android:id="@+id/textFilterByStatus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginHorizontal="5dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@android:color/background_light"
-            android:textSize="16sp"/>
+            <LinearLayout
+                android:id="@+id/textFilter1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:layout_below="@+id/textFilterResult"
+                android:weightSum="2"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textFilterByType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
 
-    <LinearLayout
-        android:id="@+id/textFilter2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:layout_below="@+id/textFilter1"
-        android:layout_marginHorizontal="5dp"
-        android:padding="8dp"
-        android:background="@color/black"
-        android:weightSum="2"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textFilterByStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
 
-        <TextView
-            android:id="@+id/textFilterByRating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginHorizontal="5dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@android:color/background_light"
-            android:textSize="16sp"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textFilterByOrderType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginHorizontal="5dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@android:color/background_light"
-            android:textSize="16sp"/>
+            <LinearLayout
+                android:id="@+id/textFilter2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:layout_below="@+id/textFilter1"
+                android:weightSum="2"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textFilterByRating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFilterList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textFilter2"
-        android:orientation="vertical"
-        android:scrollbars="vertical"
-        android:overScrollMode="never"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:listitem="@layout/container_anime"/>
+                <TextView
+                    android:id="@+id/textFilterByOrderType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFilterList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textFilter2"
+                android:orientation="vertical"
+                android:scrollbars="vertical"
+                android:overScrollMode="never"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/container_anime"/>
+
+            <TextView
+                android:id="@+id/textNoFilterResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textFilter2"
+                android:padding="8dp"
+                android:text="@string/text_no_result"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                style="@style/TextAppearance.AppCompat.Body2"/>
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <ProgressBar
         android:id="@+id/loadingFilter"
@@ -124,20 +152,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         style="@android:style/Widget.ProgressBar"/>
-
-    <TextView
-        android:id="@+id/textNoFilterResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textFilter2"
-        android:layout_margin="5dp"
-        android:padding="8dp"
-        android:background="@color/black"
-        android:text="@string/text_no_result"
-        android:fontFamily="sans-serif"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:visibility="gone"
-        style="@style/TextAppearance.AppCompat.Body2"/>
 
 </RelativeLayout>

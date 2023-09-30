@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:alpha="0.2">
+        android:alpha="0.5">
 
         <ImageView
             android:id="@+id/imageBackground"
@@ -33,213 +33,232 @@
             android:visibility="gone"/>
     </FrameLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/detailScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:visibility="gone">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_margin="8dp"
+            android:alpha="0.9"
+            app:cardCornerRadius="5dp"
+            style="@style/CardView.Dark">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/imagePoster"
-                    android:layout_width="135dp"
-                    android:layout_height="192dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:scaleType="centerCrop"
-                    app:riv_corner_radius="5dp"
-                    android:contentDescription="@string/image_poster_desc"/>
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/generalInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="start|center_vertical"
-                    android:weightSum="3"
-                    android:layout_marginHorizontal="10dp"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/textName"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:gravity="start|center_vertical"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="sans-serif"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        style="@style/TextAppearance.Material3.TitleLarge"/>
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imagePoster"
+                        android:layout_width="135dp"
+                        android:layout_height="192dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:scaleType="centerCrop"
+                        app:riv_corner_radius="5dp"
+                        android:contentDescription="@string/image_poster_desc"/>
 
-                    <TextView
-                        android:id="@+id/textScoreOrPopularity"
+                    <LinearLayout
+                        android:id="@+id/generalInfo"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:gravity="start|center_vertical"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="sans-serif"
-                        android:textColor="@color/white"
-                        style="@style/TextAppearance.Material3.TitleLarge"/>
+                        android:weightSum="3"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textTypeAndEpisodes"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:gravity="start|center_vertical"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="sans-serif"
-                        android:textColor="@color/white"
-                        style="@style/TextAppearance.Material3.TitleLarge"/>
+                        <TextView
+                            android:id="@+id/textName"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:gravity="start|center_vertical"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            style="@style/TextAppearance.Material3.BodyMedium"/>
+
+                        <TextView
+                            android:id="@+id/textScoreOrPopularity"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:gravity="start|center_vertical"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            style="@style/TextAppearance.Material3.BodyMedium"/>
+
+                        <TextView
+                            android:id="@+id/textTypeAndEpisodes"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:gravity="start|center_vertical"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            style="@style/TextAppearance.Material3.BodyMedium"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/titleSynopsisOrAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/synopsis"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+                <TextView
+                    android:id="@+id/textSynopsisOrAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:alpha="0.8"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+                <TextView
+                    android:id="@+id/titleBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/background"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+                <TextView
+                    android:id="@+id/textBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:alpha="0.8"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+                <TextView
+                    android:id="@+id/textGenreOrDebutList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="@string/genre"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvGenreOrDebutList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:scrollbars="horizontal"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/container_genre"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/textPictureList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="@string/pictures"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPictureList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:scrollbars="horizontal"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/container_pictures"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/textRecommendationList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="@string/anime_recommendations"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    style="@style/TextAppearance.Material3.LabelMedium"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecommendationList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:scrollbars="horizontal"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/container_recommendations"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/titleSynopsisOrAbout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:fontFamily="sans-serif"
-                android:includeFontPadding="false"
-                android:text="@string/synopsis"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:visibility="gone"
-                style="@style/TextAppearance.Material3.LabelMedium"/>
+        </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/textSynopsisOrAbout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginHorizontal="10dp"
-                android:alpha="0.8"
-                android:fontFamily="sans-serif"
-                android:includeFontPadding="false"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                style="@style/TextAppearance.Material3.LabelMedium"/>
-
-            <TextView
-                android:id="@+id/titleBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:fontFamily="sans-serif"
-                android:includeFontPadding="false"
-                android:text="@string/background"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:visibility="gone"
-                style="@style/TextAppearance.Material3.LabelMedium"/>
-
-            <TextView
-                android:id="@+id/textBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginHorizontal="10dp"
-                android:alpha="0.8"
-                android:fontFamily="sans-serif"
-                android:includeFontPadding="false"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                style="@style/TextAppearance.Material3.LabelMedium"/>
-
-            <TextView
-                android:id="@+id/textGenreOrDebutList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:text="@string/genre"
-                android:fontFamily="sans-serif"
-                android:textColor="@android:color/background_light"
-                android:textStyle="bold"
-                android:visibility="gone"
-                style="@style/TextAppearance.Material3.LabelMedium"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvGenreOrDebutList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:scrollbars="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/container_genre"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/textPictureList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:text="@string/pictures"
-                android:fontFamily="sans-serif"
-                android:textColor="@android:color/background_light"
-                android:textStyle="bold"
-                android:visibility="gone"
-                style="@style/TextAppearance.Material3.LabelMedium"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPictureList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:scrollbars="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/container_pictures"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/textRecommendationList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:text="@string/anime_recommendations"
-                android:fontFamily="sans-serif"
-                android:textColor="@android:color/background_light"
-                android:textStyle="bold"
-                android:visibility="gone"
-                style="@style/TextAppearance.Material3.LabelMedium"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecommendationList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:scrollbars="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/container_recommendations"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <TextView
         android:id="@+id/textNoDetailResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:layout_centerInParent="true"
         android:text="@string/text_no_result"
         android:fontFamily="sans-serif"
@@ -250,9 +269,9 @@
 
     <ProgressBar
         android:id="@+id/loadingDetail"
-        style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        style="@android:style/Widget.ProgressBar"/>
 
 </RelativeLayout>

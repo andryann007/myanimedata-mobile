@@ -5,20 +5,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:alpha="0.9"
+    android:alpha="0.8"
     tools:context=".ui.FavoriteCharacterFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFavoriteCharacterList"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:scrollbars="vertical"
-        android:overScrollMode="never"
-        android:visibility="gone"
-        app:spanCount="3"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/container_character" />
+        android:layout_margin="8dp"
+        android:alpha="0.9"
+        app:cardCornerRadius="5dp"
+        style="@style/CardView.Light">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFavoriteCharacterList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:scrollbars="vertical"
+            android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:visibility="gone"
+            app:spanCount="3"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/container_character" />
+
+        <TextView
+            android:id="@+id/textNoFavoriteResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/text_no_result"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            style="@style/TextAppearance.AppCompat.Body2"/>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <ProgressBar
         android:id="@+id/loadingFavoriteCharacter"
@@ -26,17 +50,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         style="@android:style/Widget.ProgressBar"/>
-
-    <TextView
-        android:id="@+id/textNoFavoriteResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/text_no_result"
-        android:fontFamily="sans-serif"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:visibility="gone"
-        style="@style/TextAppearance.AppCompat.Body2"/>
-
 </FrameLayout>
