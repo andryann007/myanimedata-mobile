@@ -197,14 +197,22 @@ class DetailActivity : AppCompatActivity() {
                             )
                         }
                     }
-                    binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
-                    binding!!.textSynopsisOrAbout.text = response.body()!!.animeDetails?.synopsis
+                    if(response.body()!!.animeDetails?.synopsis != null){
+                        binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
+                        binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
+                        binding!!.textSynopsisOrAbout.text = response.body()!!.animeDetails?.synopsis
+                    } else {
+                        binding!!.titleSynopsisOrAbout.visibility = View.GONE
+                    }
 
-                    binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
-                    binding!!.titleBackground.visibility = View.VISIBLE
-                    binding!!.textBackground.text = response.body()!!.animeDetails?.background
+                    if(response.body()!!.animeDetails?.background != null){
+                        binding!!.titleBackground.visibility = View.VISIBLE
+                        binding!!.textBackground.visibility = View.VISIBLE
+                        binding!!.textBackground.text = response.body()!!.animeDetails?.background
+                    } else {
+                        binding!!.titleBackground.visibility = View.GONE
+                    }
 
-                    binding!!.textBackground.visibility = View.VISIBLE
                     setGenresAnime()
                     setPicturesAnime()
                 } else {
@@ -381,13 +389,23 @@ class DetailActivity : AppCompatActivity() {
                             it
                         )
                     }
-                    binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
-                    binding!!.textSynopsisOrAbout.text = response.body()!!.mangaDetails?.synopsis
 
-                    binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
-                    binding!!.titleBackground.visibility = View.VISIBLE
-                    binding!!.textBackground.text = response.body()!!.mangaDetails?.background
-                    binding!!.textBackground.visibility = View.VISIBLE
+                    if(response.body()!!.mangaDetails?.synopsis != null){
+                        binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
+                        binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
+                        binding!!.textSynopsisOrAbout.text = response.body()!!.mangaDetails?.synopsis
+                    } else {
+                        binding!!.titleSynopsisOrAbout.visibility = View.GONE
+                    }
+
+                    if(response.body()!!.mangaDetails?.background != null){
+                        binding!!.titleBackground.visibility = View.VISIBLE
+                        binding!!.textBackground.visibility = View.VISIBLE
+                        binding!!.textBackground.text = response.body()!!.mangaDetails?.background
+                    } else {
+                        binding!!.titleBackground.visibility = View.GONE
+                    }
+
                     setGenresMangas()
                     setPicturesMangas()
                 } else {
@@ -565,11 +583,18 @@ class DetailActivity : AppCompatActivity() {
                             it
                         )
                     }
-                    binding!!.titleSynopsisOrAbout.text = "About :"
-                    binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
 
-                    binding!!.textSynopsisOrAbout.text = response.body()!!.characterDetail?.about
-                    binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
+                    if(response.body()!!.characterDetail?.about != null){
+                        binding!!.titleSynopsisOrAbout.visibility = View.VISIBLE
+                        binding!!.textSynopsisOrAbout.visibility = View.VISIBLE
+                        binding!!.titleSynopsisOrAbout.text = "About :"
+                        binding!!.textSynopsisOrAbout.text = response.body()!!.characterDetail?.about
+                    } else {
+                        binding!!.titleSynopsisOrAbout.visibility = View.GONE
+                    }
+
+                    binding!!.titleBackground.visibility = View.GONE
+
                     setCharacterRole()
                 } else {
                     binding!!.loadingDetail.visibility = View.GONE
